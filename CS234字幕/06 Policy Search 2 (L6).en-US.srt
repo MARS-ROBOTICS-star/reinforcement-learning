@@ -1,0 +1,7673 @@
+1
+00:00:05,400 --> 00:00:06,130
+Hi, everybody.
+
+2
+00:00:06,130 --> 00:00:06,770
+Welcome back.
+
+3
+00:00:06,770 --> 00:00:09,270
+We're going to be talking more
+about policy gradient methods
+
+4
+00:00:09,270 --> 00:00:09,770
+today.
+
+5
+00:00:09,770 --> 00:00:12,360
+And we're going to start off
+with a quick Refresh Your
+
+6
+00:00:12,360 --> 00:00:13,510
+Understanding.
+
+7
+00:01:02,090 --> 00:01:02,590
+All right.
+
+8
+00:01:02,590 --> 00:01:04,480
+Let's go ahead and
+go through these.
+
+9
+00:01:04,480 --> 00:01:07,770
+So everybody said the last thing
+was false, which is correct.
+
+10
+00:01:07,770 --> 00:01:09,910
+It is not guaranteed
+to converge.
+
+11
+00:01:09,910 --> 00:01:12,160
+They're not guaranteed to
+converge to a global optima.
+
+12
+00:01:12,160 --> 00:01:14,368
+They're just guaranteed to
+converge to a local optima
+
+13
+00:01:14,368 --> 00:01:17,430
+of the policy gradient space.
+
+14
+00:01:17,430 --> 00:01:18,935
+The first one is true.
+
+15
+00:01:22,100 --> 00:01:24,722
+There are different
+ways to write this down,
+
+16
+00:01:24,722 --> 00:01:26,180
+but in general,
+what we're doing is
+
+17
+00:01:26,180 --> 00:01:29,240
+we're going to be trying to
+find, take steps in the policy
+
+18
+00:01:29,240 --> 00:01:30,320
+parameterization space.
+
+19
+00:01:30,320 --> 00:01:33,570
+We're parameterizing
+our policies by theta,
+
+20
+00:01:33,570 --> 00:01:36,620
+so that we're going
+to be trying to move
+
+21
+00:01:36,620 --> 00:01:41,540
+in the direction of the log
+of the policy parameters times
+
+22
+00:01:41,540 --> 00:01:45,560
+their value, the return
+you get from them.
+
+23
+00:01:45,560 --> 00:01:48,690
+The second one is false.
+
+24
+00:01:48,690 --> 00:01:50,870
+There's a bit of
+disagreement over this.
+
+25
+00:01:50,870 --> 00:01:54,420
+So because you can see
+from this first derivative,
+
+26
+00:01:54,420 --> 00:01:58,670
+we are going to look at the
+direction of the derivative
+
+27
+00:01:58,670 --> 00:02:01,530
+with respect to theta of the
+log of the policy parameters.
+
+28
+00:02:01,530 --> 00:02:05,520
+But it's weighted by the return,
+or weighted by the Q-function.
+
+29
+00:02:05,520 --> 00:02:09,710
+So whether we push it up or
+not will depend whether or not
+
+30
+00:02:09,710 --> 00:02:12,890
+we're getting high rewards
+when we go in that direction.
+
+31
+00:02:12,890 --> 00:02:15,500
+So this one is false.
+
+32
+00:02:15,500 --> 00:02:19,280
+And this one is also true.
+
+33
+00:02:19,280 --> 00:02:21,150
+But in general, what
+we're trying to do
+
+34
+00:02:21,150 --> 00:02:24,720
+is we're trying to find parts
+of the policy space, such
+
+35
+00:02:24,720 --> 00:02:27,150
+that when we follow
+that policy, we
+
+36
+00:02:27,150 --> 00:02:31,260
+visit states and actions,
+which have higher estimated
+
+37
+00:02:31,260 --> 00:02:34,410
+Q-function, or higher
+estimated rewards.
+
+38
+00:02:34,410 --> 00:02:37,150
+Do you have a question?
+
+39
+00:02:37,150 --> 00:02:37,650
+OK.
+
+40
+00:02:40,280 --> 00:02:42,950
+Great.
+
+41
+00:02:42,950 --> 00:02:43,450
+All right.
+
+42
+00:02:47,620 --> 00:02:50,555
+So last time, we started talking
+about policy search, which
+
+43
+00:02:50,555 --> 00:02:52,930
+was this idea of saying we're
+going to be directly trying
+
+44
+00:02:52,930 --> 00:02:56,930
+to search in the policy
+parameterized by some theta.
+
+45
+00:02:56,930 --> 00:02:59,240
+This could be a
+Gaussian policy class.
+
+46
+00:02:59,240 --> 00:03:02,450
+This could be softmax, or this
+could be, as it will often be,
+
+47
+00:03:02,450 --> 00:03:03,680
+a deep neural network.
+
+48
+00:03:03,680 --> 00:03:05,530
+And what we're going
+to talk about today
+
+49
+00:03:05,530 --> 00:03:08,720
+is we're going to get
+to finish off that part,
+
+50
+00:03:08,720 --> 00:03:11,260
+and then talk about more
+advanced policy gradient
+
+51
+00:03:11,260 --> 00:03:11,930
+methods.
+
+52
+00:03:11,930 --> 00:03:13,430
+And in particular,
+today we're going
+
+53
+00:03:13,430 --> 00:03:15,780
+to cover at least
+the majority of PPO.
+
+54
+00:03:15,780 --> 00:03:17,830
+So this should be
+enough for you to be
+
+55
+00:03:17,830 --> 00:03:20,600
+making significant
+progress on Homework 2.
+
+56
+00:03:23,200 --> 00:03:25,450
+So in particular, what we're
+going to be covering is,
+
+57
+00:03:25,450 --> 00:03:28,270
+we've talked last time a lot
+about likelihood ratio or score
+
+58
+00:03:28,270 --> 00:03:29,848
+function policy gradients.
+
+59
+00:03:29,848 --> 00:03:32,140
+We're going to talk more
+about the notion of a baseline
+
+60
+00:03:32,140 --> 00:03:34,930
+and why introducing
+that is not going
+
+61
+00:03:34,930 --> 00:03:38,150
+to incur any bias in the
+estimate of our gradient.
+
+62
+00:03:38,150 --> 00:03:40,300
+We'll talk about
+alternative targets,
+
+63
+00:03:40,300 --> 00:03:42,370
+and then we're going
+to talk about PPO.
+
+64
+00:03:42,370 --> 00:03:43,870
+And again, just to
+remind ourselves,
+
+65
+00:03:43,870 --> 00:03:47,000
+PPO is what they used in
+ChatGPT and a huge number
+
+66
+00:03:47,000 --> 00:03:48,600
+of other application
+areas, as well.
+
+67
+00:03:48,600 --> 00:03:51,880
+So it's a really,
+really useful technique.
+
+68
+00:03:51,880 --> 00:03:52,380
+All right.
+
+69
+00:03:52,380 --> 00:03:54,320
+So let's just
+remind ourselves, we
+
+70
+00:03:54,320 --> 00:03:56,660
+talked about how we can take
+a derivative with respect
+
+71
+00:03:56,660 --> 00:03:59,470
+to the value of a
+particular policy.
+
+72
+00:03:59,470 --> 00:04:04,340
+So this was the
+policy parameters.
+
+73
+00:04:04,340 --> 00:04:09,020
+And we showed that it
+could look like this.
+
+74
+00:04:09,020 --> 00:04:13,080
+And this was an unbiased
+estimate of the gradient,
+
+75
+00:04:13,080 --> 00:04:16,339
+but it could be very noisy, in
+part because it looks something
+
+76
+00:04:16,339 --> 00:04:19,760
+like our Monte Carlo estimates
+that we saw before because we're
+
+77
+00:04:19,760 --> 00:04:21,980
+looking at these returns.
+
+78
+00:04:21,980 --> 00:04:24,260
+And so we talked about a
+couple of different fixes,
+
+79
+00:04:24,260 --> 00:04:26,600
+or we started to talk about
+fixes to make it tractable.
+
+80
+00:04:26,600 --> 00:04:29,100
+So one was to leverage
+the temporal structure,
+
+81
+00:04:29,100 --> 00:04:31,790
+meaning that your reward
+on time step three
+
+82
+00:04:31,790 --> 00:04:34,820
+can't depend on your
+actions after time step 3.
+
+83
+00:04:34,820 --> 00:04:36,650
+And so we could
+use that to reduce
+
+84
+00:04:36,650 --> 00:04:38,345
+the variance of our estimator.
+
+85
+00:04:38,345 --> 00:04:40,470
+And now, the next thing
+we're going to talk about--
+
+86
+00:04:40,470 --> 00:04:44,300
+we start talking about this
+last time-- is baseline.
+
+87
+00:04:44,300 --> 00:04:46,230
+So as we talk
+about this, I think
+
+88
+00:04:46,230 --> 00:04:48,230
+it's just useful to keep
+in mind throughout this
+
+89
+00:04:48,230 --> 00:04:51,390
+that we're always trying to
+converge as quickly as possible.
+
+90
+00:04:51,390 --> 00:04:54,000
+So we want these
+estimates of the gradient
+
+91
+00:04:54,000 --> 00:04:56,030
+to be as low
+variance as possible
+
+92
+00:04:56,030 --> 00:04:58,745
+so we can try to be taking
+better steps in our policy
+
+93
+00:04:58,745 --> 00:04:59,245
+space.
+
+94
+00:05:02,860 --> 00:05:03,360
+All right.
+
+95
+00:05:03,360 --> 00:05:04,850
+So let's look at the baseline.
+
+96
+00:05:04,850 --> 00:05:06,530
+We started talking
+about this before
+
+97
+00:05:06,530 --> 00:05:08,510
+and we said, well,
+when we are thinking
+
+98
+00:05:08,510 --> 00:05:12,810
+about how to move our policy
+inside of the policy space,
+
+99
+00:05:12,810 --> 00:05:16,015
+we want to think about, not just
+how much reward we're getting,
+
+100
+00:05:16,015 --> 00:05:17,390
+but really, maybe
+how much reward
+
+101
+00:05:17,390 --> 00:05:19,818
+we're getting relative to
+other things we could be doing.
+
+102
+00:05:19,818 --> 00:05:21,860
+So we want to know how
+much better this policy is
+
+103
+00:05:21,860 --> 00:05:23,450
+compared to other stuff.
+
+104
+00:05:23,450 --> 00:05:29,000
+And I said, you could introduce
+this baseline, b of st,
+
+105
+00:05:29,000 --> 00:05:31,890
+which was only a
+function of the state.
+
+106
+00:05:31,890 --> 00:05:42,150
+So note, not a function
+of a, of theta or a.
+
+107
+00:05:42,150 --> 00:05:44,530
+Now, there's been other
+work, including from my lab,
+
+108
+00:05:44,530 --> 00:05:46,155
+thinking about whether
+we can introduce
+
+109
+00:05:46,155 --> 00:05:48,850
+baselines that may be a function
+of something beyond the state.
+
+110
+00:05:48,850 --> 00:05:51,183
+But for today, we're just
+going to assume that it's only
+
+111
+00:05:51,183 --> 00:05:52,295
+a function of the state.
+
+112
+00:05:52,295 --> 00:05:53,670
+And what we're
+going to prove now
+
+113
+00:05:53,670 --> 00:05:55,900
+is that, for any
+choice of the baseline,
+
+114
+00:05:55,900 --> 00:05:57,850
+as long as it's only a
+function of the state,
+
+115
+00:05:57,850 --> 00:06:00,370
+this gradient
+estimator is unbiased,
+
+116
+00:06:00,370 --> 00:06:02,620
+which means that we could
+introduce this here,
+
+117
+00:06:02,620 --> 00:06:06,750
+and we're not changing, on
+average, what the gradient
+
+118
+00:06:06,750 --> 00:06:08,490
+estimator is.
+
+119
+00:06:08,490 --> 00:06:13,362
+And a near optimal choice is
+going to be the expected return.
+
+120
+00:06:13,362 --> 00:06:14,820
+So now, we're going
+to, again, just
+
+121
+00:06:14,820 --> 00:06:17,460
+be trying to think about
+how much better is taking
+
+122
+00:06:17,460 --> 00:06:19,680
+the actions under this
+current policy compared
+
+123
+00:06:19,680 --> 00:06:22,620
+to other things we could do.
+
+124
+00:06:22,620 --> 00:06:23,820
+So let's see.
+
+125
+00:06:23,820 --> 00:06:26,550
+We're going to step through
+why adding a baseline
+
+126
+00:06:26,550 --> 00:06:31,260
+does not incur any bias in
+our estimate of the gradient.
+
+127
+00:06:31,260 --> 00:06:33,210
+So what we're going
+to do this is we're
+
+128
+00:06:33,210 --> 00:06:35,695
+going to think about how
+our gradient comes together.
+
+129
+00:06:39,513 --> 00:06:40,013
+OK.
+
+130
+00:06:40,013 --> 00:06:43,840
+So remember, tau here
+is our trajectories,
+
+131
+00:06:43,840 --> 00:06:46,900
+and then this is our gradient.
+
+132
+00:06:46,900 --> 00:06:54,820
+So the goal is to show
+this is equal to 0.
+
+133
+00:06:54,820 --> 00:06:55,490
+Why is that?
+
+134
+00:06:55,490 --> 00:06:57,920
+Because if we think
+about what this term was,
+
+135
+00:06:57,920 --> 00:07:01,870
+this first term was an
+estimate, unbiased estimate
+
+136
+00:07:01,870 --> 00:07:02,900
+of the gradient.
+
+137
+00:07:02,900 --> 00:07:06,400
+And now we've subtracted off
+this term times this term,
+
+138
+00:07:06,400 --> 00:07:09,610
+and we want to show that, in
+expectation, subtracting off
+
+139
+00:07:09,610 --> 00:07:14,273
+that term is 0, which means that
+we didn't introduce any bias.
+
+140
+00:07:14,273 --> 00:07:16,190
+OK, so let's just step
+through how that works.
+
+141
+00:07:16,190 --> 00:07:17,450
+So the goal is to
+show this as 0,
+
+142
+00:07:17,450 --> 00:07:19,200
+and we're just going
+to step through this.
+
+143
+00:07:19,200 --> 00:07:20,850
+So our expectation is over tau.
+
+144
+00:07:20,850 --> 00:07:23,660
+Tau is our trajectory, so
+let's just write it out.
+
+145
+00:07:23,660 --> 00:07:25,940
+You can write it
+out as the states
+
+146
+00:07:25,940 --> 00:07:30,380
+we've seen up to a time
+step t plus the states
+
+147
+00:07:30,380 --> 00:07:33,195
+that we see from that
+time step onwards
+
+148
+00:07:33,195 --> 00:07:35,820
+because that's like we're just
+writing out our full trajectory.
+
+149
+00:07:35,820 --> 00:07:37,403
+So we can just think
+of our trajectory
+
+150
+00:07:37,403 --> 00:07:45,080
+here as being s0 to t
+and a0 to t minus 1.
+
+151
+00:07:45,080 --> 00:07:46,620
+And that's just the
+full trajectory.
+
+152
+00:07:46,620 --> 00:07:47,870
+So that's tau.
+
+153
+00:07:47,870 --> 00:07:50,630
+And so we're just going to
+decompose this expectation.
+
+154
+00:07:50,630 --> 00:07:52,040
+So we break this up.
+
+155
+00:07:52,040 --> 00:07:54,620
+And after we've
+done that, we can
+
+156
+00:07:54,620 --> 00:08:02,815
+notice that we can pull
+one of the terms out.
+
+157
+00:08:07,490 --> 00:08:10,010
+I'm going to pull this out
+because this is not a function
+
+158
+00:08:10,010 --> 00:08:11,606
+of this future expectation.
+
+159
+00:08:21,610 --> 00:08:24,040
+And I could pull that out
+there because this is just
+
+160
+00:08:24,040 --> 00:08:25,870
+a function of the
+current state, and it
+
+161
+00:08:25,870 --> 00:08:28,270
+doesn't depend on the future
+state, so the future actions
+
+162
+00:08:28,270 --> 00:08:29,760
+that I take.
+
+163
+00:08:29,760 --> 00:08:30,260
+All right.
+
+164
+00:08:30,260 --> 00:08:30,860
+So that's what I did.
+
+165
+00:08:30,860 --> 00:08:32,277
+And then next, I'm
+going to notice
+
+166
+00:08:32,277 --> 00:08:34,030
+that, well, this
+term here is only
+
+167
+00:08:34,030 --> 00:08:36,049
+a function of the
+state and the action.
+
+168
+00:08:36,049 --> 00:08:38,260
+It's not, again, a function
+of all the future actions
+
+169
+00:08:38,260 --> 00:08:39,539
+and future states.
+
+170
+00:08:39,539 --> 00:08:48,380
+So we can just rewrite that as
+expectation over the action t.
+
+171
+00:09:03,200 --> 00:09:03,780
+All right.
+
+172
+00:09:03,780 --> 00:09:05,420
+So what are we going to do next?
+
+173
+00:09:05,420 --> 00:09:06,920
+The next thing we're
+going to do is,
+
+174
+00:09:06,920 --> 00:09:10,310
+I'm just going to write
+this out more fully.
+
+175
+00:09:10,310 --> 00:09:12,175
+So I'll repeat this.
+
+176
+00:09:15,890 --> 00:09:18,450
+So we've got our
+baseline here, st,
+
+177
+00:09:18,450 --> 00:09:20,700
+and we're going to write out
+what this expectation is.
+
+178
+00:09:20,700 --> 00:09:22,830
+This is an expectation
+over the actions.
+
+179
+00:09:22,830 --> 00:09:24,270
+What actions are we taking?
+
+180
+00:09:24,270 --> 00:09:26,943
+We're exactly taking the
+actions according to our policy.
+
+181
+00:09:37,710 --> 00:09:40,170
+So I've just rewritten
+what that expectation is.
+
+182
+00:09:40,170 --> 00:09:41,900
+The expectation we're
+taking over actions
+
+183
+00:09:41,900 --> 00:09:45,050
+is exactly the probability
+we take each action according
+
+184
+00:09:45,050 --> 00:09:47,345
+to our current policy.
+
+185
+00:09:47,345 --> 00:09:51,170
+OK, once we have that, we can
+play the likelihood ratio,
+
+186
+00:09:51,170 --> 00:09:54,020
+or we can think of what
+is this derivative.
+
+187
+00:09:54,020 --> 00:10:01,682
+This derivative is
+equal to bst sum over a.
+
+188
+00:10:01,682 --> 00:10:04,130
+The derivative of
+log is just going
+
+189
+00:10:04,130 --> 00:10:11,490
+to be the derivative of
+the things inside divide it
+
+190
+00:10:11,490 --> 00:10:17,530
+by this one I should have added.
+
+191
+00:10:17,530 --> 00:10:20,110
+Let me put a theta in here to
+make it clear that all of this
+
+192
+00:10:20,110 --> 00:10:23,590
+is a function of
+my current theta.
+
+193
+00:10:23,590 --> 00:10:25,910
+So I just took the derivative
+with respect to the log.
+
+194
+00:10:25,910 --> 00:10:29,500
+But when we see that, we
+realize we can cross those out.
+
+195
+00:10:29,500 --> 00:10:30,840
+So we can cross off this.
+
+196
+00:10:30,840 --> 00:10:34,000
+We can cross off this
+because that's the same.
+
+197
+00:10:34,000 --> 00:10:35,020
+So now what do we have?
+
+198
+00:10:35,020 --> 00:10:37,500
+We have the expectation
+over states.
+
+199
+00:10:40,300 --> 00:10:44,997
+b of st, sum over a, derivative.
+
+200
+00:10:44,997 --> 00:10:47,080
+Remember, we're taking the
+derivative with respect
+
+201
+00:10:47,080 --> 00:10:53,110
+to theta pi of at st theta.
+
+202
+00:10:53,110 --> 00:10:55,522
+So this is what this
+looks like so far.
+
+203
+00:10:55,522 --> 00:10:56,980
+And now what I'm
+going to do is I'm
+
+204
+00:10:56,980 --> 00:10:59,590
+going to switch the
+derivative and the sum.
+
+205
+00:10:59,590 --> 00:11:00,961
+OK?
+
+206
+00:11:00,961 --> 00:11:05,440
+So if I'm going to say this is
+b of st, derivative of theta,
+
+207
+00:11:05,440 --> 00:11:06,615
+sum over a.
+
+208
+00:11:11,710 --> 00:11:13,175
+OK, why was that important?
+
+209
+00:11:13,175 --> 00:11:14,425
+Because now, and let me just--
+
+210
+00:11:19,740 --> 00:11:23,160
+but we know here that the sum
+over all actions we could take
+
+211
+00:11:23,160 --> 00:11:26,120
+at this time step
+has to sum to 1,
+
+212
+00:11:26,120 --> 00:11:28,580
+because that's true
+for any policy.
+
+213
+00:11:28,580 --> 00:11:35,210
+So this must equal
+1, which means
+
+214
+00:11:35,210 --> 00:11:39,180
+we have b of st of the
+derivative of theta of 1,
+
+215
+00:11:39,180 --> 00:11:41,635
+which is equal to 0,
+because that's a constant.
+
+216
+00:11:45,470 --> 00:11:49,856
+Let me just show it here
+because it's more neat.
+
+217
+00:11:49,856 --> 00:11:54,323
+So there's two main insights
+for how we did this proof.
+
+218
+00:11:54,323 --> 00:11:56,240
+The first was we thought
+about our expectation
+
+219
+00:11:56,240 --> 00:11:57,920
+over all trajectories,
+and we broke it
+
+220
+00:11:57,920 --> 00:12:01,020
+up to the part of the
+trajectory that happened before,
+
+221
+00:12:01,020 --> 00:12:03,620
+the state of interest,
+the st, and the part that
+
+222
+00:12:03,620 --> 00:12:04,860
+happened afterwards.
+
+223
+00:12:04,860 --> 00:12:07,670
+After we did that,
+we showed that we
+
+224
+00:12:07,670 --> 00:12:10,727
+could rewrite that expectation
+just in terms of at,
+
+225
+00:12:10,727 --> 00:12:12,810
+because we didn't care
+about all the future stuff.
+
+226
+00:12:12,810 --> 00:12:17,660
+This only depends on at and st.
+And then we take the derivative,
+
+227
+00:12:17,660 --> 00:12:20,090
+and then we can see that
+we can switch these,
+
+228
+00:12:20,090 --> 00:12:22,080
+and then that just becomes 1.
+
+229
+00:12:22,080 --> 00:12:24,260
+And it's a constant that
+doesn't depend on theta.
+
+230
+00:12:24,260 --> 00:12:28,415
+So the derivative with
+respect to theta is 0.
+
+231
+00:12:28,415 --> 00:12:32,360
+And so that is why introducing
+a baseline that only depends
+
+232
+00:12:32,360 --> 00:12:35,910
+on the state does not introduce
+any bias because an expectation,
+
+233
+00:12:35,910 --> 00:12:38,090
+its value is 0.
+
+234
+00:12:38,090 --> 00:12:40,280
+So that allows us to
+derive what we often
+
+235
+00:12:40,280 --> 00:12:42,980
+call a sort of a vanilla
+policy gradient method, which
+
+236
+00:12:42,980 --> 00:12:46,680
+incorporates both the temporal
+structure and a baseline.
+
+237
+00:12:46,680 --> 00:12:48,540
+And so the idea in
+this case is that we're
+
+238
+00:12:48,540 --> 00:12:49,470
+going to collect
+a set of-- we're
+
+239
+00:12:49,470 --> 00:12:50,880
+going to take our
+current policy, which
+
+240
+00:12:50,880 --> 00:12:52,150
+is parameterized by theta.
+
+241
+00:12:52,150 --> 00:12:55,530
+We're going to roll it
+out a number of times,
+
+242
+00:12:55,530 --> 00:12:59,168
+and then we go for each time
+step t in each trajectory.
+
+243
+00:12:59,168 --> 00:13:00,585
+We're going to
+compute the return,
+
+244
+00:13:00,585 --> 00:13:02,620
+just like our Monte
+Carlo estimate.
+
+245
+00:13:02,620 --> 00:13:04,870
+And then we can compute
+the advantage estimate,
+
+246
+00:13:04,870 --> 00:13:09,240
+which is we take that current
+return from that state
+
+247
+00:13:09,240 --> 00:13:12,390
+till the end of the
+episode minus our baseline.
+
+248
+00:13:12,390 --> 00:13:14,450
+And someone asked me
+about this last time.
+
+249
+00:13:14,450 --> 00:13:16,200
+Generally, we're going
+to change refitting
+
+250
+00:13:16,200 --> 00:13:18,040
+the baseline each time.
+
+251
+00:13:18,040 --> 00:13:20,790
+So we can re estimate
+the baseline.
+
+252
+00:13:20,790 --> 00:13:24,190
+Again, it doesn't matter what
+we pick for the baseline.
+
+253
+00:13:24,190 --> 00:13:25,980
+It will always be
+unbiased, but there will
+
+254
+00:13:25,980 --> 00:13:27,640
+be better or worse choices.
+
+255
+00:13:27,640 --> 00:13:29,830
+So you can imagine,
+if the baseline is 0,
+
+256
+00:13:29,830 --> 00:13:31,670
+it will never make
+any difference.
+
+257
+00:13:31,670 --> 00:13:33,420
+The goal is to,
+hopefully, have a baseline
+
+258
+00:13:33,420 --> 00:13:35,970
+that's pretty informative
+and has a value close
+
+259
+00:13:35,970 --> 00:13:38,850
+to the value of your policy.
+
+260
+00:13:38,850 --> 00:13:41,550
+And so then we'll update the
+policy using our policy gradient
+
+261
+00:13:41,550 --> 00:13:45,270
+estimate, which is a
+sum of these terms.
+
+262
+00:13:45,270 --> 00:13:50,430
+So we're going to use all
+of these terms, where we've
+
+263
+00:13:50,430 --> 00:13:53,280
+got that derivative with
+respect to the log of the policy
+
+264
+00:13:53,280 --> 00:13:58,260
+parameters times our
+advantage, and then repeat.
+
+265
+00:13:58,260 --> 00:14:02,230
+So this is a vanilla
+policy gradient algorithm.
+
+266
+00:14:02,230 --> 00:14:03,640
+Yeah.
+
+267
+00:14:03,640 --> 00:14:06,910
+There is no discount
+factor in the return.
+
+268
+00:14:06,910 --> 00:14:08,410
+Is that intentional, or what?
+
+269
+00:14:08,410 --> 00:14:09,860
+Yeah, good question.
+
+270
+00:14:09,860 --> 00:14:12,700
+So right now, the question is,
+there's no discount factor.
+
+271
+00:14:12,700 --> 00:14:14,200
+There's no discount
+factor right now
+
+272
+00:14:14,200 --> 00:14:16,533
+because we're assuming we're
+in the fully episodic case,
+
+273
+00:14:16,533 --> 00:14:18,350
+so we don't have to
+have a discount factor.
+
+274
+00:14:18,350 --> 00:14:20,830
+You could certainly
+include one if you want to.
+
+275
+00:14:20,830 --> 00:14:24,400
+Yeah, so for right now here, we
+don't have a discount factor.
+
+276
+00:14:24,400 --> 00:14:25,930
+Now, one thing that
+you might think
+
+277
+00:14:25,930 --> 00:14:27,250
+about when you're
+starting to look at this
+
+278
+00:14:27,250 --> 00:14:29,740
+is to say, well, a lot of this
+feels like the Monte Carlo
+
+279
+00:14:29,740 --> 00:14:32,600
+estimation that we did
+earlier in the class.
+
+280
+00:14:32,600 --> 00:14:38,230
+We've been using these G
+estimators, this return,
+
+281
+00:14:38,230 --> 00:14:39,850
+to estimate what
+is the performance
+
+282
+00:14:39,850 --> 00:14:43,060
+of the policy from this time
+step to the end of the episode.
+
+283
+00:14:43,060 --> 00:14:45,680
+But as you might
+imagine in this case,
+
+284
+00:14:45,680 --> 00:14:48,580
+that generally is a
+pretty noisy estimate.
+
+285
+00:14:48,580 --> 00:14:51,915
+So then the question is going
+to be, could we maybe do better.
+
+286
+00:14:55,940 --> 00:14:58,262
+So there's two places
+we could imagine.
+
+287
+00:14:58,262 --> 00:15:00,470
+I guess there's two things
+here that we could imagine
+
+288
+00:15:00,470 --> 00:15:02,130
+plugging in other choices for.
+
+289
+00:15:02,130 --> 00:15:05,930
+There is what is the
+return of the policy
+
+290
+00:15:05,930 --> 00:15:08,490
+from a particular action
+till the end of the episode,
+
+291
+00:15:08,490 --> 00:15:11,480
+and what is my general
+estimate of the performance
+
+292
+00:15:11,480 --> 00:15:12,130
+in that state.
+
+293
+00:15:14,750 --> 00:15:16,400
+So one thing you
+can imagine here
+
+294
+00:15:16,400 --> 00:15:19,230
+is, if we think back to Q
+functions and value functions,
+
+295
+00:15:19,230 --> 00:15:21,770
+maybe we could plug those in,
+instead of using the return
+
+296
+00:15:21,770 --> 00:15:24,020
+and using a generic baseline.
+
+297
+00:15:24,020 --> 00:15:26,533
+So you could plug in--
+instead of saying,
+
+298
+00:15:26,533 --> 00:15:27,950
+what is the return
+from this state
+
+299
+00:15:27,950 --> 00:15:29,492
+and action to the
+end of the episode,
+
+300
+00:15:29,492 --> 00:15:31,370
+you could imagine
+plugging in the Q
+
+301
+00:15:31,370 --> 00:15:34,460
+value for the current policy
+from the state and action
+
+302
+00:15:34,460 --> 00:15:35,580
+to the end of the episode.
+
+303
+00:15:35,580 --> 00:15:37,710
+And we can either make
+gamma equal to 1 or not.
+
+304
+00:15:37,710 --> 00:15:42,920
+We're going to generally
+assume no for now.
+
+305
+00:15:42,920 --> 00:15:47,340
+Assume episodic.
+
+306
+00:15:47,340 --> 00:15:53,560
+So you can set gamma equal to 1.
+
+307
+00:15:53,560 --> 00:15:56,840
+And the state value function
+could be a good baseline.
+
+308
+00:16:00,330 --> 00:16:02,600
+And just to remember
+here, on this slide,
+
+309
+00:16:02,600 --> 00:16:04,850
+you can think of G as kind
+of being like a Q function,
+
+310
+00:16:04,850 --> 00:16:06,330
+and V as being a value function.
+
+311
+00:16:06,330 --> 00:16:10,720
+So this would be an
+alternative we could do.
+
+312
+00:16:10,720 --> 00:16:14,922
+OK, so let's think about how we
+generally could reduce variance.
+
+313
+00:16:14,922 --> 00:16:16,630
+So what we've seen so
+far is we're mostly
+
+314
+00:16:16,630 --> 00:16:18,280
+using Monte Carlo like returns.
+
+315
+00:16:18,280 --> 00:16:20,155
+Now, let's see if we
+can do something better.
+
+316
+00:16:22,600 --> 00:16:25,000
+So one thing we
+can do now is we're
+
+317
+00:16:25,000 --> 00:16:28,730
+going to try to plug in and use
+things like state action values.
+
+318
+00:16:28,730 --> 00:16:31,060
+And this is where the idea
+of actor critic methods
+
+319
+00:16:31,060 --> 00:16:33,520
+come in, which are also really
+popular in reinforcement
+
+320
+00:16:33,520 --> 00:16:35,760
+learning.
+
+321
+00:16:35,760 --> 00:16:39,420
+So the idea here
+is that we could
+
+322
+00:16:39,420 --> 00:16:41,490
+reduce the variance of
+this estimate of the value
+
+323
+00:16:41,490 --> 00:16:44,640
+function at a single st
+from a single rollout
+
+324
+00:16:44,640 --> 00:16:48,390
+by bootstrapping or doing
+function approximation
+
+325
+00:16:48,390 --> 00:16:49,770
+at that point.
+
+326
+00:16:49,770 --> 00:16:52,560
+So you could think back to
+deep Q-learning or something
+
+327
+00:16:52,560 --> 00:16:55,110
+like that as a way for us to
+approximate what the value might
+
+328
+00:16:55,110 --> 00:17:01,450
+be, or just general sort of deep
+learning for the value function.
+
+329
+00:17:01,450 --> 00:17:03,700
+So when we do this,
+we end up with what
+
+330
+00:17:03,700 --> 00:17:05,480
+is called actor critic methods.
+
+331
+00:17:05,480 --> 00:17:08,890
+The idea is that the
+actor is the policy.
+
+332
+00:17:08,890 --> 00:17:17,750
+So the actor is the policy
+often parameterized by theta.
+
+333
+00:17:17,750 --> 00:17:21,349
+And the value function, or the
+state action value function,
+
+334
+00:17:21,349 --> 00:17:23,630
+is the critic.
+
+335
+00:17:23,630 --> 00:17:27,040
+And it's representing
+a V or a Q function.
+
+336
+00:17:27,040 --> 00:17:28,790
+So that's why they're
+called actor critic.
+
+337
+00:17:28,790 --> 00:17:31,250
+Actor is our policy
+parameterization.
+
+338
+00:17:31,250 --> 00:17:33,380
+Critic is our
+state action value.
+
+339
+00:17:33,380 --> 00:17:35,360
+And the great thing
+is that we can
+
+340
+00:17:35,360 --> 00:17:39,440
+use both of those inside of
+a policy gradient algorithm.
+
+341
+00:17:39,440 --> 00:17:43,100
+So you are constantly updating
+an estimate of the state action
+
+342
+00:17:43,100 --> 00:17:46,010
+value, as well as having
+an explicit policy
+
+343
+00:17:46,010 --> 00:17:46,940
+parameterization.
+
+344
+00:17:46,940 --> 00:17:49,910
+And you use them together to,
+hopefully, increase the rate
+
+345
+00:17:49,910 --> 00:17:52,278
+at which we learn to
+get a good policy.
+
+346
+00:17:52,278 --> 00:17:54,320
+Now, in this case, normally
+what we're doing here
+
+347
+00:17:54,320 --> 00:17:56,850
+is we're gathering
+data using the policy.
+
+348
+00:17:56,850 --> 00:18:01,663
+And then we're using that
+data to fit a critic.
+
+349
+00:18:01,663 --> 00:18:03,080
+And the reason we
+call it a critic
+
+350
+00:18:03,080 --> 00:18:04,910
+is because the critic
+is sort of trying
+
+351
+00:18:04,910 --> 00:18:09,440
+to estimate the performance
+of an explicit representation
+
+352
+00:18:09,440 --> 00:18:11,690
+of the performance
+of the policy.
+
+353
+00:18:11,690 --> 00:18:13,820
+So the actor makes
+decisions, and the critic
+
+354
+00:18:13,820 --> 00:18:15,370
+says that's how good it was.
+
+355
+00:18:15,370 --> 00:18:17,430
+So that's why it's
+called actor critic.
+
+356
+00:18:17,430 --> 00:18:20,570
+A3C is a pretty popular
+actor critic method.
+
+357
+00:18:20,570 --> 00:18:21,820
+There's quite a lot of others.
+
+358
+00:18:21,820 --> 00:18:23,940
+So many of the reinforcement
+learning algorithms
+
+359
+00:18:23,940 --> 00:18:26,470
+will end up being essentially
+actor critic algorithms.
+
+360
+00:18:26,470 --> 00:18:28,637
+And so it'll be useful to
+have both representations.
+
+361
+00:18:28,637 --> 00:18:30,012
+So if you think
+of it, you'd have
+
+362
+00:18:30,012 --> 00:18:32,490
+a sort of a deep neural network
+to represent your policy,
+
+363
+00:18:32,490 --> 00:18:35,118
+and you'd have a deep neural
+network, a separate one-- you
+
+364
+00:18:35,118 --> 00:18:36,660
+could share parameters,
+but you don't
+
+365
+00:18:36,660 --> 00:18:40,230
+have to-- to represent
+your value function.
+
+366
+00:18:40,230 --> 00:18:40,730
+All right.
+
+367
+00:18:40,730 --> 00:18:45,520
+Once we do that, we can think
+of rewriting our policy gradient
+
+368
+00:18:45,520 --> 00:18:46,400
+formulas.
+
+369
+00:18:46,400 --> 00:18:49,130
+So this was what we had before.
+
+370
+00:18:49,130 --> 00:18:52,340
+We could approximate
+this now as saying, well,
+
+371
+00:18:52,340 --> 00:18:55,360
+what if we just plugged in
+instead of that return g, which
+
+372
+00:18:55,360 --> 00:18:58,720
+is that sum over the rewards,
+we plugged in a Q function,
+
+373
+00:18:58,720 --> 00:19:01,120
+and we plugged in a
+parameterized Q function
+
+374
+00:19:01,120 --> 00:19:02,530
+with a parameter w.
+
+375
+00:19:02,530 --> 00:19:05,020
+So these were our weights.
+
+376
+00:19:05,020 --> 00:19:06,660
+So now, just to
+highlight here, we're
+
+377
+00:19:06,660 --> 00:19:10,150
+going to have these two sets
+of parameters w and theta,
+
+378
+00:19:10,150 --> 00:19:14,200
+theta for the policy, w
+for the value function.
+
+379
+00:19:14,200 --> 00:19:17,780
+And if we let the baseline
+be an estimate of the V,
+
+380
+00:19:17,780 --> 00:19:21,400
+then we can just directly write
+down a state action advantage
+
+381
+00:19:21,400 --> 00:19:25,090
+function, where we
+look at the difference
+
+382
+00:19:25,090 --> 00:19:29,902
+between the Q and the V. So now
+V is serving as our baseline.
+
+383
+00:19:29,902 --> 00:19:32,110
+And I'll just highlight here
+that using the advantage
+
+384
+00:19:32,110 --> 00:19:35,440
+function was one of
+the first things that--
+
+385
+00:19:35,440 --> 00:19:38,420
+I got best paper maybe in 2016.
+
+386
+00:19:38,420 --> 00:19:41,000
+Right after deep Q-learning
+had started coming out
+
+387
+00:19:41,000 --> 00:19:43,652
+when people thought about
+these different adaptations,
+
+388
+00:19:43,652 --> 00:19:45,110
+one of the things
+that was proposed
+
+389
+00:19:45,110 --> 00:19:46,940
+is to think about
+trying to maximize
+
+390
+00:19:46,940 --> 00:19:49,700
+with respect to advantages.
+
+391
+00:19:49,700 --> 00:19:52,220
+But here, we're going to be
+using this within a policy
+
+392
+00:19:52,220 --> 00:19:55,247
+gradient approach.
+
+393
+00:19:55,247 --> 00:19:57,080
+Now, one of the things
+you might wonder here
+
+394
+00:19:57,080 --> 00:19:59,040
+is, OK, well, we've
+got these extremes.
+
+395
+00:19:59,040 --> 00:20:01,730
+On the one hand, you could
+have this Monte Carlo return
+
+396
+00:20:01,730 --> 00:20:03,882
+of what is the value
+of the state in action
+
+397
+00:20:03,882 --> 00:20:05,840
+that you get from starting
+that state in action
+
+398
+00:20:05,840 --> 00:20:07,800
+and rolling out to the
+end of the episode.
+
+399
+00:20:07,800 --> 00:20:10,550
+And the other is you could
+plug in a Q function.
+
+400
+00:20:10,550 --> 00:20:15,140
+Now, there might be some sort
+of blending between these two.
+
+401
+00:20:15,140 --> 00:20:18,620
+So these are known
+as n step estimators.
+
+402
+00:20:18,620 --> 00:20:20,360
+So a critic, in
+general, doesn't have
+
+403
+00:20:20,360 --> 00:20:21,987
+to pick sort of a
+temporal difference.
+
+404
+00:20:21,987 --> 00:20:24,320
+Temporal difference in the
+way that we've seen it so far
+
+405
+00:20:24,320 --> 00:20:26,840
+is normally-- so I'll
+just write down here.
+
+406
+00:20:26,840 --> 00:20:31,040
+We've seen it as
+TD0, which means
+
+407
+00:20:31,040 --> 00:20:35,840
+we have the immediate reward
+plus gamma times V of s prime.
+
+408
+00:20:35,840 --> 00:20:39,230
+So in TD0, you take you think
+of your immediate reward,
+
+409
+00:20:39,230 --> 00:20:40,850
+and then you plug
+in or bootstrap
+
+410
+00:20:40,850 --> 00:20:43,580
+immediately when you say
+ns on the next state.
+
+411
+00:20:43,580 --> 00:20:46,330
+And I'm going to plug-in my
+value for that next state.
+
+412
+00:20:46,330 --> 00:20:48,330
+So if you think back to
+our tree representation,
+
+413
+00:20:48,330 --> 00:20:50,600
+it's like you see one
+actual observed return,
+
+414
+00:20:50,600 --> 00:20:52,940
+and then you plug-in
+your estimate.
+
+415
+00:20:52,940 --> 00:20:56,510
+But in general, you could trade
+off between taking one step
+
+416
+00:20:56,510 --> 00:20:58,130
+or taking two steps,
+or three steps,
+
+417
+00:20:58,130 --> 00:21:02,180
+and then plugging in your
+estimate of the return.
+
+418
+00:21:02,180 --> 00:21:05,450
+So in particular,
+here's a number
+
+419
+00:21:05,450 --> 00:21:09,260
+of different types of
+estimators you could look at.
+
+420
+00:21:09,260 --> 00:21:13,280
+So let's call this
+r hat 1, which
+
+421
+00:21:13,280 --> 00:21:15,128
+is get your immediate reward.
+
+422
+00:21:15,128 --> 00:21:16,920
+This is what we've seen
+before, plus gamma.
+
+423
+00:21:16,920 --> 00:21:18,410
+Then you bootstrap.
+
+424
+00:21:18,410 --> 00:21:21,470
+A second one would be
+you take your next 2.
+
+425
+00:21:21,470 --> 00:21:25,430
+Again, your gamma can be 1 or
+not, and then you plug in it.
+
+426
+00:21:25,430 --> 00:21:29,120
+And sort of r hat infinity
+would be your normal Monte Carlo
+
+427
+00:21:29,120 --> 00:21:31,620
+return, which is you don't
+do any bootstrapping.
+
+428
+00:21:31,620 --> 00:21:34,100
+You just sum up
+all your rewards.
+
+429
+00:21:34,100 --> 00:21:35,750
+And you can think
+of each of these
+
+430
+00:21:35,750 --> 00:21:38,040
+as being estimates
+of your Q function.
+
+431
+00:21:38,040 --> 00:21:40,820
+And then you could just
+get advantage estimators
+
+432
+00:21:40,820 --> 00:21:43,970
+where you subtract off the V
+of your current state in each
+
+433
+00:21:43,970 --> 00:21:46,280
+of those settings.
+
+434
+00:21:46,280 --> 00:21:47,970
+So those are all
+things you could do.
+
+435
+00:21:47,970 --> 00:21:49,650
+They're called n
+step estimators,
+
+436
+00:21:49,650 --> 00:21:53,123
+where n is the number of time
+steps until you bootstrap.
+
+437
+00:21:53,123 --> 00:21:55,040
+And one of the important
+things to think about
+
+438
+00:21:55,040 --> 00:21:58,640
+is where you might want to
+trade off between these ones.
+
+439
+00:21:58,640 --> 00:22:00,900
+So we'll do just a Check
+Your Understanding now.
+
+440
+00:22:00,900 --> 00:22:02,720
+If we think about
+introducing these type
+
+441
+00:22:02,720 --> 00:22:09,900
+of blended estimators, how does
+bias and variance trade off?
+
+442
+00:22:09,900 --> 00:22:12,160
+So why don't we go
+ahead and do that now.
+
+443
+00:23:13,323 --> 00:23:14,740
+Can you select
+like more than one?
+
+444
+00:23:14,740 --> 00:23:15,965
+You should be able to.
+
+445
+00:23:15,965 --> 00:23:16,590
+Does that work?
+
+446
+00:23:31,725 --> 00:23:33,850
+OK, I'll give you one more
+minute to think about it
+
+447
+00:23:33,850 --> 00:23:35,210
+and put it in your answer.
+
+448
+00:23:35,210 --> 00:23:38,560
+And then there's a
+lot of variability
+
+449
+00:23:38,560 --> 00:23:39,940
+in what people are saying.
+
+450
+00:23:39,940 --> 00:23:43,380
+And so why don't you talk to
+your neighbor in a second?
+
+451
+00:23:51,240 --> 00:23:51,740
+All right.
+
+452
+00:23:51,740 --> 00:23:52,550
+Turn to a neighbor.
+
+453
+00:23:52,550 --> 00:23:53,425
+Compare what you got.
+
+454
+00:24:00,720 --> 00:24:04,640
+[INAUDIBLE]
+
+455
+00:24:24,845 --> 00:24:25,970
+What do you think about it?
+
+456
+00:24:25,970 --> 00:24:29,379
+[INTERPOSING VOICES]
+
+457
+00:24:30,844 --> 00:24:31,344
+Yeah?
+
+458
+00:24:35,770 --> 00:24:37,280
+you are subtracting
+the V function.
+
+459
+00:24:37,280 --> 00:24:39,820
+But if you think back to
+Monte Carlo and TD methods,
+
+460
+00:24:39,820 --> 00:24:41,450
+did they have the same bias?
+
+461
+00:24:41,450 --> 00:24:43,960
+[INTERPOSING VOICES]
+
+462
+00:24:52,320 --> 00:24:55,700
+Well, this is the question.
+
+463
+00:24:55,700 --> 00:24:57,190
+Do these both have
+the same bias?
+
+464
+00:24:57,190 --> 00:25:00,090
+So if you ignore subtracting
+a hundred [INAUDIBLE]
+
+465
+00:25:00,090 --> 00:25:02,280
+the first part of
+the estimate, do you
+
+466
+00:25:02,280 --> 00:25:06,490
+think the first one has
+higher bias or the second one?
+
+467
+00:25:06,490 --> 00:25:09,415
+Yeah, I don't know
+why it has high bias.
+
+468
+00:25:09,415 --> 00:25:11,040
+If you think back,
+the first one should
+
+469
+00:25:11,040 --> 00:25:13,192
+be like the temporal
+difference method,
+
+470
+00:25:13,192 --> 00:25:14,900
+and the second one
+should be Monte Carlo.
+
+471
+00:25:17,432 --> 00:25:19,140
+And remember, I guess,
+it should be clear
+
+472
+00:25:19,140 --> 00:25:23,820
+that these Vs are all estimates,
+so they're not converged.
+
+473
+00:25:23,820 --> 00:25:28,240
+So then the top one
+has higher bias.
+
+474
+00:25:28,240 --> 00:25:28,740
+Exactly.
+
+475
+00:25:28,740 --> 00:25:34,150
+The second one has lower bias
+because of the actual value.
+
+476
+00:25:34,150 --> 00:25:35,140
+Exactly, yeah.
+
+477
+00:25:35,140 --> 00:25:38,850
+And then what do you think
+that means for the variance?
+
+478
+00:25:38,850 --> 00:25:45,090
+I guess higher variance also for
+the top one because, I guess,
+
+479
+00:25:45,090 --> 00:25:47,760
+because it's an estimate.
+
+480
+00:25:47,760 --> 00:25:48,370
+Close.
+
+481
+00:25:48,370 --> 00:25:49,980
+Yeah, so for the
+first one, you're
+
+482
+00:25:49,980 --> 00:25:51,690
+totally right that it's got
+higher bias because you're
+
+483
+00:25:51,690 --> 00:25:52,773
+immediately bootstrapping.
+
+484
+00:25:52,773 --> 00:25:55,120
+But in general, it will
+have lower variance.
+
+485
+00:25:55,120 --> 00:25:55,620
+OK.
+
+486
+00:25:55,620 --> 00:25:57,660
+Is that just
+generally a trade off?
+
+487
+00:25:57,660 --> 00:25:58,500
+Yeah, yeah.
+
+488
+00:25:58,500 --> 00:25:59,990
+Normally, the Monte
+Carlo methods,
+
+489
+00:25:59,990 --> 00:26:01,615
+because you're summing
+them up, they're
+
+490
+00:26:01,615 --> 00:26:02,780
+normally totally unbiased.
+
+491
+00:26:02,780 --> 00:26:04,020
+But they have lots of terms.
+
+492
+00:26:04,020 --> 00:26:06,310
+So you could think of there's
+lots of stochasticity.
+
+493
+00:26:06,310 --> 00:26:06,920
+OK.
+
+494
+00:26:06,920 --> 00:26:08,860
+Yeah, and then the other
+way is normally aggressive.
+
+495
+00:26:08,860 --> 00:26:09,360
+I see.
+
+496
+00:26:09,360 --> 00:26:10,360
+OK, that makes sense.
+
+497
+00:26:10,360 --> 00:26:11,091
+Cool.
+
+498
+00:26:11,091 --> 00:26:14,780
+[INTERPOSING VOICES]
+
+499
+00:26:21,830 --> 00:26:22,330
+All right.
+
+500
+00:26:22,330 --> 00:26:24,423
+I'm going to ask if people
+all turn this-- yeah,
+
+501
+00:26:24,423 --> 00:26:26,340
+I'm going to ask, did
+it may change their mind
+
+502
+00:26:26,340 --> 00:26:28,580
+after talking to someone?
+
+503
+00:26:28,580 --> 00:26:29,700
+OK, at least a few.
+
+504
+00:26:29,700 --> 00:26:30,390
+Yep, all right.
+
+505
+00:26:30,390 --> 00:26:33,540
+So I think one of
+the things, too,
+
+506
+00:26:33,540 --> 00:26:36,683
+I just wanted to clarify here
+is that I find it easiest to--
+
+507
+00:26:36,683 --> 00:26:38,600
+I think it's often easiest
+to think about this
+
+508
+00:26:38,600 --> 00:26:41,030
+without subtracting
+the V, because the V is
+
+509
+00:26:41,030 --> 00:26:42,168
+the same in both of these.
+
+510
+00:26:42,168 --> 00:26:44,210
+So you can just focus to
+understand which of them
+
+511
+00:26:44,210 --> 00:26:46,800
+has high variance or high bias.
+
+512
+00:26:46,800 --> 00:26:48,840
+You can just focus
+on the first things.
+
+513
+00:26:48,840 --> 00:26:50,730
+And when you look at
+just the first things,
+
+514
+00:26:50,730 --> 00:26:52,220
+it should remind
+you of Monte Carlo
+
+515
+00:26:52,220 --> 00:26:54,740
+methods versus temporal
+different methods.
+
+516
+00:26:54,740 --> 00:26:59,300
+So the first one has low
+variance and high bias.
+
+517
+00:26:59,300 --> 00:27:02,160
+Does somebody want to say why?
+
+518
+00:27:02,160 --> 00:27:06,690
+So the first one, which looks
+kind of like a TD0 update,
+
+519
+00:27:06,690 --> 00:27:13,110
+so this one has low variance.
+
+520
+00:27:13,110 --> 00:27:19,047
+So a1, low variance, high bias.
+
+521
+00:27:19,047 --> 00:27:20,630
+Does anyone want to
+share why that is?
+
+522
+00:27:25,040 --> 00:27:25,880
+Which is it?
+
+523
+00:27:25,880 --> 00:27:27,410
+Sorry, it wasn't on top.
+
+524
+00:27:27,410 --> 00:27:28,250
+It wasn't, no.
+
+525
+00:27:31,407 --> 00:27:33,990
+Just to make sure, I'm going to
+explain what each of them has.
+
+526
+00:27:33,990 --> 00:27:34,703
+But yes.
+
+527
+00:27:34,703 --> 00:27:35,870
+Do you want to say somewhat?
+
+528
+00:27:35,870 --> 00:27:36,370
+Yeah.
+
+529
+00:27:36,370 --> 00:27:38,270
+And remind me your name.
+
+530
+00:27:38,270 --> 00:27:40,590
+I'm not entirely
+sure, but I think
+
+531
+00:27:40,590 --> 00:27:42,840
+that intuition, at least
+when I was thinking about it,
+
+532
+00:27:42,840 --> 00:27:47,960
+was that using the actual values
+of, for example, rt plus 1
+
+533
+00:27:47,960 --> 00:27:52,280
+is more accurate, versus if
+you bootstrap very early,
+
+534
+00:27:52,280 --> 00:27:53,430
+it's more of an estimate.
+
+535
+00:27:53,430 --> 00:27:54,870
+It's not as accurate.
+
+536
+00:27:54,870 --> 00:27:56,010
+Yeah, that's exactly right.
+
+537
+00:27:56,010 --> 00:27:58,370
+So it's the same as in
+temporal difference methods.
+
+538
+00:27:58,370 --> 00:28:00,485
+In general, it's a
+little misleading
+
+539
+00:28:00,485 --> 00:28:01,610
+sometimes to look at these.
+
+540
+00:28:01,610 --> 00:28:03,652
+Maybe I should put hats
+over all these next year.
+
+541
+00:28:03,652 --> 00:28:05,790
+But all of these Vs
+are just estimates.
+
+542
+00:28:05,790 --> 00:28:08,600
+They're given finite amounts of
+data and however many backups
+
+543
+00:28:08,600 --> 00:28:09,800
+we've done, et cetera.
+
+544
+00:28:09,800 --> 00:28:11,280
+V is an approximation.
+
+545
+00:28:11,280 --> 00:28:13,570
+So this is an estimate.
+
+546
+00:28:13,570 --> 00:28:15,460
+So this isn't true.
+
+547
+00:28:15,460 --> 00:28:18,070
+And if it's not true,
+it's probably biased.
+
+548
+00:28:18,070 --> 00:28:22,700
+So in general, V will not
+be an unbiased estimator.
+
+549
+00:28:22,700 --> 00:28:27,730
+And so this means that we're
+only using 1.r from the true
+
+550
+00:28:27,730 --> 00:28:30,360
+policy, and then we're
+immediately bootstrapping.
+
+551
+00:28:30,360 --> 00:28:33,415
+So in general, this is going
+to be high bias or higher bias,
+
+552
+00:28:33,415 --> 00:28:35,540
+but it's generally going
+to be pretty low variance.
+
+553
+00:28:35,540 --> 00:28:39,250
+And the way to think about this
+is that each of the rewards,
+
+554
+00:28:39,250 --> 00:28:42,790
+in general, are going to be
+from a stochastic process
+
+555
+00:28:42,790 --> 00:28:44,613
+because you're taking
+a series of steps.
+
+556
+00:28:44,613 --> 00:28:46,030
+And then at each
+one, you're going
+
+557
+00:28:46,030 --> 00:28:48,260
+to sample a reward from there.
+
+558
+00:28:48,260 --> 00:28:51,140
+So you only have one
+really random thing here,
+
+559
+00:28:51,140 --> 00:28:53,410
+and then one thing
+that is fixed.
+
+560
+00:28:53,410 --> 00:28:56,290
+It might be wrong,
+but it's fixed.
+
+561
+00:28:56,290 --> 00:29:00,850
+In contrast, this one, which
+looks like a Monte Carlo
+
+562
+00:29:00,850 --> 00:29:04,240
+estimate, is going to have
+high variance because it's
+
+563
+00:29:04,240 --> 00:29:06,820
+got all of these
+different rewards that
+
+564
+00:29:06,820 --> 00:29:10,040
+are all being sampled
+from a stochastic process.
+
+565
+00:29:10,040 --> 00:29:13,163
+So if you think of
+it this way, imagine
+
+566
+00:29:13,163 --> 00:29:15,830
+it's something where your robot
+can walk anywhere over the room.
+
+567
+00:29:15,830 --> 00:29:18,680
+And under your
+policy, your policy
+
+568
+00:29:18,680 --> 00:29:22,980
+can go in all of these
+different directions.
+
+569
+00:29:22,980 --> 00:29:26,170
+But when you actually just
+execute one trajectory,
+
+570
+00:29:26,170 --> 00:29:28,200
+you're just going
+to get one of those.
+
+571
+00:29:28,200 --> 00:29:30,940
+And so its variance
+generally is enormous.
+
+572
+00:29:30,940 --> 00:29:34,680
+And this might be true
+even if, on average,
+
+573
+00:29:34,680 --> 00:29:37,200
+you kind of have a trajectory
+like this or something.
+
+574
+00:29:37,200 --> 00:29:40,710
+So in general, this one is going
+to be really high variance,
+
+575
+00:29:40,710 --> 00:29:45,210
+but it's generally going
+to be low or 0 bias.
+
+576
+00:29:45,210 --> 00:29:46,960
+Why is it low or 0 bias?
+
+577
+00:29:46,960 --> 00:29:50,520
+Because this actually is
+a return from the policy
+
+578
+00:29:50,520 --> 00:29:52,140
+that you're executing.
+
+579
+00:29:52,140 --> 00:29:55,140
+So in expectation,
+this really is
+
+580
+00:29:55,140 --> 00:29:57,620
+equal to the value
+of that policy.
+
+581
+00:29:57,620 --> 00:30:00,990
+So it's generally
+low or 0 bias, but it
+
+582
+00:30:00,990 --> 00:30:02,430
+can be really high variance.
+
+583
+00:30:02,430 --> 00:30:05,140
+And so that should maybe
+give some intuition over--
+
+584
+00:30:05,140 --> 00:30:06,930
+and we were just
+discussing this.
+
+585
+00:30:06,930 --> 00:30:08,763
+In general, it's going
+to be, unfortunately,
+
+586
+00:30:08,763 --> 00:30:11,350
+be a trade off between
+low variance and low bias.
+
+587
+00:30:11,350 --> 00:30:14,790
+And so often you're going to
+want things in terms of n.
+
+588
+00:30:14,790 --> 00:30:17,910
+So if that's the n
+step, and you want
+
+589
+00:30:17,910 --> 00:30:19,830
+to minimize your
+mean squared error,
+
+590
+00:30:19,830 --> 00:30:21,330
+often you're going
+to end up wanting
+
+591
+00:30:21,330 --> 00:30:23,350
+to do something where
+it's a couple steps,
+
+592
+00:30:23,350 --> 00:30:25,690
+and then bootstrap to
+get a nice trade off
+
+593
+00:30:25,690 --> 00:30:27,758
+between bias and variance.
+
+594
+00:30:27,758 --> 00:30:29,800
+And I think we'll probably
+talk a little bit more
+
+595
+00:30:29,800 --> 00:30:31,880
+about that next week.
+
+596
+00:30:31,880 --> 00:30:38,340
+So I'll just highlight this
+here that this has low bias
+
+597
+00:30:38,340 --> 00:30:42,040
+and high variance on this one.
+
+598
+00:30:42,040 --> 00:30:44,650
+So this one has low
+variance and high bias.
+
+599
+00:30:44,650 --> 00:30:47,750
+The other one is the opposite.
+
+600
+00:30:47,750 --> 00:30:49,840
+All right, cool.
+
+601
+00:30:49,840 --> 00:30:52,250
+So just to think
+about this, so when
+
+602
+00:30:52,250 --> 00:30:54,390
+we are thinking
+about these targets,
+
+603
+00:30:54,390 --> 00:30:56,750
+we can go between
+these different ones.
+
+604
+00:30:56,750 --> 00:30:58,140
+And then, oops, sorry.
+
+605
+00:30:58,140 --> 00:30:59,430
+Somehow, these got copied.
+
+606
+00:30:59,430 --> 00:31:03,030
+OK, so these are all things
+that you can plug in.
+
+607
+00:31:03,030 --> 00:31:05,330
+You can make different
+choices over whether you
+
+608
+00:31:05,330 --> 00:31:08,862
+plug in these n step
+methods or others.
+
+609
+00:31:08,862 --> 00:31:11,570
+And then you can use this all as
+part of your actor critic policy
+
+610
+00:31:11,570 --> 00:31:12,910
+gradient method.
+
+611
+00:31:12,910 --> 00:31:15,410
+So now what we're going to do,
+and I'll just make it a slide
+
+612
+00:31:15,410 --> 00:31:17,000
+to delete those slides.
+
+613
+00:31:17,000 --> 00:31:18,620
+So now what we're
+going to go into
+
+614
+00:31:18,620 --> 00:31:20,567
+is more advanced policy
+gradient methods.
+
+615
+00:31:20,567 --> 00:31:22,400
+OK, so those are the
+basic ones, and they're
+
+616
+00:31:22,400 --> 00:31:24,500
+kind of the backbone between
+all of the algorithms
+
+617
+00:31:24,500 --> 00:31:25,730
+that we do now.
+
+618
+00:31:25,730 --> 00:31:27,500
+But there's been
+a lot of interest
+
+619
+00:31:27,500 --> 00:31:30,050
+in these types of methods
+and how do we scale them up,
+
+620
+00:31:30,050 --> 00:31:31,910
+and how do we make them better.
+
+621
+00:31:31,910 --> 00:31:36,140
+And we'll talk about what
+we mean by better here.
+
+622
+00:31:36,140 --> 00:31:40,130
+So actually, we'll probably talk
+about some of this next week
+
+623
+00:31:40,130 --> 00:31:42,440
+because I wanted to
+make sure that we
+
+624
+00:31:42,440 --> 00:31:45,482
+got through the algorithm
+today so that you guys can have
+
+625
+00:31:45,482 --> 00:31:47,190
+all the knowledge you
+need to be starting
+
+626
+00:31:47,190 --> 00:31:48,447
+to do the implementation.
+
+627
+00:31:48,447 --> 00:31:50,405
+And then we'll do more
+on the theory next week.
+
+628
+00:31:53,010 --> 00:31:54,450
+So policy gradients,
+so far, we've
+
+629
+00:31:54,450 --> 00:31:55,590
+been talking about
+them being great,
+
+630
+00:31:55,590 --> 00:31:57,423
+and we know that they're
+used in some really
+
+631
+00:31:57,423 --> 00:31:58,890
+important application areas.
+
+632
+00:31:58,890 --> 00:32:02,460
+Why do we have to go beyond
+the methods that we just saw?
+
+633
+00:32:02,460 --> 00:32:06,480
+Well, there's a couple of
+different limitations to them.
+
+634
+00:32:06,480 --> 00:32:11,940
+One is that the sample
+efficiency is generally poor.
+
+635
+00:32:11,940 --> 00:32:17,430
+And so in general, you
+have to do many rollouts
+
+636
+00:32:17,430 --> 00:32:21,270
+with the same policy in
+order to get a good estimate
+
+637
+00:32:21,270 --> 00:32:21,960
+of the gradient.
+
+638
+00:32:21,960 --> 00:32:23,320
+Because you want a good
+estimate of the gradient,
+
+639
+00:32:23,320 --> 00:32:24,987
+because otherwise,
+when you take a step,
+
+640
+00:32:24,987 --> 00:32:26,880
+you might get somewhere
+that's not as good
+
+641
+00:32:26,880 --> 00:32:29,700
+or, you don't get to the
+place you want to as quickly.
+
+642
+00:32:29,700 --> 00:32:32,220
+And the other, and we're going
+to see an example of this
+
+643
+00:32:32,220 --> 00:32:35,940
+shortly, is that the distance
+in the parameter space
+
+644
+00:32:35,940 --> 00:32:39,600
+doesn't necessarily equal the
+distance in the policy space.
+
+645
+00:32:39,600 --> 00:32:41,380
+So this is a little
+bit weird of an idea.
+
+646
+00:32:41,380 --> 00:32:44,290
+But the idea is that, if you
+have a policy parameterization,
+
+647
+00:32:44,290 --> 00:32:46,600
+whether it's like a deep
+neural network or others,
+
+648
+00:32:46,600 --> 00:32:48,280
+there's some
+parameters in there.
+
+649
+00:32:48,280 --> 00:32:50,830
+And when you change them,
+when you change your theta,
+
+650
+00:32:50,830 --> 00:32:52,810
+you're going to get a
+different policy out.
+
+651
+00:32:52,810 --> 00:32:56,530
+But whether that is really
+smooth, if I change theta,
+
+652
+00:32:56,530 --> 00:32:57,820
+let's say theta is a scalar.
+
+653
+00:32:57,820 --> 00:32:59,410
+So maybe theta is like 0.7.
+
+654
+00:32:59,410 --> 00:33:01,770
+If I change it to
+0.75, does that
+
+655
+00:33:01,770 --> 00:33:04,890
+smoothly change how much more
+I take a particular action,
+
+656
+00:33:04,890 --> 00:33:07,050
+or might it be
+really discontinuous?
+
+657
+00:33:07,050 --> 00:33:09,660
+Might it suddenly say you
+were taking this action
+
+658
+00:33:09,660 --> 00:33:12,330
+with 20% probability, and
+I changed it a little bit,
+
+659
+00:33:12,330 --> 00:33:16,410
+and now I'm like taking that
+action with 90% probability.
+
+660
+00:33:16,410 --> 00:33:17,850
+The main idea
+here, and we'll see
+
+661
+00:33:17,850 --> 00:33:22,570
+an example of this in a second,
+is this part may not be smooth,
+
+662
+00:33:22,570 --> 00:33:25,720
+which means that even really
+small changes in your theta,
+
+663
+00:33:25,720 --> 00:33:28,680
+in your policy
+parameterization, might actually
+
+664
+00:33:28,680 --> 00:33:32,197
+lead to really big differences
+in how you're making decisions.
+
+665
+00:33:32,197 --> 00:33:34,530
+So you could imagine your
+robot picks up things one way,
+
+666
+00:33:34,530 --> 00:33:36,363
+and then you change
+your theta a little bit,
+
+667
+00:33:36,363 --> 00:33:37,980
+and suddenly, it
+drives off a cliff.
+
+668
+00:33:37,980 --> 00:33:41,130
+OK, not quite that
+extreme, but it's
+
+669
+00:33:41,130 --> 00:33:44,903
+not clear that, as we smoothly
+take gradient steps in theta,
+
+670
+00:33:44,903 --> 00:33:46,320
+if that's going
+to smoothly change
+
+671
+00:33:46,320 --> 00:33:49,810
+our policy parameterization
+or policy decisions.
+
+672
+00:33:49,810 --> 00:33:52,050
+So let's look at those both.
+
+673
+00:33:52,050 --> 00:33:52,600
+All right.
+
+674
+00:33:52,600 --> 00:33:53,650
+Sample efficiency.
+
+675
+00:33:53,650 --> 00:33:55,140
+So what we've been
+seeing so far is
+
+676
+00:33:55,140 --> 00:33:57,070
+the idea is that
+we take our policy,
+
+677
+00:33:57,070 --> 00:33:59,230
+we roll it out
+one or more times,
+
+678
+00:33:59,230 --> 00:34:01,110
+and then we take
+a gradient step,
+
+679
+00:34:01,110 --> 00:34:06,330
+and we take one gradient step,
+and then we roll out our policy
+
+680
+00:34:06,330 --> 00:34:07,740
+again.
+
+681
+00:34:07,740 --> 00:34:09,330
+And in general,
+it would be really
+
+682
+00:34:09,330 --> 00:34:12,900
+nice to be able to take
+multiple gradient steps.
+
+683
+00:34:12,900 --> 00:34:15,090
+But so far, we
+have not seen that.
+
+684
+00:34:15,090 --> 00:34:17,639
+And it's called on
+policy expectation.
+
+685
+00:34:17,639 --> 00:34:22,153
+So this is similar to
+SARSA and other methods
+
+686
+00:34:22,153 --> 00:34:23,820
+we've seen before,
+where you're learning
+
+687
+00:34:23,820 --> 00:34:27,060
+about a policy and its value
+by actually executing it.
+
+688
+00:34:27,060 --> 00:34:30,929
+So the problem is
+when we think about--
+
+689
+00:34:30,929 --> 00:34:34,139
+let me just go back to here.
+
+690
+00:34:34,139 --> 00:34:36,670
+When we think about
+doing these gradients,
+
+691
+00:34:36,670 --> 00:34:38,760
+we've assumed that we've
+gotten trajectories
+
+692
+00:34:38,760 --> 00:34:41,949
+from the policy and the theta
+that we're at right now.
+
+693
+00:34:41,949 --> 00:34:44,199
+And then we use that
+data to take a step.
+
+694
+00:34:44,199 --> 00:34:45,580
+So now we're at some point.
+
+695
+00:34:45,580 --> 00:34:46,980
+Here's our theta.
+
+696
+00:34:46,980 --> 00:34:50,280
+We're at some point, and
+we estimate the gradient
+
+697
+00:34:50,280 --> 00:34:51,840
+from that point.
+
+698
+00:34:51,840 --> 00:34:54,780
+So we estimate it
+from trajectories
+
+699
+00:34:54,780 --> 00:34:58,590
+that are generated under
+theta, and then we take a step.
+
+700
+00:34:58,590 --> 00:35:04,300
+Now, the problem is,
+now we might be here.
+
+701
+00:35:04,300 --> 00:35:07,030
+And what we would like to
+do is to take another step
+
+702
+00:35:07,030 --> 00:35:08,600
+before getting more data.
+
+703
+00:35:08,600 --> 00:35:10,570
+But the problem
+is, we don't have--
+
+704
+00:35:10,570 --> 00:35:12,430
+let's call this theta prime.
+
+705
+00:35:12,430 --> 00:35:16,070
+What we have is we
+have data from theta.
+
+706
+00:35:16,070 --> 00:35:18,860
+We don't have any
+data from theta prime.
+
+707
+00:35:18,860 --> 00:35:20,960
+So a priori, it
+shouldn't be clear
+
+708
+00:35:20,960 --> 00:35:22,758
+that we could take
+more than one step.
+
+709
+00:35:22,758 --> 00:35:25,050
+You can take one step because
+we have data about theta.
+
+710
+00:35:25,050 --> 00:35:27,410
+We estimate the
+gradient at that point.
+
+711
+00:35:27,410 --> 00:35:29,662
+Now, we would like to
+just be able to continue
+
+712
+00:35:29,662 --> 00:35:31,370
+to take gradient steps
+before we actually
+
+713
+00:35:31,370 --> 00:35:33,360
+go out in the real world
+and gather more data.
+
+714
+00:35:33,360 --> 00:35:36,230
+But it shouldn't be
+obvious how to do that yet.
+
+715
+00:35:36,230 --> 00:35:39,118
+And so when we talk about
+policy gradient right now,
+
+716
+00:35:39,118 --> 00:35:40,910
+we've been talking
+about on policy methods,
+
+717
+00:35:40,910 --> 00:35:43,820
+where we just try to estimate
+the gradient for the policy we
+
+718
+00:35:43,820 --> 00:35:46,250
+just executed.
+
+719
+00:35:46,250 --> 00:35:49,170
+So similar to SARSA.
+
+720
+00:35:49,170 --> 00:35:52,945
+Now, so what we would
+like to be able to do is--
+
+721
+00:35:52,945 --> 00:35:54,570
+so that's what we've
+been doing so far.
+
+722
+00:35:54,570 --> 00:35:56,230
+We collect sample
+trajectories from the policy,
+
+723
+00:35:56,230 --> 00:35:57,610
+then we form a sample estimate.
+
+724
+00:35:57,610 --> 00:35:58,510
+It's pretty stable.
+
+725
+00:35:58,510 --> 00:36:01,590
+We get our gradient, we take
+a step, we rinse and repeat.
+
+726
+00:36:01,590 --> 00:36:04,080
+Another thing we could do,
+thinking about Q-learning
+
+727
+00:36:04,080 --> 00:36:05,910
+or others is, well,
+what if we could
+
+728
+00:36:05,910 --> 00:36:08,430
+use that old data to
+estimate the gradient
+
+729
+00:36:08,430 --> 00:36:10,480
+at some other theta,
+some other policy.
+
+730
+00:36:10,480 --> 00:36:11,670
+Could we do that?
+
+731
+00:36:11,670 --> 00:36:14,670
+This is known as off
+policy estimates.
+
+732
+00:36:14,670 --> 00:36:17,020
+This generally can start
+to be pretty unstable.
+
+733
+00:36:17,020 --> 00:36:18,728
+We're going to think
+about different ways
+
+734
+00:36:18,728 --> 00:36:19,920
+we could even do that.
+
+735
+00:36:19,920 --> 00:36:21,295
+But we really would like that.
+
+736
+00:36:21,295 --> 00:36:23,170
+We would like to be able
+to use our old data,
+
+737
+00:36:23,170 --> 00:36:26,250
+take multiple gradient
+steps before we actually
+
+738
+00:36:26,250 --> 00:36:27,978
+have to gather data.
+
+739
+00:36:27,978 --> 00:36:29,520
+And you can imagine
+that might end up
+
+740
+00:36:29,520 --> 00:36:31,603
+allowing us to be much
+more data efficient so
+
+741
+00:36:31,603 --> 00:36:34,020
+that the total amount of times
+we have to gather more data
+
+742
+00:36:34,020 --> 00:36:35,700
+is much less.
+
+743
+00:36:35,700 --> 00:36:38,563
+So we're going to think
+about a way today,
+
+744
+00:36:38,563 --> 00:36:40,230
+and we'll talk more
+about this certainly
+
+745
+00:36:40,230 --> 00:36:41,650
+over the next few
+weeks, as well,
+
+746
+00:36:41,650 --> 00:36:43,770
+of how do we use
+our old data to,
+
+747
+00:36:43,770 --> 00:36:48,210
+essentially, move faster
+in our parameter space.
+
+748
+00:36:48,210 --> 00:36:50,460
+Here's the second big challenge.
+
+749
+00:36:50,460 --> 00:36:53,430
+So in general, we're going to
+be doing stochastic gradient
+
+750
+00:36:53,430 --> 00:36:55,948
+ascent with some step size.
+
+751
+00:36:55,948 --> 00:36:57,990
+We've repeatedly thought
+of there being some sort
+
+752
+00:36:57,990 --> 00:37:00,450
+of learning rate or step size.
+
+753
+00:37:00,450 --> 00:37:02,250
+One of the challenges--
+and this was
+
+754
+00:37:02,250 --> 00:37:04,510
+important for deep Q learning.
+
+755
+00:37:04,510 --> 00:37:06,732
+We thought about it even
+for TD learning and stuff.
+
+756
+00:37:06,732 --> 00:37:07,690
+What was the step size?
+
+757
+00:37:07,690 --> 00:37:09,565
+How much do we update
+our estimate every time
+
+758
+00:37:09,565 --> 00:37:11,030
+we get new data?
+
+759
+00:37:11,030 --> 00:37:13,040
+Turns out it's much harder here.
+
+760
+00:37:13,040 --> 00:37:16,350
+Now, we saw before that,
+under some pretty loose,
+
+761
+00:37:16,350 --> 00:37:18,700
+loose requirements
+on the learning rate,
+
+762
+00:37:18,700 --> 00:37:21,730
+we could, at least
+in tabular cases,
+
+763
+00:37:21,730 --> 00:37:24,180
+guarantee to
+converge, et cetera.
+
+764
+00:37:24,180 --> 00:37:27,390
+Policy gradient methods
+are a little bit different.
+
+765
+00:37:27,390 --> 00:37:31,770
+Here, the step size
+really matters.
+
+766
+00:37:31,770 --> 00:37:36,190
+And if we take a step size
+that is really quite bad,
+
+767
+00:37:36,190 --> 00:37:39,510
+we can collapse in
+our performance.
+
+768
+00:37:39,510 --> 00:37:41,610
+Does anybody have
+an idea of why?
+
+769
+00:37:41,610 --> 00:37:44,870
+Why does that happen?
+
+770
+00:37:44,870 --> 00:37:46,306
+We why can we suddenly collapse?
+
+771
+00:37:51,490 --> 00:37:56,635
+So I [INAUDIBLE] might
+mix the optimal target,
+
+772
+00:37:56,635 --> 00:37:59,490
+and then go for the win rate.
+
+773
+00:37:59,490 --> 00:38:00,660
+Yeah, that is great.
+
+774
+00:38:00,660 --> 00:38:01,160
+Great.
+
+775
+00:38:01,160 --> 00:38:03,190
+So let's look at an example.
+
+776
+00:38:03,190 --> 00:38:05,480
+So remember, the way that
+we're getting our data
+
+777
+00:38:05,480 --> 00:38:06,513
+is from our policy.
+
+778
+00:38:09,920 --> 00:38:12,412
+So let's say we're trying
+to get to this point.
+
+779
+00:38:12,412 --> 00:38:13,620
+You have a big learning rate.
+
+780
+00:38:13,620 --> 00:38:15,500
+So we took big steps.
+
+781
+00:38:15,500 --> 00:38:19,430
+You might now get to part of
+the space, which is really bad,
+
+782
+00:38:19,430 --> 00:38:20,910
+really, really bad policies.
+
+783
+00:38:20,910 --> 00:38:23,285
+By really bad policies, I mean
+they have really bad value
+
+784
+00:38:23,285 --> 00:38:24,860
+functions.
+
+785
+00:38:24,860 --> 00:38:28,280
+If you have really bad value
+functions and trajectories,
+
+786
+00:38:28,280 --> 00:38:30,140
+which are visiting
+states and actions, which
+
+787
+00:38:30,140 --> 00:38:32,450
+all have really bad
+reward, it's really hard
+
+788
+00:38:32,450 --> 00:38:35,210
+to estimate a good
+gradient of where to go.
+
+789
+00:38:35,210 --> 00:38:38,690
+In general, you might be in
+a really long plateau place.
+
+790
+00:38:38,690 --> 00:38:40,550
+So this could be a really long.
+
+791
+00:38:40,550 --> 00:38:42,260
+And so the gradient
+here might be
+
+792
+00:38:42,260 --> 00:38:44,660
+really hard to estimate
+of how do I get back
+
+793
+00:38:44,660 --> 00:38:46,020
+to that local optima.
+
+794
+00:38:46,020 --> 00:38:48,440
+In general, it's not
+going to be impossible,
+
+795
+00:38:48,440 --> 00:38:50,620
+unless it's completely flat.
+
+796
+00:38:50,620 --> 00:38:54,780
+But it might be really
+close to completely flat.
+
+797
+00:38:54,780 --> 00:38:57,300
+And so that's a big problem,
+is that you don't necessarily
+
+798
+00:38:57,300 --> 00:39:00,405
+know how large your
+step size should be.
+
+799
+00:39:00,405 --> 00:39:03,030
+On the other hand, if you use a
+really small step sizes, that's
+
+800
+00:39:03,030 --> 00:39:06,427
+bad, too, because each
+time, your step size
+
+801
+00:39:06,427 --> 00:39:08,760
+is basically determining how
+much you change your policy
+
+802
+00:39:08,760 --> 00:39:10,030
+before you get new data.
+
+803
+00:39:10,030 --> 00:39:13,230
+And so you would like to take
+as big a step sizes as possible
+
+804
+00:39:13,230 --> 00:39:16,740
+that don't overstep and that
+allow you to quickly get
+
+805
+00:39:16,740 --> 00:39:18,970
+to the optimal local optima.
+
+806
+00:39:18,970 --> 00:39:21,390
+Now, things like of
+atom style optimizers,
+
+807
+00:39:21,390 --> 00:39:25,380
+et cetera, help, but it won't
+necessarily solve the problem.
+
+808
+00:39:25,380 --> 00:39:27,530
+And one of the
+challenges here is,
+
+809
+00:39:27,530 --> 00:39:30,480
+we're only getting
+information about the states
+
+810
+00:39:30,480 --> 00:39:33,005
+and actions that are
+visited under our policy.
+
+811
+00:39:33,005 --> 00:39:34,380
+And you just might
+get to regions
+
+812
+00:39:34,380 --> 00:39:36,240
+where there's very
+little information
+
+813
+00:39:36,240 --> 00:39:39,020
+to estimate those gradients.
+
+814
+00:39:39,020 --> 00:39:40,350
+Here's another challenge.
+
+815
+00:39:40,350 --> 00:39:46,080
+And this relates to that we're
+taking steps in the theta space,
+
+816
+00:39:46,080 --> 00:39:48,140
+not directly in
+terms of the actions
+
+817
+00:39:48,140 --> 00:39:50,510
+we take when we
+update our policy.
+
+818
+00:39:50,510 --> 00:39:54,050
+So let's think about a
+parameterization, which
+
+819
+00:39:54,050 --> 00:39:55,950
+is a pretty simple
+parameterization.
+
+820
+00:39:55,950 --> 00:39:58,255
+So this is a logistic function.
+
+821
+00:40:03,950 --> 00:40:07,010
+And this is 1 over 1
+plus e to the minus w.
+
+822
+00:40:10,456 --> 00:40:14,130
+So in this case, this
+is the parameterization.
+
+823
+00:40:14,130 --> 00:40:15,660
+It's kind of like a softmax.
+
+824
+00:40:15,660 --> 00:40:17,930
+You just have some probability
+of going to one action,
+
+825
+00:40:17,930 --> 00:40:20,060
+and the rest of the
+probability goes to the other,
+
+826
+00:40:20,060 --> 00:40:22,820
+and you've parameterized
+it with theta.
+
+827
+00:40:22,820 --> 00:40:26,630
+So if theta is equal
+to 0, it's 50/50.
+
+828
+00:40:26,630 --> 00:40:28,550
+You'll either take a1 or a2.
+
+829
+00:40:28,550 --> 00:40:32,850
+If theta is equal to 2, you
+suddenly take a2 is much less.
+
+830
+00:40:32,850 --> 00:40:37,970
+And if theta is equal to 4,
+you basically never take a2.
+
+831
+00:40:37,970 --> 00:40:43,130
+And that's just because of how
+our relationship goes from theta
+
+832
+00:40:43,130 --> 00:40:45,175
+to pi of a.
+
+833
+00:40:47,800 --> 00:40:50,240
+In this parameterization,
+it's pretty extreme.
+
+834
+00:40:50,240 --> 00:40:52,810
+So as we make sort of small,
+relatively small changes
+
+835
+00:40:52,810 --> 00:40:56,420
+to theta, I didn't make
+theta a million or anything.
+
+836
+00:40:56,420 --> 00:40:59,830
+I've basically shifted,
+even with 0, to 2, to 4,
+
+837
+00:40:59,830 --> 00:41:02,800
+I've radically shifted how
+much of my probability mass
+
+838
+00:41:02,800 --> 00:41:05,590
+goes on to a1.
+
+839
+00:41:05,590 --> 00:41:08,595
+And that's just to illustrate
+this issue of smoothness
+
+840
+00:41:08,595 --> 00:41:10,720
+that, as I make what might
+be considered relatively
+
+841
+00:41:10,720 --> 00:41:12,520
+small changes in my
+theta space, that
+
+842
+00:41:12,520 --> 00:41:15,780
+might make my policy
+near deterministic.
+
+843
+00:41:15,780 --> 00:41:18,290
+And we know that if our
+policy is deterministic,
+
+844
+00:41:18,290 --> 00:41:21,852
+we can't learn anything
+about other actions.
+
+845
+00:41:21,852 --> 00:41:23,560
+So let me just make
+this a little smaller
+
+846
+00:41:23,560 --> 00:41:24,727
+so you can see the question.
+
+847
+00:41:24,727 --> 00:41:28,450
+So the challenge in this case
+is that step size can matter
+
+848
+00:41:28,450 --> 00:41:30,710
+a lot in terms of efficiency.
+
+849
+00:41:30,710 --> 00:41:32,960
+We don't necessarily know
+what the right step size is,
+
+850
+00:41:32,960 --> 00:41:34,480
+and it may be hard
+for us to know
+
+851
+00:41:34,480 --> 00:41:37,000
+how small changes in
+our parameter space
+
+852
+00:41:37,000 --> 00:41:39,700
+relate to changes in
+the action distributions
+
+853
+00:41:39,700 --> 00:41:40,900
+we actually follow.
+
+854
+00:41:40,900 --> 00:41:42,670
+And so what we'd
+really like to do here
+
+855
+00:41:42,670 --> 00:41:45,100
+is to actually come up
+with an update rule that
+
+856
+00:41:45,100 --> 00:41:47,960
+doesn't over-change
+the policy too quickly,
+
+857
+00:41:47,960 --> 00:41:50,920
+but still allows us to
+make rapid progress.
+
+858
+00:41:50,920 --> 00:41:53,440
+So we'd like to move as
+far as we can in a way
+
+859
+00:41:53,440 --> 00:41:55,480
+that we think is,
+really, ideally,
+
+860
+00:41:55,480 --> 00:41:57,170
+is going to just
+directly increase
+
+861
+00:41:57,170 --> 00:41:58,170
+the value of our policy.
+
+862
+00:42:00,665 --> 00:42:03,040
+And I guess I'll say, well,
+we'll see a bit more of that.
+
+863
+00:42:03,040 --> 00:42:06,148
+And also, ideally, we would
+like this all to be monotonic.
+
+864
+00:42:06,148 --> 00:42:08,440
+We would like it so that if
+we think back to the policy
+
+865
+00:42:08,440 --> 00:42:09,910
+improvement
+algorithms that we've
+
+866
+00:42:09,910 --> 00:42:13,390
+seen before, policy improvement
+algorithms for the tabular
+
+867
+00:42:13,390 --> 00:42:15,500
+case where we knew
+how the world worked
+
+868
+00:42:15,500 --> 00:42:17,650
+had this great property
+that every time we
+
+869
+00:42:17,650 --> 00:42:21,527
+updated our policy, we got a
+better policy or we were done.
+
+870
+00:42:21,527 --> 00:42:23,360
+Now, the world is much
+more complicated now.
+
+871
+00:42:23,360 --> 00:42:26,910
+We've got these sort of
+continuous parameterizations.
+
+872
+00:42:26,910 --> 00:42:29,190
+We're not guaranteed to
+get to the optimal policy,
+
+873
+00:42:29,190 --> 00:42:31,370
+but it would be really
+cool if we could still
+
+874
+00:42:31,370 --> 00:42:32,953
+guarantee that we're
+going to just get
+
+875
+00:42:32,953 --> 00:42:37,290
+sort of monotonic improvement,
+unless we get to a local optima.
+
+876
+00:42:37,290 --> 00:42:40,513
+And the things that
+I've shown you so far
+
+877
+00:42:40,513 --> 00:42:42,930
+don't necessarily have that
+property because they'll still
+
+878
+00:42:42,930 --> 00:42:44,760
+converge to a local
+optima, but you might
+
+879
+00:42:44,760 --> 00:42:46,770
+overstep, like we see here.
+
+880
+00:42:46,770 --> 00:42:48,015
+So you might go over.
+
+881
+00:42:48,015 --> 00:42:52,140
+You might be having monotonic
+improvement and then crash,
+
+882
+00:42:52,140 --> 00:42:54,130
+and then you have to
+go back and forth.
+
+883
+00:42:54,130 --> 00:42:56,887
+So we have not guaranteed
+monotonic improvement so far.
+
+884
+00:42:56,887 --> 00:42:58,470
+But that would be
+really nice and that
+
+885
+00:42:58,470 --> 00:43:00,553
+could be important in a
+lot of real world domains,
+
+886
+00:43:00,553 --> 00:43:01,740
+like you'd imagine.
+
+887
+00:43:01,740 --> 00:43:04,373
+If you were using this for
+health care applications,
+
+888
+00:43:04,373 --> 00:43:06,540
+you would really like to
+have monotonic improvement,
+
+889
+00:43:06,540 --> 00:43:09,850
+and not suddenly
+performance crash.
+
+890
+00:43:09,850 --> 00:43:10,960
+All right.
+
+891
+00:43:10,960 --> 00:43:13,997
+So let's think about how we
+might be able to get here.
+
+892
+00:43:13,997 --> 00:43:16,330
+And you can think of a lot
+of this lecture is motivating
+
+893
+00:43:16,330 --> 00:43:19,990
+the things that you're going
+to be doing in Homework 2,
+
+894
+00:43:19,990 --> 00:43:21,400
+including the theory.
+
+895
+00:43:21,400 --> 00:43:23,140
+So in general, what
+we'd like to have is
+
+896
+00:43:23,140 --> 00:43:26,080
+we'd like to have an update step
+that uses all the data that we
+
+897
+00:43:26,080 --> 00:43:28,370
+just got as efficiently
+as possible,
+
+898
+00:43:28,370 --> 00:43:30,650
+and that takes steps
+that sort of respect
+
+899
+00:43:30,650 --> 00:43:34,720
+this distance in the policy,
+like the decision space, as
+
+900
+00:43:34,720 --> 00:43:38,545
+opposed to just smoothness
+in the parameter space.
+
+901
+00:43:38,545 --> 00:43:41,260
+And in order to do that,
+we need to understand
+
+902
+00:43:41,260 --> 00:43:44,560
+how does the performance
+of two policies relate.
+
+903
+00:43:44,560 --> 00:43:47,710
+So we have data from one
+policy, and we're considering
+
+904
+00:43:47,710 --> 00:43:49,670
+trying to move to a new policy.
+
+905
+00:43:49,670 --> 00:43:51,730
+And we'd really like to
+know, OK, given the data
+
+906
+00:43:51,730 --> 00:43:53,260
+that I have from
+policy one, what
+
+907
+00:43:53,260 --> 00:43:55,900
+does it tell me about how
+good policy two might be?
+
+908
+00:43:55,900 --> 00:43:58,930
+Because ideally,
+policy one's data
+
+909
+00:43:58,930 --> 00:44:01,060
+would allow us to tell us
+which policy two I should
+
+910
+00:44:01,060 --> 00:44:02,930
+move to next.
+
+911
+00:44:02,930 --> 00:44:05,960
+So this is what you're
+proving in Homework 2.
+
+912
+00:44:05,960 --> 00:44:09,010
+You're going to prove the
+performance difference lemma.
+
+913
+00:44:09,010 --> 00:44:10,690
+And the performance
+difference lemma,
+
+914
+00:44:10,690 --> 00:44:17,050
+it allows us to relate the
+performance of one policy
+
+915
+00:44:17,050 --> 00:44:19,960
+to the performance of
+another policy, given
+
+916
+00:44:19,960 --> 00:44:22,530
+data from one of the policies.
+
+917
+00:44:22,530 --> 00:44:23,990
+Let me just state this out.
+
+918
+00:44:23,990 --> 00:44:25,810
+So what does this say?
+
+919
+00:44:25,810 --> 00:44:33,070
+This is the value of one policy,
+policy one, policy pi prime.
+
+920
+00:44:33,070 --> 00:44:36,340
+I'm just using j
+here, but this is
+
+921
+00:44:36,340 --> 00:44:39,190
+value V. You can think
+of this as just V.
+
+922
+00:44:39,190 --> 00:44:40,940
+So what is that equal to?
+
+923
+00:44:40,940 --> 00:44:45,670
+That is equal to the expectation
+over trajectories that
+
+924
+00:44:45,670 --> 00:44:48,970
+are sampled using pi prime.
+
+925
+00:44:48,970 --> 00:44:58,930
+And again, if this is finite,
+can use gamma equal to 1.
+
+926
+00:44:58,930 --> 00:45:02,740
+We sum over the
+distribution of trajectories
+
+927
+00:45:02,740 --> 00:45:08,530
+you could get if you followed
+policy pi 1 times the advantage
+
+928
+00:45:08,530 --> 00:45:12,460
+under policy pi.
+
+929
+00:45:12,460 --> 00:45:19,000
+So this part here is just equal
+to the difference between if you
+
+930
+00:45:19,000 --> 00:45:24,700
+took an action minus.
+
+931
+00:45:30,830 --> 00:45:34,250
+But note here, because
+this expectation here
+
+932
+00:45:34,250 --> 00:45:37,737
+is over pi prime, the way
+we're selecting these actions,
+
+933
+00:45:37,737 --> 00:45:39,445
+I'll just write it
+out a little bit more.
+
+934
+00:45:42,340 --> 00:45:46,090
+Imagine we have
+deterministic policies.
+
+935
+00:45:46,090 --> 00:45:48,430
+So it's like we're
+thinking about the Q value,
+
+936
+00:45:48,430 --> 00:45:51,880
+if we first take an action
+according to policy pi prime
+
+937
+00:45:51,880 --> 00:45:54,612
+and then follow policy
+pi for the rest of time,
+
+938
+00:45:54,612 --> 00:45:57,070
+versus what we would have gotten
+if we just followed policy
+
+939
+00:45:57,070 --> 00:45:58,300
+pi the whole time.
+
+940
+00:45:58,300 --> 00:46:00,440
+So you can think of it
+as sort of breaking down
+
+941
+00:46:00,440 --> 00:46:02,440
+the difference in the
+value between two policies
+
+942
+00:46:02,440 --> 00:46:05,092
+into a series of
+small differences of,
+
+943
+00:46:05,092 --> 00:46:07,300
+well, how much gain would
+I have gotten at this state
+
+944
+00:46:07,300 --> 00:46:10,510
+if I had taken pi prime's action
+instead of the one I actually
+
+945
+00:46:10,510 --> 00:46:11,200
+took.
+
+946
+00:46:11,200 --> 00:46:12,580
+OK, what about here?
+
+947
+00:46:12,580 --> 00:46:15,160
+And then you of want to
+sum up all those additions.
+
+948
+00:46:15,160 --> 00:46:16,930
+Every day, I'm
+happier because I went
+
+949
+00:46:16,930 --> 00:46:18,222
+to Stanford instead of Harvard.
+
+950
+00:46:18,222 --> 00:46:20,263
+And I just add up all of
+those, and that tells me
+
+951
+00:46:20,263 --> 00:46:22,440
+over the course of my whole
+career how much happier.
+
+952
+00:46:22,440 --> 00:46:25,990
+I will have been,
+hypothetically.
+
+953
+00:46:25,990 --> 00:46:29,183
+OK, so this here is
+over trajectories.
+
+954
+00:46:29,183 --> 00:46:30,850
+Now we're going to
+make a transformation
+
+955
+00:46:30,850 --> 00:46:34,300
+and move it into state
+action distributions.
+
+956
+00:46:34,300 --> 00:46:38,710
+Because what this is
+going to be here-- so now,
+
+957
+00:46:38,710 --> 00:46:40,340
+this was over trajectories.
+
+958
+00:46:40,340 --> 00:46:44,450
+We're going to rewrite this
+just in terms of state action
+
+959
+00:46:44,450 --> 00:46:45,727
+distributions.
+
+960
+00:46:45,727 --> 00:46:47,310
+What we're going to
+say is, all right,
+
+961
+00:46:47,310 --> 00:46:49,980
+as we think about adding up
+all these advantages, what
+
+962
+00:46:49,980 --> 00:46:51,980
+I'm going to do is I'm
+going to cluster together
+
+963
+00:46:51,980 --> 00:46:54,860
+all the advantages that have
+to do with the same state.
+
+964
+00:46:54,860 --> 00:46:57,350
+So I think of there as
+being a distribution
+
+965
+00:46:57,350 --> 00:47:00,320
+over states I might
+reach and actions I might
+
+966
+00:47:00,320 --> 00:47:02,570
+take under policy pi prime.
+
+967
+00:47:02,570 --> 00:47:05,660
+So if I just follow this policy,
+I'm going to visit some states,
+
+968
+00:47:05,660 --> 00:47:07,610
+and I'm just going
+to think about what
+
+969
+00:47:07,610 --> 00:47:10,760
+is the advantage in each
+of those states weighed
+
+970
+00:47:10,760 --> 00:47:13,230
+by how frequently I visit them.
+
+971
+00:47:13,230 --> 00:47:14,730
+So we're sort of
+transforming things
+
+972
+00:47:14,730 --> 00:47:17,010
+from thinking of it as being
+trajectories and thinking
+
+973
+00:47:17,010 --> 00:47:19,800
+about weighting over
+time steps, to weighting
+
+974
+00:47:19,800 --> 00:47:24,510
+over a finite set or a
+space of states and actions.
+
+975
+00:47:24,510 --> 00:47:26,050
+And so we'll have
+a distribution.
+
+976
+00:47:26,050 --> 00:47:29,050
+It might be like, I visit
+state 1 half the time.
+
+977
+00:47:29,050 --> 00:47:32,760
+I visit state 7 only
+1 in 10,000 times.
+
+978
+00:47:32,760 --> 00:47:37,590
+So this allows us to
+reweight the advantages.
+
+979
+00:47:37,590 --> 00:47:39,840
+What does this
+distribution look like?
+
+980
+00:47:39,840 --> 00:47:41,470
+This looks like the following.
+
+981
+00:47:41,470 --> 00:47:43,565
+Essentially, you just
+think of what is my--
+
+982
+00:47:43,565 --> 00:47:45,690
+so here, we're allowing us
+to have discount factors
+
+983
+00:47:45,690 --> 00:47:47,523
+because we're looking
+for the infinite case.
+
+984
+00:47:47,523 --> 00:47:48,970
+But you can adjust this.
+
+985
+00:47:48,970 --> 00:47:51,100
+What this is just
+saying is that, well,
+
+986
+00:47:51,100 --> 00:47:53,460
+my weighted
+distribution for state
+
+987
+00:47:53,460 --> 00:47:56,745
+s is equal to, well, how
+likely was I to be in state
+
+988
+00:47:56,745 --> 00:47:59,820
+s on time step 1
+under that policy.
+
+989
+00:47:59,820 --> 00:48:03,420
+Well, how likely was I to
+be in state s in time step
+
+990
+00:48:03,420 --> 00:48:04,930
+2 under that policy?
+
+991
+00:48:04,930 --> 00:48:06,790
+What if I was in time step 3?
+
+992
+00:48:06,790 --> 00:48:08,940
+And so you just sum
+up all of those.
+
+993
+00:48:08,940 --> 00:48:12,690
+And as you could imagine, in
+the infinite horizon case,
+
+994
+00:48:12,690 --> 00:48:14,710
+those could easily go to
+infinity, particularly
+
+995
+00:48:14,710 --> 00:48:16,630
+if you have states
+you can visit a lot.
+
+996
+00:48:16,630 --> 00:48:18,460
+And so the discount
+factor here makes
+
+997
+00:48:18,460 --> 00:48:20,360
+sure this becomes
+a distribution.
+
+998
+00:48:20,360 --> 00:48:22,750
+So we want this still
+to be normalized.
+
+999
+00:48:22,750 --> 00:48:26,620
+And then similarly, this is
+also with respect to taking
+
+1000
+00:48:26,620 --> 00:48:28,990
+the actions under pi prime.
+
+1001
+00:48:28,990 --> 00:48:31,790
+So you'll be proving
+this in the homework,
+
+1002
+00:48:31,790 --> 00:48:35,150
+but we'll see how
+this can be helpful.
+
+1003
+00:48:35,150 --> 00:48:38,410
+So why are we
+making you do this?
+
+1004
+00:48:38,410 --> 00:48:41,500
+So the nice thing is
+it's going to define
+
+1005
+00:48:41,500 --> 00:48:45,660
+the performance of pi prime in
+terms of advantages from pi.
+
+1006
+00:48:45,660 --> 00:48:47,660
+OK, so that seems good
+because we're like, well,
+
+1007
+00:48:47,660 --> 00:48:51,880
+we have an existing policy.
+
+1008
+00:48:51,880 --> 00:48:54,490
+But the problem is it
+still requires trajectories
+
+1009
+00:48:54,490 --> 00:48:55,610
+sampled from pi prime.
+
+1010
+00:48:55,610 --> 00:48:57,235
+So you could think
+of pi as potentially
+
+1011
+00:48:57,235 --> 00:48:58,780
+being the policy
+we have right now,
+
+1012
+00:48:58,780 --> 00:49:00,830
+and maybe we can estimate
+the Q function for it.
+
+1013
+00:49:00,830 --> 00:49:02,740
+We can estimate its advantages.
+
+1014
+00:49:02,740 --> 00:49:05,350
+And now, we want to figure
+out how good would be
+
+1015
+00:49:05,350 --> 00:49:07,358
+this new policy we might take.
+
+1016
+00:49:07,358 --> 00:49:09,400
+But the problem is we
+don't have any trajectories
+
+1017
+00:49:09,400 --> 00:49:10,280
+for the new policy.
+
+1018
+00:49:10,280 --> 00:49:12,568
+We only have data
+from the old policy.
+
+1019
+00:49:12,568 --> 00:49:14,110
+So we really want
+to get to something
+
+1020
+00:49:14,110 --> 00:49:17,950
+where we can estimate how good
+is pi prime using data only
+
+1021
+00:49:17,950 --> 00:49:18,710
+from pi.
+
+1022
+00:49:18,710 --> 00:49:19,810
+That's our goal.
+
+1023
+00:49:19,810 --> 00:49:37,460
+So our goal, estimate j pi
+prime only from data from pi.
+
+1024
+00:49:37,460 --> 00:49:39,470
+So you can think of pi
+prime as the new policy.
+
+1025
+00:49:39,470 --> 00:49:41,770
+So what we really want
+to do is take a step
+
+1026
+00:49:41,770 --> 00:49:44,200
+so that our new
+policy is the best
+
+1027
+00:49:44,200 --> 00:49:46,990
+one we could get to in
+terms of its improvement
+
+1028
+00:49:46,990 --> 00:49:48,610
+over the previous policy.
+
+1029
+00:49:48,610 --> 00:49:50,680
+And we want to be able
+to do that by only using
+
+1030
+00:49:50,680 --> 00:49:52,845
+an estimate from our old data.
+
+1031
+00:49:52,845 --> 00:49:54,970
+And it shouldn't be clear
+yet how we could do that.
+
+1032
+00:49:54,970 --> 00:49:58,220
+This is looking promising, but
+we still seem like we need data.
+
+1033
+00:49:58,220 --> 00:50:03,440
+So this is still data
+from the new policy.
+
+1034
+00:50:06,760 --> 00:50:08,660
+So let's look at it
+from a different angle.
+
+1035
+00:50:08,660 --> 00:50:13,430
+So this thing d, d pi of s is
+a distribution over states.
+
+1036
+00:50:13,430 --> 00:50:17,090
+It's a discounted future
+state distribution.
+
+1037
+00:50:17,090 --> 00:50:21,520
+And we're going to use that to
+rewrite the relative performance
+
+1038
+00:50:21,520 --> 00:50:23,360
+of policy performance identity.
+
+1039
+00:50:23,360 --> 00:50:24,530
+So why is this relative?
+
+1040
+00:50:24,530 --> 00:50:27,010
+It's because it's with
+respect to the performance
+
+1041
+00:50:27,010 --> 00:50:28,370
+of our current policy.
+
+1042
+00:50:28,370 --> 00:50:32,168
+So that's why we have
+a subtraction there.
+
+1043
+00:50:32,168 --> 00:50:33,585
+We're going to
+rewrite that there.
+
+1044
+00:50:36,375 --> 00:50:37,500
+I want to see if I have it.
+
+1045
+00:50:37,500 --> 00:50:38,040
+OK, yeah.
+
+1046
+00:50:38,040 --> 00:50:39,460
+So I'm going to
+step through this.
+
+1047
+00:50:39,460 --> 00:50:44,530
+So what we can do at this point
+is we can rewrite it as follows.
+
+1048
+00:50:44,530 --> 00:50:47,880
+So right now, remember,
+this is in the time
+
+1049
+00:50:47,880 --> 00:50:49,253
+or the trajectory notation.
+
+1050
+00:50:52,960 --> 00:50:55,540
+So I'm going to,
+again, rewrite this
+
+1051
+00:50:55,540 --> 00:50:57,760
+so that I'm going to move
+it into the state action
+
+1052
+00:50:57,760 --> 00:50:58,625
+representation.
+
+1053
+00:50:58,625 --> 00:51:00,500
+So instead of thinking
+about as trajectories,
+
+1054
+00:51:00,500 --> 00:51:02,200
+I'm going to think
+about it as what's
+
+1055
+00:51:02,200 --> 00:51:04,960
+the distribution over states
+and actions that I'm visiting.
+
+1056
+00:51:04,960 --> 00:51:08,620
+So I'm going to
+write it as follows.
+
+1057
+00:51:08,620 --> 00:51:13,471
+1 over 1 minus gamma sub over--
+
+1058
+00:51:13,471 --> 00:51:15,096
+I should write this
+as the expectation.
+
+1059
+00:51:17,640 --> 00:51:30,410
+Expectation over s prime
+according to pi [INAUDIBLE]
+
+1060
+00:51:30,410 --> 00:51:31,920
+and then under--
+
+1061
+00:51:31,920 --> 00:51:33,045
+I should write it this way.
+
+1062
+00:51:40,520 --> 00:51:42,235
+OK, what have I done there?
+
+1063
+00:51:42,235 --> 00:51:44,610
+So this should look pretty
+similar to the previous slide.
+
+1064
+00:51:44,610 --> 00:51:47,810
+What I've said is, OK, this
+is the discounted future state
+
+1065
+00:51:47,810 --> 00:51:48,650
+distribution.
+
+1066
+00:51:48,650 --> 00:51:56,750
+I saw on the previous slide that
+I can rewrite this expression
+
+1067
+00:51:56,750 --> 00:52:02,270
+as 1 over 1 minus gamma, e
+times s times this d times a.
+
+1068
+00:52:02,270 --> 00:52:03,580
+So that's what I'm doing now.
+
+1069
+00:52:06,130 --> 00:52:09,955
+So I've rewritten it in terms of
+this state action distribution.
+
+1070
+00:52:09,955 --> 00:52:12,230
+And this is where I'm
+in this problematic case
+
+1071
+00:52:12,230 --> 00:52:14,660
+that I've got the wrong--
+
+1072
+00:52:14,660 --> 00:52:16,290
+let me make sure I
+put a quote there.
+
+1073
+00:52:16,290 --> 00:52:19,760
+So this is just to
+be really clear.
+
+1074
+00:52:19,760 --> 00:52:21,630
+This is over pi prime.
+
+1075
+00:52:21,630 --> 00:52:24,890
+So this is all with
+respect to the new policy.
+
+1076
+00:52:24,890 --> 00:52:27,160
+So now I'm going to
+note the following.
+
+1077
+00:52:27,160 --> 00:52:29,010
+OK, so what does this look like?
+
+1078
+00:52:29,010 --> 00:52:32,060
+This looks like it's
+1 over 1 minus gamma,
+
+1079
+00:52:32,060 --> 00:52:37,880
+the expectation over s prime
+sampled according to d pi prime.
+
+1080
+00:52:37,880 --> 00:52:40,170
+And then what is
+this expectation?
+
+1081
+00:52:40,170 --> 00:52:49,310
+So this is going to be sum over
+a pi of a, given s pi prime.
+
+1082
+00:52:49,310 --> 00:52:50,510
+That's horrible notation.
+
+1083
+00:52:50,510 --> 00:52:51,385
+Let's try this again.
+
+1084
+00:52:56,090 --> 00:52:57,530
+That's what this means.
+
+1085
+00:52:57,530 --> 00:53:00,030
+I'm taking an expectation
+for each of the states.
+
+1086
+00:53:00,030 --> 00:53:04,770
+I'm taking an expectation
+with respect to here.
+
+1087
+00:53:04,770 --> 00:53:08,630
+Let me just try
+to make this neat.
+
+1088
+00:53:08,630 --> 00:53:09,950
+There we go.
+
+1089
+00:53:09,950 --> 00:53:14,750
+OK, so I'm saying, imagine
+I sample states from my d pi
+
+1090
+00:53:14,750 --> 00:53:16,330
+prime distribution.
+
+1091
+00:53:16,330 --> 00:53:19,740
+How do I do this expectation
+over a sampled from p prime?
+
+1092
+00:53:19,740 --> 00:53:21,330
+Well, I just sum
+over all the actions,
+
+1093
+00:53:21,330 --> 00:53:22,830
+look at the probability
+of me taking
+
+1094
+00:53:22,830 --> 00:53:27,230
+that action for that state under
+p prime times my advantage.
+
+1095
+00:53:27,230 --> 00:53:29,030
+So now, the key thing
+we're going to do
+
+1096
+00:53:29,030 --> 00:53:33,650
+is we're going to try to change
+this so that we are using more--
+
+1097
+00:53:33,650 --> 00:53:35,150
+we're going to try
+to get to a point
+
+1098
+00:53:35,150 --> 00:53:37,010
+where we only need data from pi.
+
+1099
+00:53:37,010 --> 00:53:39,080
+So the first thing
+we're going to do here
+
+1100
+00:53:39,080 --> 00:53:42,200
+is we're just going to rewrite
+this, and I'm going to multiply
+
+1101
+00:53:42,200 --> 00:53:43,570
+and divide by the same thing.
+
+1102
+00:53:46,490 --> 00:53:49,610
+So I'm going to say this
+is pi prime of a given s,
+
+1103
+00:53:49,610 --> 00:53:54,837
+divided by pi of a given
+s, times pi of a given s.
+
+1104
+00:53:54,837 --> 00:53:57,170
+OK, I have not done anything,
+except for I've multiplied
+
+1105
+00:53:57,170 --> 00:53:58,730
+and divided by the same thing.
+
+1106
+00:53:58,730 --> 00:54:00,090
+Why did I do that?
+
+1107
+00:54:00,090 --> 00:54:03,930
+Well, the good thing is I know
+how to get samples from this.
+
+1108
+00:54:03,930 --> 00:54:05,438
+I have samples from this.
+
+1109
+00:54:05,438 --> 00:54:06,480
+This is from my old data.
+
+1110
+00:54:06,480 --> 00:54:09,510
+This is from the actual
+policy that I took before.
+
+1111
+00:54:09,510 --> 00:54:12,900
+OK, so what this says I can
+write this as, I've got 1 over 1
+
+1112
+00:54:12,900 --> 00:54:17,370
+minus gamma e of s
+according to d pi prime.
+
+1113
+00:54:17,370 --> 00:54:21,360
+And then I have this
+expectation over a sampled
+
+1114
+00:54:21,360 --> 00:54:27,566
+according to pi, not pi prime,
+of my reweighted advantages.
+
+1115
+00:54:30,470 --> 00:54:32,220
+And what do I reweigh them by?
+
+1116
+00:54:32,220 --> 00:54:34,640
+I reweigh them exactly
+by the probability
+
+1117
+00:54:34,640 --> 00:54:38,470
+I take that action under the new
+policy versus the old policy.
+
+1118
+00:54:38,470 --> 00:54:40,970
+And that's OK because I'm going
+to assume that I have access
+
+1119
+00:54:40,970 --> 00:54:43,620
+to the policy parameterization
+of the new policy.
+
+1120
+00:54:43,620 --> 00:54:45,540
+I'm just trying to figure
+out how good it is.
+
+1121
+00:54:45,540 --> 00:54:48,622
+I don't have samples from
+it, but if you tell me,
+
+1122
+00:54:48,622 --> 00:54:50,580
+hey, this is the action
+you took in that state,
+
+1123
+00:54:50,580 --> 00:54:53,163
+I can say, OK, well, that's how
+likely I would have taken that
+
+1124
+00:54:53,163 --> 00:54:54,550
+under my new policy.
+
+1125
+00:54:54,550 --> 00:54:56,240
+So I can do that reweighting.
+
+1126
+00:54:56,240 --> 00:54:57,740
+And this is an
+instance of something
+
+1127
+00:54:57,740 --> 00:54:59,040
+called importance sampling.
+
+1128
+00:54:59,040 --> 00:55:01,280
+And we're going to see a
+lot more about that soon.
+
+1129
+00:55:01,280 --> 00:55:03,252
+So this is the
+first step I can do.
+
+1130
+00:55:03,252 --> 00:55:03,960
+So this is great.
+
+1131
+00:55:03,960 --> 00:55:04,460
+Right?
+
+1132
+00:55:04,460 --> 00:55:07,730
+Because now, I don't need
+to have samples from actions
+
+1133
+00:55:07,730 --> 00:55:09,390
+taken by my new policy.
+
+1134
+00:55:09,390 --> 00:55:12,030
+I can just reweight the
+data I already have.
+
+1135
+00:55:12,030 --> 00:55:13,280
+So that's super cool.
+
+1136
+00:55:13,280 --> 00:55:14,580
+But there's a problem.
+
+1137
+00:55:14,580 --> 00:55:17,780
+This is still pi prime.
+
+1138
+00:55:17,780 --> 00:55:23,540
+So I still don't have any data
+over states from my pi prime.
+
+1139
+00:55:23,540 --> 00:55:24,270
+All right.
+
+1140
+00:55:24,270 --> 00:55:27,390
+So this is that just
+written out more neatly.
+
+1141
+00:55:27,390 --> 00:55:29,570
+We'll see a lot more
+on that in the future.
+
+1142
+00:55:29,570 --> 00:55:31,020
+But we still have
+this big problem
+
+1143
+00:55:31,020 --> 00:55:35,580
+because we don't have
+any states from pi prime.
+
+1144
+00:55:35,580 --> 00:55:39,321
+We have data from pi.
+
+1145
+00:55:39,321 --> 00:55:41,610
+So what are we going
+to do about that?
+
+1146
+00:55:41,610 --> 00:55:46,600
+Well, we're just
+going to ignore it.
+
+1147
+00:55:46,600 --> 00:55:47,950
+Always an option.
+
+1148
+00:55:47,950 --> 00:55:53,363
+So we're just going to
+ignore that and proceed.
+
+1149
+00:55:53,363 --> 00:55:55,030
+And this is what this
+is going to happen
+
+1150
+00:55:55,030 --> 00:55:58,660
+in the rest of the class for
+the rest of this lecture.
+
+1151
+00:55:58,660 --> 00:56:03,200
+We're just going to pretend
+that those states are the same.
+
+1152
+00:56:03,200 --> 00:56:07,370
+Now, as you might imagine, that
+is going to slightly induce
+
+1153
+00:56:07,370 --> 00:56:09,830
+some error in my estimate.
+
+1154
+00:56:09,830 --> 00:56:11,180
+When might that be bad?
+
+1155
+00:56:11,180 --> 00:56:13,820
+Well, it might be really bad if
+the two policies would actually
+
+1156
+00:56:13,820 --> 00:56:18,050
+visit totally different
+parts of the state space.
+
+1157
+00:56:18,050 --> 00:56:20,460
+But if they visit things
+that are really close,
+
+1158
+00:56:20,460 --> 00:56:22,150
+maybe it's not going
+to be that bad.
+
+1159
+00:56:22,150 --> 00:56:22,650
+OK?
+
+1160
+00:56:22,650 --> 00:56:24,837
+So let's imagine that
+you have policy 1,
+
+1161
+00:56:24,837 --> 00:56:26,420
+and it goes, since
+this is your robot,
+
+1162
+00:56:26,420 --> 00:56:28,350
+and it goes to most of
+this part of the space,
+
+1163
+00:56:28,350 --> 00:56:30,030
+and then you change your policy.
+
+1164
+00:56:30,030 --> 00:56:32,210
+And maybe it also goes to
+that part of the space,
+
+1165
+00:56:32,210 --> 00:56:34,020
+and it goes a little
+over here, too.
+
+1166
+00:56:34,020 --> 00:56:36,590
+But there's quite
+a bit of overlap.
+
+1167
+00:56:36,590 --> 00:56:38,330
+The places where
+it would be bad is
+
+1168
+00:56:38,330 --> 00:56:42,230
+something like if your policy
+goes like this, your new policy.
+
+1169
+00:56:42,230 --> 00:56:45,590
+And then there's no overlap
+in your state space.
+
+1170
+00:56:45,590 --> 00:56:48,710
+So it's going to turn out that
+if pi and pi prime are close,
+
+1171
+00:56:48,710 --> 00:56:51,080
+and we're going to define
+what we mean by close,
+
+1172
+00:56:51,080 --> 00:56:54,650
+then this is actually
+not a bad approximation.
+
+1173
+00:56:54,650 --> 00:56:55,560
+It's not perfect.
+
+1174
+00:56:55,560 --> 00:56:56,720
+It's not too bad.
+
+1175
+00:56:56,720 --> 00:57:02,180
+So in the paper, they
+prove that we can bound
+
+1176
+00:57:02,180 --> 00:57:05,390
+how bad this approximation is.
+
+1177
+00:57:05,390 --> 00:57:08,180
+So in general, we're
+going to define
+
+1178
+00:57:08,180 --> 00:57:13,340
+this to be L, math script L,
+of pi with respect to pi prime.
+
+1179
+00:57:13,340 --> 00:57:17,400
+If this was perfect,
+this thing would be 0
+
+1180
+00:57:17,400 --> 00:57:20,860
+because this would exactly
+equal this difference.
+
+1181
+00:57:20,860 --> 00:57:23,975
+So this minus this would be--
+
+1182
+00:57:23,975 --> 00:57:26,220
+these two things
+would exactly be 0.
+
+1183
+00:57:26,220 --> 00:57:32,700
+But what it turns out is that
+how far off this approximation
+
+1184
+00:57:32,700 --> 00:57:34,360
+is depends--
+
+1185
+00:57:34,360 --> 00:57:38,010
+bless you-- on the KL
+divergence in the policies.
+
+1186
+00:57:38,010 --> 00:57:40,330
+And I'll define what KL
+divergence is in a second.
+
+1187
+00:57:40,330 --> 00:57:43,790
+So in particular, it depends on
+the KL divergence with respect
+
+1188
+00:57:43,790 --> 00:57:45,110
+to--
+
+1189
+00:57:45,110 --> 00:57:47,330
+let me just undo that so
+I can just do this part.
+
+1190
+00:57:47,330 --> 00:57:50,510
+With respect to states
+if you were sampling them
+
+1191
+00:57:50,510 --> 00:57:52,020
+according to d pi.
+
+1192
+00:57:52,020 --> 00:57:56,450
+Now, d pi is good because d pi
+is the actual discounted states
+
+1193
+00:57:56,450 --> 00:57:58,380
+that we visit under
+our current policy.
+
+1194
+00:57:58,380 --> 00:58:00,590
+That means we actually
+have data about it.
+
+1195
+00:58:00,590 --> 00:58:03,358
+So I always like to work
+with my-- in my lab,
+
+1196
+00:58:03,358 --> 00:58:05,900
+we always try to instantiate
+our theoretical bounds because I
+
+1197
+00:58:05,900 --> 00:58:07,733
+feel like it's super
+informative to be like,
+
+1198
+00:58:07,733 --> 00:58:11,330
+is this 10 to the
+10, or is this 0.5.
+
+1199
+00:58:11,330 --> 00:58:13,340
+And one of the big
+questions often
+
+1200
+00:58:13,340 --> 00:58:14,840
+that comes up when
+we try to do this
+
+1201
+00:58:14,840 --> 00:58:17,835
+is that sometimes you can't
+instantiate your bounds at all
+
+1202
+00:58:17,835 --> 00:58:19,960
+because it will depend on
+constants you don't know.
+
+1203
+00:58:19,960 --> 00:58:21,918
+So it's a beautiful
+theorem, but you can't even
+
+1204
+00:58:21,918 --> 00:58:22,950
+check how big it is.
+
+1205
+00:58:22,950 --> 00:58:26,180
+The nice thing about
+this is it's checkable.
+
+1206
+00:58:26,180 --> 00:58:28,310
+At least this part
+is because you
+
+1207
+00:58:28,310 --> 00:58:29,810
+can look at your
+actual trajectories
+
+1208
+00:58:29,810 --> 00:58:31,230
+from your current policy.
+
+1209
+00:58:31,230 --> 00:58:33,240
+And if you have a
+new policy, pi prime,
+
+1210
+00:58:33,240 --> 00:58:36,120
+you can see and evaluate what
+your KL divergence will be.
+
+1211
+00:58:36,120 --> 00:58:37,950
+So this is actually evaluatable.
+
+1212
+00:58:37,950 --> 00:58:39,700
+So we'll see.
+
+1213
+00:58:39,700 --> 00:58:42,000
+What is C?
+
+1214
+00:58:42,000 --> 00:58:44,220
+So C is a constant.
+
+1215
+00:58:44,220 --> 00:58:46,560
+Any information about its value?
+
+1216
+00:58:46,560 --> 00:58:47,850
+No.
+
+1217
+00:58:47,850 --> 00:58:49,420
+We're not going to
+need it for now.
+
+1218
+00:58:49,420 --> 00:58:53,820
+But in the paper, you can read
+about exactly what that is.
+
+1219
+00:58:53,820 --> 00:58:55,060
+Yes, good question, though.
+
+1220
+00:58:55,060 --> 00:58:57,210
+OK, let's see what
+KL divergence is.
+
+1221
+00:58:57,210 --> 00:58:59,220
+So what this says,
+just at a high level,
+
+1222
+00:58:59,220 --> 00:59:03,540
+is that this approximation
+is not totally insane
+
+1223
+00:59:03,540 --> 00:59:05,580
+if the policies are close.
+
+1224
+00:59:05,580 --> 00:59:08,340
+In fact, this is going to be
+a pretty good approximation.
+
+1225
+00:59:08,340 --> 00:59:11,533
+So as we're going to
+see, this is tight
+
+1226
+00:59:11,533 --> 00:59:13,950
+if the policies are identical,
+which is exactly what you'd
+
+1227
+00:59:13,950 --> 00:59:15,340
+expect this to be tight.
+
+1228
+00:59:15,340 --> 00:59:17,200
+So if your two
+policies are identical,
+
+1229
+00:59:17,200 --> 00:59:18,610
+their difference should be 0.
+
+1230
+00:59:18,610 --> 00:59:20,930
+And this bound would
+tell you it's 0.
+
+1231
+00:59:20,930 --> 00:59:21,430
+All right.
+
+1232
+00:59:21,430 --> 00:59:22,440
+What is KL divergence?
+
+1233
+00:59:22,440 --> 00:59:23,710
+Some of you guys might
+have seen this before,
+
+1234
+00:59:23,710 --> 00:59:25,650
+but in case some
+people might be new.
+
+1235
+00:59:25,650 --> 00:59:27,900
+So what KL divergence
+allows us to do
+
+1236
+00:59:27,900 --> 00:59:31,690
+is to compare two
+probability distributions.
+
+1237
+00:59:31,690 --> 00:59:36,180
+So in our case, what this is
+going to be is over actions
+
+1238
+00:59:36,180 --> 00:59:37,030
+we will take.
+
+1239
+00:59:37,030 --> 00:59:41,460
+So pi of a given s,
+versus pi of a given s.
+
+1240
+00:59:41,460 --> 00:59:44,370
+So both of these are
+probability distributions
+
+1241
+00:59:44,370 --> 00:59:46,950
+that sum to 1 for
+a particular state.
+
+1242
+00:59:46,950 --> 00:59:50,400
+And so in our case, what we
+would be summing over here,
+
+1243
+00:59:50,400 --> 00:59:51,630
+x would be a.
+
+1244
+00:59:51,630 --> 00:59:53,730
+So we'd be summing
+over all of these.
+
+1245
+00:59:53,730 --> 00:59:57,790
+If you have the same
+probability distribution,
+
+1246
+00:59:57,790 --> 00:59:59,050
+the KL divergence is 0.
+
+1247
+00:59:59,050 --> 01:00:00,990
+Otherwise, it's
+strictly positive.
+
+1248
+01:00:00,990 --> 01:00:03,700
+It's good to know
+it's not symmetric
+
+1249
+01:00:03,700 --> 01:00:07,413
+because we've made a choice
+here in the ordering.
+
+1250
+01:00:07,413 --> 01:00:09,080
+These are good
+properties to know about.
+
+1251
+01:00:09,080 --> 01:00:13,150
+It comes up all the time
+in reinforcement learning.
+
+1252
+01:00:13,150 --> 01:00:16,630
+So in our case, we can look
+at, for a particular state s,
+
+1253
+01:00:16,630 --> 01:00:18,850
+what is the KL divergence
+and what the policies would
+
+1254
+01:00:18,850 --> 01:00:20,938
+do for that particular state.
+
+1255
+01:00:20,938 --> 01:00:22,230
+So that's what we've got there.
+
+1256
+01:00:22,230 --> 01:00:24,170
+So it says, essentially,
+how different
+
+1257
+01:00:24,170 --> 01:00:25,730
+are the actions you would take.
+
+1258
+01:00:25,730 --> 01:00:27,080
+Now, why is this good?
+
+1259
+01:00:27,080 --> 01:00:29,250
+Well, we've been spending
+some time saying, hey,
+
+1260
+01:00:29,250 --> 01:00:30,667
+we really don't
+want to think just
+
+1261
+01:00:30,667 --> 01:00:33,210
+about how close we
+are in theta space.
+
+1262
+01:00:33,210 --> 01:00:35,585
+We really want to get to
+thinking about how different are
+
+1263
+01:00:35,585 --> 01:00:37,700
+our actual policies,
+how different are
+
+1264
+01:00:37,700 --> 01:00:40,500
+the actual decisions we
+make in particular states.
+
+1265
+01:00:40,500 --> 01:00:42,530
+And the nice thing
+is, what this bound
+
+1266
+01:00:42,530 --> 01:00:47,630
+says is that the difference
+between two policies
+
+1267
+01:00:47,630 --> 01:00:51,180
+is not just about how close you
+are in some parameter space.
+
+1268
+01:00:51,180 --> 01:00:53,090
+It's really about
+how different are
+
+1269
+01:00:53,090 --> 01:00:55,220
+the decisions you make
+in all the states you'd
+
+1270
+01:00:55,220 --> 01:00:58,970
+reach under your current
+state distribution.
+
+1271
+01:00:58,970 --> 01:01:00,830
+And so if you'd make
+all the same decisions
+
+1272
+01:01:00,830 --> 01:01:02,610
+in the states you're
+already reaching,
+
+1273
+01:01:02,610 --> 01:01:05,220
+your policy value is going
+to be really similar.
+
+1274
+01:01:05,220 --> 01:01:07,380
+If you would make very
+different decisions,
+
+1275
+01:01:07,380 --> 01:01:09,578
+then your policy value
+might be really different,
+
+1276
+01:01:09,578 --> 01:01:11,870
+because you'd go off and
+explore really different parts
+
+1277
+01:01:11,870 --> 01:01:14,691
+of the state space.
+
+1278
+01:01:14,691 --> 01:01:17,700
+So this is really elegant.
+
+1279
+01:01:17,700 --> 01:01:22,440
+And now, we have something where
+we can just use our old data.
+
+1280
+01:01:22,440 --> 01:01:24,000
+So we have our old data.
+
+1281
+01:01:24,000 --> 01:01:27,150
+We can use it to estimate
+what the performance
+
+1282
+01:01:27,150 --> 01:01:31,350
+improvement would be if we
+try to get to a new policy.
+
+1283
+01:01:31,350 --> 01:01:33,150
+And so what you might
+imagine in this case
+
+1284
+01:01:33,150 --> 01:01:35,460
+is you could use it to
+search over or decide
+
+1285
+01:01:35,460 --> 01:01:37,860
+which new policy to try.
+
+1286
+01:01:37,860 --> 01:01:40,835
+This allows you to compute it
+for lots of different pi prime.
+
+1287
+01:01:40,835 --> 01:01:44,370
+It doesn't just have to be the
+pi prime for one gradient step.
+
+1288
+01:01:44,370 --> 01:01:47,280
+It says, in general, even
+outside of policy gradient
+
+1289
+01:01:47,280 --> 01:01:52,530
+methods, you can evaluate the
+value of changing your policy
+
+1290
+01:01:52,530 --> 01:01:55,170
+to pi prime with respect
+to your current performance
+
+1291
+01:01:55,170 --> 01:01:56,890
+by this expression.
+
+1292
+01:01:56,890 --> 01:01:58,380
+And this will be
+more or less tight
+
+1293
+01:01:58,380 --> 01:02:00,690
+depending on how
+different your policy is
+
+1294
+01:02:00,690 --> 01:02:04,920
+at making decisions in states
+that you would currently reach.
+
+1295
+01:02:04,920 --> 01:02:06,320
+And we'll talk more about this.
+
+1296
+01:02:06,320 --> 01:02:11,850
+We haven't talked about this
+yet, so we will talk about--
+
+1297
+01:02:18,182 --> 01:02:22,230
+This also relates to some really
+nice literature from the last 20
+
+1298
+01:02:22,230 --> 01:02:25,530
+years of thinking about how
+do we do monotonic policy
+
+1299
+01:02:25,530 --> 01:02:28,980
+improvement in policy gradient
+methods and policy search
+
+1300
+01:02:28,980 --> 01:02:29,740
+methods.
+
+1301
+01:02:29,740 --> 01:02:32,310
+It also relates to the notion
+of a trust region, which
+
+1302
+01:02:32,310 --> 01:02:36,485
+is this idea of, when
+you're changing your policy,
+
+1303
+01:02:36,485 --> 01:02:37,860
+how far can you
+go and still sort
+
+1304
+01:02:37,860 --> 01:02:39,540
+of trust the performance
+of it and trust
+
+1305
+01:02:39,540 --> 01:02:40,710
+you can get improvement.
+
+1306
+01:02:40,710 --> 01:02:43,330
+So there's a bunch of different
+nice papers related to this.
+
+1307
+01:02:43,330 --> 01:02:46,100
+OK, let's talk
+about the algorithm.
+
+1308
+01:02:46,100 --> 01:02:48,170
+Proximal policy
+optimization is going
+
+1309
+01:02:48,170 --> 01:02:50,670
+to be inspired by all the things
+that we just talked about.
+
+1310
+01:02:50,670 --> 01:02:52,280
+So what we want
+to do is, it wants
+
+1311
+01:02:52,280 --> 01:02:55,100
+to be able to take
+multiple gradient steps,
+
+1312
+01:02:55,100 --> 01:02:56,960
+and it wants to be able
+to do this in a way
+
+1313
+01:02:56,960 --> 01:02:59,110
+so that we don't overstep.
+
+1314
+01:02:59,110 --> 01:03:03,290
+We try to focus on policy
+parameterization in terms
+
+1315
+01:03:03,290 --> 01:03:05,180
+of the actual
+decisions that we make.
+
+1316
+01:03:05,180 --> 01:03:07,700
+So there are two
+different variants.
+
+1317
+01:03:07,700 --> 01:03:10,850
+One is it solves an
+unconstrained optimization
+
+1318
+01:03:10,850 --> 01:03:14,390
+problem where it uses
+this approximation.
+
+1319
+01:03:14,390 --> 01:03:17,760
+So that's the approximation
+we had on the previous slides.
+
+1320
+01:03:17,760 --> 01:03:23,420
+I'll just write down, from
+prior slides, where we use data
+
+1321
+01:03:23,420 --> 01:03:27,200
+from the current policy, and we
+add up these weighted advantage
+
+1322
+01:03:27,200 --> 01:03:28,170
+functions.
+
+1323
+01:03:28,170 --> 01:03:30,290
+So what it says is, well,
+the thing you want to do
+
+1324
+01:03:30,290 --> 01:03:33,530
+is you want to pick the policy
+that maximizes our estimated
+
+1325
+01:03:33,530 --> 01:03:37,560
+difference, subject to a
+constraint on the KL divergence.
+
+1326
+01:03:37,560 --> 01:03:41,300
+Because it's realizing
+that L approximation is
+
+1327
+01:03:41,300 --> 01:03:43,490
+going to get worse and
+worse as the KL divergence
+
+1328
+01:03:43,490 --> 01:03:44,700
+gets really large.
+
+1329
+01:03:44,700 --> 01:03:54,520
+So it's directly
+incorporating this bound.
+
+1330
+01:03:54,520 --> 01:03:57,222
+So it's thinking, OK, I want
+to think about what this is,
+
+1331
+01:03:57,222 --> 01:03:58,930
+but then I also have
+to consider the fact
+
+1332
+01:03:58,930 --> 01:04:00,910
+that my estimate might
+be off by as much
+
+1333
+01:04:00,910 --> 01:04:04,670
+as this square root of KL.
+
+1334
+01:04:04,670 --> 01:04:07,490
+So you really want to improve
+with respect to something
+
+1335
+01:04:07,490 --> 01:04:09,770
+that considers both of those.
+
+1336
+01:04:09,770 --> 01:04:12,510
+So this is one
+version of policy.
+
+1337
+01:04:12,510 --> 01:04:15,620
+This is not the way
+most people do PPO.
+
+1338
+01:04:15,620 --> 01:04:17,250
+We'll see the other
+really common one.
+
+1339
+01:04:17,250 --> 01:04:19,160
+But it's a nice
+baseline to know about.
+
+1340
+01:04:19,160 --> 01:04:21,230
+And here, when we
+think about what
+
+1341
+01:04:21,230 --> 01:04:24,330
+that KL is, as you
+might have noticed,
+
+1342
+01:04:24,330 --> 01:04:27,170
+KL is defined for
+a single state.
+
+1343
+01:04:27,170 --> 01:04:29,030
+So for a single
+state, we can say
+
+1344
+01:04:29,030 --> 01:04:30,875
+what is the distribution
+over actions I take
+
+1345
+01:04:30,875 --> 01:04:32,820
+in one policy versus another.
+
+1346
+01:04:32,820 --> 01:04:34,620
+But of course, we
+have lots of states.
+
+1347
+01:04:34,620 --> 01:04:36,260
+And so what we can
+do here is we can
+
+1348
+01:04:36,260 --> 01:04:40,830
+take an expectation over the KL,
+over all the states we visit.
+
+1349
+01:04:40,830 --> 01:04:43,940
+And that was part of the
+theoretical bound, too.
+
+1350
+01:04:43,940 --> 01:04:46,070
+Another really important
+thing you can see here
+
+1351
+01:04:46,070 --> 01:04:52,210
+is this waiting between
+trying to optimize this policy
+
+1352
+01:04:52,210 --> 01:04:56,230
+improvement, while
+respecting this KL penalty.
+
+1353
+01:04:56,230 --> 01:04:59,890
+And you can change this
+over each iteration
+
+1354
+01:04:59,890 --> 01:05:03,880
+to approximately satisfy the
+KL divergence constraint.
+
+1355
+01:05:03,880 --> 01:05:06,670
+So this does not
+guarantee that you will.
+
+1356
+01:05:06,670 --> 01:05:08,230
+This does not
+guarantee that you're
+
+1357
+01:05:08,230 --> 01:05:09,830
+going to get
+monotonic improvement,
+
+1358
+01:05:09,830 --> 01:05:12,893
+but it's trying to
+get towards that.
+
+1359
+01:05:12,893 --> 01:05:14,060
+So let's see how that works.
+
+1360
+01:05:14,060 --> 01:05:15,992
+So this is the algorithm.
+
+1361
+01:05:15,992 --> 01:05:17,950
+What it does is, you can
+compute the advantages
+
+1362
+01:05:17,950 --> 01:05:20,180
+using any advantage
+estimation algorithm.
+
+1363
+01:05:20,180 --> 01:05:22,540
+You compute your
+policy update, and you
+
+1364
+01:05:22,540 --> 01:05:24,330
+can do K steps with that.
+
+1365
+01:05:24,330 --> 01:05:28,670
+So the nice thing is that you
+can use your old data here,
+
+1366
+01:05:28,670 --> 01:05:33,010
+and you can take
+multiple gradient steps.
+
+1367
+01:05:33,010 --> 01:05:35,140
+After you do this,
+you can also check
+
+1368
+01:05:35,140 --> 01:05:39,590
+if your KL divergence for your
+new resulting policy is large.
+
+1369
+01:05:39,590 --> 01:05:42,410
+If it is, then you may
+increase the penalty.
+
+1370
+01:05:42,410 --> 01:05:46,030
+If it's small, you can
+decrease the penalty.
+
+1371
+01:05:46,030 --> 01:05:48,020
+And that just allows
+us to trade off
+
+1372
+01:05:48,020 --> 01:05:50,630
+between how much we pay
+attention to this KL divergence
+
+1373
+01:05:50,630 --> 01:05:54,110
+constraint versus not.
+
+1374
+01:05:54,110 --> 01:05:57,930
+And as I noted here, you might
+violate the KL constraints,
+
+1375
+01:05:57,930 --> 01:06:01,100
+but most of them, they
+don't, empirically.
+
+1376
+01:06:01,100 --> 01:06:03,710
+This is one reasonable thing
+to do based on everything
+
+1377
+01:06:03,710 --> 01:06:04,370
+we've seen.
+
+1378
+01:06:04,370 --> 01:06:06,203
+Now we're going to see
+something else, which
+
+1379
+01:06:06,203 --> 01:06:08,870
+is inspired by that is a
+much more common thing to do,
+
+1380
+01:06:08,870 --> 01:06:11,400
+which is, well, let me
+just highlight here.
+
+1381
+01:06:11,400 --> 01:06:14,400
+Multiple gradient
+steps is really good.
+
+1382
+01:06:14,400 --> 01:06:17,240
+So one of the benefits
+is that we're not just
+
+1383
+01:06:17,240 --> 01:06:18,660
+taking a single gradient step.
+
+1384
+01:06:18,660 --> 01:06:19,620
+We're taking multiple.
+
+1385
+01:06:19,620 --> 01:06:21,710
+So just to really
+highlight that.
+
+1386
+01:06:21,710 --> 01:06:22,290
+All right.
+
+1387
+01:06:22,290 --> 01:06:24,860
+What is the other thing
+we want to do here?
+
+1388
+01:06:24,860 --> 01:06:27,590
+We haven't talked about
+natural gradients.
+
+1389
+01:06:27,590 --> 01:06:30,140
+But for any of you that
+are familiar with these,
+
+1390
+01:06:30,140 --> 01:06:31,790
+they're another
+way to try to think
+
+1391
+01:06:31,790 --> 01:06:33,630
+about taking gradient steps.
+
+1392
+01:06:33,630 --> 01:06:35,630
+We're not going to talk
+about that for now.
+
+1393
+01:06:35,630 --> 01:06:39,030
+So the other thing we could
+do is equipped objective.
+
+1394
+01:06:39,030 --> 01:06:42,320
+So what we're going to
+look at in this case is,
+
+1395
+01:06:42,320 --> 01:06:44,810
+remember how we talked about
+we had this kind of ratio
+
+1396
+01:06:44,810 --> 01:06:47,820
+between this is what we're
+using to weight our advantage
+
+1397
+01:06:47,820 --> 01:06:50,480
+function, was the difference
+between how likely
+
+1398
+01:06:50,480 --> 01:06:52,970
+you were to take that
+action under our old policy
+
+1399
+01:06:52,970 --> 01:06:53,920
+versus our new.
+
+1400
+01:06:53,920 --> 01:06:57,720
+And we're using it to weight
+our advantage function.
+
+1401
+01:06:57,720 --> 01:06:59,710
+What the clipping
+does is it says,
+
+1402
+01:06:59,710 --> 01:07:04,780
+well, I don't want this to
+get too high or too low.
+
+1403
+01:07:04,780 --> 01:07:05,290
+OK?
+
+1404
+01:07:05,290 --> 01:07:07,082
+This could become really
+high or really low
+
+1405
+01:07:07,082 --> 01:07:10,490
+when my policies are
+really different.
+
+1406
+01:07:10,490 --> 01:07:13,010
+If my policy is really--
+
+1407
+01:07:13,010 --> 01:07:16,700
+you can imagine that,
+if my policy puts
+
+1408
+01:07:16,700 --> 01:07:18,560
+really low probability
+on something
+
+1409
+01:07:18,560 --> 01:07:21,200
+that the current policy
+puts high probability on,
+
+1410
+01:07:21,200 --> 01:07:24,680
+this ratio here is going
+to go towards-- this r is
+
+1411
+01:07:24,680 --> 01:07:27,570
+going to go to about 0.
+
+1412
+01:07:27,570 --> 01:07:31,080
+And if this puts very
+high, let's say this is 1,
+
+1413
+01:07:31,080 --> 01:07:33,910
+and this puts very low
+probability on that,
+
+1414
+01:07:33,910 --> 01:07:35,440
+this could be extremely large.
+
+1415
+01:07:35,440 --> 01:07:37,580
+This could be like 10 to the 6.
+
+1416
+01:07:37,580 --> 01:07:39,540
+It could be very, very large.
+
+1417
+01:07:39,540 --> 01:07:42,655
+And both of those are being
+used to weight the advantage
+
+1418
+01:07:42,655 --> 01:07:43,155
+function.
+
+1419
+01:07:43,155 --> 01:07:43,470
+Right?
+
+1420
+01:07:43,470 --> 01:07:46,012
+So your advantage function could
+be getting shrunk towards 0,
+
+1421
+01:07:46,012 --> 01:07:49,330
+or it could be getting blown up
+by a factor of, say, 10 to the 6
+
+1422
+01:07:49,330 --> 01:07:51,960
+if you have a big difference
+in the actions you
+
+1423
+01:07:51,960 --> 01:07:54,120
+would take under one
+policy versus another.
+
+1424
+01:07:54,120 --> 01:07:55,620
+And in general, we
+don't like things
+
+1425
+01:07:55,620 --> 01:07:57,960
+where we're thinking of
+policy gradients, where
+
+1426
+01:07:57,960 --> 01:08:02,010
+we might have terms that
+are exploding or vanishing.
+
+1427
+01:08:02,010 --> 01:08:04,560
+And that's part of the point
+of the KL divergence constraint
+
+1428
+01:08:04,560 --> 01:08:07,280
+is to say, you want your
+policies to stay close.
+
+1429
+01:08:07,280 --> 01:08:10,023
+So the clipping is sort of
+inspired by this general idea,
+
+1430
+01:08:10,023 --> 01:08:11,940
+but says, well, maybe
+something similar we can
+
+1431
+01:08:11,940 --> 01:08:13,290
+is we're just going to clip.
+
+1432
+01:08:13,290 --> 01:08:16,710
+We're just going to say you
+can't have weighted advantage
+
+1433
+01:08:16,710 --> 01:08:20,670
+terms that are going towards
+infinity, or minus infinity,
+
+1434
+01:08:20,670 --> 01:08:22,350
+or 0.
+
+1435
+01:08:22,350 --> 01:08:25,146
+And so if this ratio
+is too extreme,
+
+1436
+01:08:25,146 --> 01:08:26,229
+I'm just going to clip it.
+
+1437
+01:08:26,229 --> 01:08:30,399
+I'm going to not allow it to
+be less than 1 minus epsilon,
+
+1438
+01:08:30,399 --> 01:08:33,250
+or greater than 1 plus epsilon.
+
+1439
+01:08:33,250 --> 01:08:35,680
+And epsilon is just
+a hyperparameter.
+
+1440
+01:08:35,680 --> 01:08:37,810
+And essentially,
+it's sort of meaning
+
+1441
+01:08:37,810 --> 01:08:40,790
+that your policy might
+change further than that,
+
+1442
+01:08:40,790 --> 01:08:43,990
+but that's not going to
+benefit your loss function.
+
+1443
+01:08:43,990 --> 01:08:47,319
+So this, again, is going to
+constrain your policy class
+
+1444
+01:08:47,319 --> 01:08:50,979
+to stay within this
+region, for which it's
+
+1445
+01:08:50,979 --> 01:08:53,029
+making similar decisions.
+
+1446
+01:08:53,029 --> 01:08:54,910
+So we're still really
+focusing on what
+
+1447
+01:08:54,910 --> 01:08:56,359
+actions are we actually taking.
+
+1448
+01:08:56,359 --> 01:08:58,390
+Are we taking similar
+actions in these states,
+
+1449
+01:08:58,390 --> 01:09:01,390
+as we would be normally,
+regardless of how much
+
+1450
+01:09:01,390 --> 01:09:03,510
+my theta is changing?
+
+1451
+01:09:03,510 --> 01:09:05,439
+And then you just do
+your policy update
+
+1452
+01:09:05,439 --> 01:09:07,490
+by taking an argmax over this.
+
+1453
+01:09:07,490 --> 01:09:11,069
+So this is your clipped
+objective function.
+
+1454
+01:09:11,069 --> 01:09:11,569
+All right.
+
+1455
+01:09:11,569 --> 01:09:13,750
+So let's see how this works.
+
+1456
+01:09:13,750 --> 01:09:15,790
+Let's think about
+what it's doing.
+
+1457
+01:09:15,790 --> 01:09:19,630
+So we'll do a quick
+Check Your Understanding.
+
+1458
+01:09:19,630 --> 01:09:23,390
+So this shows you
+what L clip does.
+
+1459
+01:09:23,390 --> 01:09:25,569
+This is L clip, as well.
+
+1460
+01:09:25,569 --> 01:09:27,640
+And what I'd like
+you to think about
+
+1461
+01:09:27,640 --> 01:09:31,090
+is, what does this look like,
+depending on the advantage
+
+1462
+01:09:31,090 --> 01:09:32,660
+function.
+
+1463
+01:09:32,660 --> 01:09:35,710
+So L. Let me just write it down.
+
+1464
+01:09:35,710 --> 01:09:37,970
+L clip.
+
+1465
+01:09:37,970 --> 01:09:40,399
+OK, so this is r.
+
+1466
+01:09:40,399 --> 01:09:42,800
+So on the x-axis is r.
+
+1467
+01:09:42,800 --> 01:09:44,908
+And then on the
+y-axis is L clip.
+
+1468
+01:09:44,908 --> 01:09:46,700
+And what this is asking
+you to think about,
+
+1469
+01:09:46,700 --> 01:09:51,500
+this is from their paper, is to
+think about what does clipping
+
+1470
+01:09:51,500 --> 01:09:55,820
+do in terms of your loss.
+
+1471
+01:09:55,820 --> 01:09:57,590
+And so I'd like
+you to think about,
+
+1472
+01:09:57,590 --> 01:10:02,360
+in this case, which of
+these two, if either,
+
+1473
+01:10:02,360 --> 01:10:04,850
+match within the advantage
+function as positive
+
+1474
+01:10:04,850 --> 01:10:07,320
+or the advantage
+function as negative.
+
+1475
+01:10:07,320 --> 01:10:09,570
+So a here is the advantage.
+
+1476
+01:10:09,570 --> 01:10:11,380
+Let me just make that clear.
+
+1477
+01:10:11,380 --> 01:10:13,250
+A is equal to the advantage.
+
+1478
+01:10:13,250 --> 01:10:16,100
+So just think of this
+for a single term.
+
+1479
+01:10:16,100 --> 01:10:21,343
+Consider for one term.
+
+1480
+01:10:21,343 --> 01:10:24,440
+So just this part.
+
+1481
+01:10:24,440 --> 01:10:31,137
+So just for one single rta,
+what is happening here?
+
+1482
+01:10:31,137 --> 01:10:33,470
+And just to be clear here,
+what we're doing in this case
+
+1483
+01:10:33,470 --> 01:10:36,000
+is we're taking the minimum
+between the normal thing we do,
+
+1484
+01:10:36,000 --> 01:10:37,417
+which is this
+reweighted advantage
+
+1485
+01:10:37,417 --> 01:10:41,995
+function times a clip of the r
+times the advantage function.
+
+1486
+01:11:04,490 --> 01:11:06,290
+And feel free to
+flip back and forth
+
+1487
+01:11:06,290 --> 01:11:09,440
+or play with
+numbers, just to get
+
+1488
+01:11:09,440 --> 01:11:15,100
+some intuition of what is this
+doing to our loss function.
+
+1489
+01:11:19,730 --> 01:11:21,710
+Or I shouldn't say loss.
+
+1490
+01:11:21,710 --> 01:11:23,410
+Our objective
+function, in this case,
+
+1491
+01:11:23,410 --> 01:11:25,080
+because we're trying to
+take the argmax of it.
+
+1492
+01:11:25,080 --> 01:11:26,455
+So we're thinking
+of this as sort
+
+1493
+01:11:26,455 --> 01:11:29,330
+of an approximation of how much
+is our policy going to improve
+
+1494
+01:11:29,330 --> 01:11:30,480
+when we change our theta.
+
+1495
+01:11:30,480 --> 01:11:33,063
+So we're going to want to take
+a max of this over with respect
+
+1496
+01:11:33,063 --> 01:11:35,120
+to a new policy theta.
+
+1497
+01:11:35,120 --> 01:11:36,920
+And we want to
+think about, this is
+
+1498
+01:11:36,920 --> 01:11:42,500
+sort of bounding what that new
+performance benefit could be,
+
+1499
+01:11:42,500 --> 01:11:45,690
+and how does that vary with
+respect to the advantage.
+
+1500
+01:12:28,990 --> 01:12:32,410
+Nobody thinks it depends on the
+value of e, which is correct.
+
+1501
+01:12:32,410 --> 01:12:36,472
+So this does not depend
+on the value of e.
+
+1502
+01:12:36,472 --> 01:12:37,930
+Why don't you turn
+to your neighbor
+
+1503
+01:12:37,930 --> 01:12:39,347
+and see if you got
+the same thing?
+
+1504
+01:12:44,538 --> 01:14:30,190
+[INTERPOSING VOICES]
+
+1505
+01:14:30,190 --> 01:14:30,690
+Cool.
+
+1506
+01:14:30,690 --> 01:14:34,880
+It looks like talking converged
+most people, which is great.
+
+1507
+01:14:34,880 --> 01:14:39,370
+So the first one is correct.
+
+1508
+01:14:39,370 --> 01:14:42,440
+So this is a greater than 0.
+
+1509
+01:14:42,440 --> 01:14:44,285
+This is a less than 0.
+
+1510
+01:14:44,285 --> 01:14:45,660
+Does someone want
+to explain why?
+
+1511
+01:14:50,330 --> 01:14:51,830
+Most of you that
+voted got it right.
+
+1512
+01:14:57,620 --> 01:15:01,220
+Well, it is quite simple
+because the simply
+
+1513
+01:15:01,220 --> 01:15:05,670
+let a coefficient to the value.
+
+1514
+01:15:05,670 --> 01:15:07,760
+So it has a positive
+slope, and it
+
+1515
+01:15:07,760 --> 01:15:09,530
+is positive and negative slope.
+
+1516
+01:15:09,530 --> 01:15:11,210
+Then it's negative.
+
+1517
+01:15:11,210 --> 01:15:13,310
+Yeah, so if we just
+focus on this for a
+
+1518
+01:15:13,310 --> 01:15:16,070
+being equal to
+greater than 0, what
+
+1519
+01:15:16,070 --> 01:15:20,150
+will happen is, as that ratio
+r gets higher, and higher,
+
+1520
+01:15:20,150 --> 01:15:22,910
+and higher, you'll
+just linearly go up
+
+1521
+01:15:22,910 --> 01:15:25,880
+because it's just
+something between 0 and 1
+
+1522
+01:15:25,880 --> 01:15:28,190
+that's getting
+larger and larger.
+
+1523
+01:15:28,190 --> 01:15:29,940
+r can never be negative.
+
+1524
+01:15:29,940 --> 01:15:32,040
+So it's just useful
+to see in this case.
+
+1525
+01:15:32,040 --> 01:15:33,582
+So as it's getting
+larger and larger,
+
+1526
+01:15:33,582 --> 01:15:36,570
+it's just going to
+increase your L clip value.
+
+1527
+01:15:36,570 --> 01:15:40,940
+But at some point, you're going
+to run up against this part.
+
+1528
+01:15:40,940 --> 01:15:44,390
+And so at this part,
+you're going to clip it,
+
+1529
+01:15:44,390 --> 01:15:47,023
+and you can't get
+higher anymore.
+
+1530
+01:15:47,023 --> 01:15:48,440
+Remember, in
+general, we're always
+
+1531
+01:15:48,440 --> 01:15:50,060
+trying to maximize L clip.
+
+1532
+01:15:50,060 --> 01:15:52,440
+In this case, when the
+advantage is negative,
+
+1533
+01:15:52,440 --> 01:15:56,792
+you're trying to reduce the
+amount of probability mass
+
+1534
+01:15:56,792 --> 01:15:58,500
+you put on that action,
+because you don't
+
+1535
+01:15:58,500 --> 01:15:59,825
+want to take that anymore.
+
+1536
+01:15:59,825 --> 01:16:02,830
+I got a negative advantage,
+so I need to stop doing that.
+
+1537
+01:16:02,830 --> 01:16:04,660
+So essentially, you
+want to be sweeping,
+
+1538
+01:16:04,660 --> 01:16:06,690
+changing your policy in
+the opposite direction.
+
+1539
+01:16:06,690 --> 01:16:08,943
+You'd really like to be
+able to push r all away to 0
+
+1540
+01:16:08,943 --> 01:16:10,860
+and say, I never want
+to do that action again.
+
+1541
+01:16:10,860 --> 01:16:12,570
+It gave me a negative advantage.
+
+1542
+01:16:12,570 --> 01:16:15,660
+But you can't do that because
+that might change, radically
+
+1543
+01:16:15,660 --> 01:16:17,530
+change your policy.
+
+1544
+01:16:17,530 --> 01:16:20,520
+And so once you get to 1
+minus epsilon, you cap it,
+
+1545
+01:16:20,520 --> 01:16:24,060
+and you can't further
+shrink it to 0.
+
+1546
+01:16:24,060 --> 01:16:25,560
+Great.
+
+1547
+01:16:25,560 --> 01:16:26,060
+OK.
+
+1548
+01:16:29,720 --> 01:16:31,630
+And another way to see
+this as from the paper
+
+1549
+01:16:31,630 --> 01:16:34,130
+is, you can think about these
+different types of constraints
+
+1550
+01:16:34,130 --> 01:16:35,070
+and different clipping.
+
+1551
+01:16:35,070 --> 01:16:36,445
+And essentially,
+again, it's sort
+
+1552
+01:16:36,445 --> 01:16:38,960
+of making the objective
+pessimistic as you get really
+
+1553
+01:16:38,960 --> 01:16:40,633
+far from theta.
+
+1554
+01:16:40,633 --> 01:16:42,300
+Now, just in the last
+couple of minutes,
+
+1555
+01:16:42,300 --> 01:16:44,610
+I want to make sure
+to show some plots.
+
+1556
+01:16:44,610 --> 01:16:47,360
+So this is just
+the same algorithm,
+
+1557
+01:16:47,360 --> 01:16:49,410
+but we're doing clipping.
+
+1558
+01:16:49,410 --> 01:16:55,250
+I will just note here that
+next week, so next time,
+
+1559
+01:16:55,250 --> 01:16:56,460
+we'll discuss--
+
+1560
+01:16:56,460 --> 01:16:59,670
+next time, we're going to
+discuss the choice of a further.
+
+1561
+01:16:59,670 --> 01:17:01,170
+Just like what we
+saw earlier today,
+
+1562
+01:17:01,170 --> 01:17:03,037
+you can do n step
+estimators, et cetera.
+
+1563
+01:17:03,037 --> 01:17:05,120
+And you can do what's
+called generalized advantage
+
+1564
+01:17:05,120 --> 01:17:06,530
+estimation.
+
+1565
+01:17:06,530 --> 01:17:08,240
+You don't need to
+know that for this.
+
+1566
+01:17:08,240 --> 01:17:09,980
+We won't cover that
+for today, but we'll
+
+1567
+01:17:09,980 --> 01:17:10,980
+cover it more next week.
+
+1568
+01:17:10,980 --> 01:17:13,770
+So just to note, there's
+some additional choices here.
+
+1569
+01:17:13,770 --> 01:17:16,910
+But let's just look at
+what the performance is.
+
+1570
+01:17:16,910 --> 01:17:21,830
+So at this point, TRPO and some
+other algorithms were out there.
+
+1571
+01:17:21,830 --> 01:17:24,690
+They have the PPO
+clipping in purple.
+
+1572
+01:17:24,690 --> 01:17:26,990
+This is a number of
+different MuJoCo domains,
+
+1573
+01:17:26,990 --> 01:17:29,860
+similar to MuJoCo domains
+you're going to be working with.
+
+1574
+01:17:29,860 --> 01:17:32,530
+And what you can see
+here is that, in general,
+
+1575
+01:17:32,530 --> 01:17:35,700
+so TRPO has this
+trust region idea,
+
+1576
+01:17:35,700 --> 01:17:39,730
+and it's similar in some ways
+to what they're doing in PPO.
+
+1577
+01:17:39,730 --> 01:17:41,460
+But trust region
+policy optimization
+
+1578
+01:17:41,460 --> 01:17:43,140
+is quite a bit more complicated.
+
+1579
+01:17:43,140 --> 01:17:45,900
+And what you can see here is
+that this light purple, which
+
+1580
+01:17:45,900 --> 01:17:49,770
+is PPO, this is the
+number of steps,
+
+1581
+01:17:49,770 --> 01:17:53,320
+is generally doing just much
+better than these other ones.
+
+1582
+01:17:53,320 --> 01:17:57,127
+So they're not claiming they're
+going to get to a better optima.
+
+1583
+01:17:57,127 --> 01:17:58,710
+They're just saying,
+we're going to be
+
+1584
+01:17:58,710 --> 01:18:00,970
+able to get there much
+faster with much less data.
+
+1585
+01:18:00,970 --> 01:18:02,850
+And in some of these
+cases, this is really
+
+1586
+01:18:02,850 --> 01:18:05,370
+an enormous
+performance improvement
+
+1587
+01:18:05,370 --> 01:18:07,180
+for the same amount of data.
+
+1588
+01:18:07,180 --> 01:18:12,660
+So this is one of the reasons
+why it became extremely popular,
+
+1589
+01:18:12,660 --> 01:18:15,450
+is it is a pretty simple
+algorithm to implement,
+
+1590
+01:18:15,450 --> 01:18:19,170
+and it has extremely good
+performance in many cases.
+
+1591
+01:18:19,170 --> 01:18:24,000
+Now, so you can go to the
+original paper, proximal policy
+
+1592
+01:18:24,000 --> 01:18:28,110
+optimization algorithms, or
+go to the blog post from 2017.
+
+1593
+01:18:28,110 --> 01:18:30,120
+I do think one thing
+that's good to know,
+
+1594
+01:18:30,120 --> 01:18:33,690
+and really, throughout
+much of our recent history,
+
+1595
+01:18:33,690 --> 01:18:36,227
+is to also understand what are
+the implementation details.
+
+1596
+01:18:36,227 --> 01:18:37,060
+So this is optional.
+
+1597
+01:18:37,060 --> 01:18:38,310
+You don't have to
+read it, but there
+
+1598
+01:18:38,310 --> 01:18:39,900
+was a nice paper
+that followed up
+
+1599
+01:18:39,900 --> 01:18:42,390
+from this work
+because, again, PPO
+
+1600
+01:18:42,390 --> 01:18:46,230
+has been hugely influential
+from some colleagues at MIT that
+
+1601
+01:18:46,230 --> 01:18:49,230
+said, well, really, which of
+these things are most important.
+
+1602
+01:18:49,230 --> 01:18:51,070
+Because in general,
+in these algorithms,
+
+1603
+01:18:51,070 --> 01:18:52,903
+there will be these
+things, but then there's
+
+1604
+01:18:52,903 --> 01:18:55,780
+also some hyperparameters or
+architecture choices, et cetera.
+
+1605
+01:18:55,780 --> 01:18:58,890
+And so knowing how these
+choices are made often
+
+1606
+01:18:58,890 --> 01:19:01,193
+do make a big
+difference in reality.
+
+1607
+01:19:01,193 --> 01:19:02,610
+And so that's
+always good to know.
+
+1608
+01:19:02,610 --> 01:19:04,830
+It's whether or not is it
+an algorithmic improvement,
+
+1609
+01:19:04,830 --> 01:19:06,120
+or are there additional
+things that we're
+
+1610
+01:19:06,120 --> 01:19:07,680
+not treating as part
+of the algorithm
+
+1611
+01:19:07,680 --> 01:19:09,055
+but actually are
+really important
+
+1612
+01:19:09,055 --> 01:19:10,505
+for practical performance.
+
+1613
+01:19:10,505 --> 01:19:11,880
+So you should know
+everything now
+
+1614
+01:19:11,880 --> 01:19:15,285
+that you need to for making
+good progress on Homework 2.
+
+1615
+01:19:15,285 --> 01:19:17,160
+And we'll continue to
+discuss this next week.
+
+1616
+01:19:17,160 --> 01:19:18,410
+Thanks
+

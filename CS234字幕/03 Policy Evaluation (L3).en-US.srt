@@ -1,0 +1,7099 @@
+1
+00:00:05,465 --> 00:00:06,090
+Hey, everybody.
+
+2
+00:00:06,090 --> 00:00:06,800
+And welcome back.
+
+3
+00:00:06,800 --> 00:00:09,140
+We're going to get started with
+a refresh your understanding
+
+4
+00:00:09,140 --> 00:00:09,640
+poll.
+
+5
+00:00:09,640 --> 00:00:13,820
+You can go to Ed and to see
+all of the polls for today.
+
+6
+00:00:13,820 --> 00:00:16,070
+Just remember to log in
+first so that we can log it
+
+7
+00:00:16,070 --> 00:00:17,700
+for participation points.
+
+8
+00:00:17,700 --> 00:00:19,430
+The two questions
+ask you to think
+
+9
+00:00:19,430 --> 00:00:22,400
+about what we talked about last
+time in terms of Markov decision
+
+10
+00:00:22,400 --> 00:00:25,985
+processes and what sort of
+guarantees or type of properties
+
+11
+00:00:25,985 --> 00:00:26,485
+they have.
+
+12
+00:00:46,630 --> 00:00:47,740
+Yeah.
+
+13
+00:00:47,740 --> 00:00:52,780
+Could you read the extend
+model of the tabular MVP again?
+
+14
+00:00:52,780 --> 00:00:53,910
+Yeah, great question.
+
+15
+00:00:53,910 --> 00:00:56,200
+Tabular MVP is where
+we can write down
+
+16
+00:00:56,200 --> 00:00:58,530
+what the value is of
+a state as a table.
+
+17
+00:00:58,530 --> 00:01:00,550
+So like can just have
+one entry for what
+
+18
+00:01:00,550 --> 00:01:03,190
+the value is for each state.
+
+19
+00:01:03,190 --> 00:01:05,440
+This is in contrast to
+neural networks or things
+
+20
+00:01:05,440 --> 00:01:07,732
+like that where you don't
+have one parameter per state.
+
+21
+00:01:43,602 --> 00:01:45,560
+OK, we'll take like
+another one or two minutes.
+
+22
+00:01:45,560 --> 00:01:47,893
+We have a good amount of
+controversy on these questions,
+
+23
+00:01:47,893 --> 00:01:50,990
+so we'll see how this converges.
+
+24
+00:02:24,460 --> 00:02:26,410
+I remember seeing
+this A to the power S
+
+25
+00:02:26,410 --> 00:02:28,520
+number in a previous context.
+
+26
+00:02:28,520 --> 00:02:32,140
+Was it in the context of policy
+iteration, or what was it?
+
+27
+00:02:32,140 --> 00:02:35,500
+Yeah, does someone want to
+remember why is A to the S
+
+28
+00:02:35,500 --> 00:02:36,850
+important?
+
+29
+00:02:36,850 --> 00:02:38,170
+I remember why it is.
+
+30
+00:02:38,170 --> 00:02:40,330
+Yeah, remind me of your name.
+
+31
+00:02:40,330 --> 00:02:43,760
+Is it the number of
+total possible policies?
+
+32
+00:02:43,760 --> 00:02:45,200
+Exactly right.
+
+33
+00:02:45,200 --> 00:02:49,090
+So there's at most A to the
+S potential deterministic
+
+34
+00:02:49,090 --> 00:02:49,590
+policies.
+
+35
+00:03:00,090 --> 00:03:00,790
+All right.
+
+36
+00:03:00,790 --> 00:03:03,360
+So most people selected
+the correct answer
+
+37
+00:03:03,360 --> 00:03:06,120
+for the first one,
+which this is true.
+
+38
+00:03:06,120 --> 00:03:11,550
+So asymptotically, value
+iteration and policy iteration
+
+39
+00:03:11,550 --> 00:03:16,360
+are correct in the tabular
+discrete Markov decision process
+
+40
+00:03:16,360 --> 00:03:16,860
+case.
+
+41
+00:03:16,860 --> 00:03:19,410
+And they will asymptotically
+both converge and compute
+
+42
+00:03:19,410 --> 00:03:20,900
+the right value function.
+
+43
+00:03:20,900 --> 00:03:23,980
+The second one looks like
+it's pretty evenly split,
+
+44
+00:03:23,980 --> 00:03:26,190
+so I'd like you to turn
+to someone near you
+
+45
+00:03:26,190 --> 00:03:29,525
+and argue for what you
+said for the second one.
+
+46
+00:03:47,536 --> 00:03:51,464
+[INDISTINCT SPEECH]
+
+47
+00:04:56,660 --> 00:04:59,635
+All right, so maybe we vote
+if your answer changed.
+
+48
+00:05:17,040 --> 00:05:18,767
+So the answer is true.
+
+49
+00:05:18,767 --> 00:05:20,100
+And about half of you said that.
+
+50
+00:05:20,100 --> 00:05:23,430
+Does someone want to
+tell me why this is true?
+
+51
+00:05:23,430 --> 00:05:24,300
+Yeah.
+
+52
+00:05:24,300 --> 00:05:26,940
+I'm not sure if this
+is correct, but I
+
+53
+00:05:26,940 --> 00:05:31,320
+think that value iteration might
+not be guaranteed to converge.
+
+54
+00:05:31,320 --> 00:05:33,190
+So if it's not
+guaranteed to converge,
+
+55
+00:05:33,190 --> 00:05:34,320
+it could just be unbounded.
+
+56
+00:05:34,320 --> 00:05:35,710
+So that certainly
+would be the case.
+
+57
+00:05:35,710 --> 00:05:37,085
+But fortunately,
+it is guaranteed
+
+58
+00:05:37,085 --> 00:05:39,180
+to converge if gamma
+is less than 1.
+
+59
+00:05:39,180 --> 00:05:44,730
+But you're correct that it
+can require more iterations.
+
+60
+00:05:44,730 --> 00:05:47,660
+And remind me your name.
+
+61
+00:05:47,660 --> 00:05:51,897
+So my thinking was that in
+making policy iteration,
+
+62
+00:05:51,897 --> 00:05:53,480
+we know that in each
+step, we're going
+
+63
+00:05:53,480 --> 00:05:55,250
+to improve to a new policy.
+
+64
+00:05:55,250 --> 00:05:59,100
+But in each value step, you
+might not reach a new policy.
+
+65
+00:05:59,100 --> 00:06:02,870
+You might take multiple
+steps to reach a new policy.
+
+66
+00:06:02,870 --> 00:06:03,630
+That's right.
+
+67
+00:06:03,630 --> 00:06:06,920
+So in policy
+iteration, and I talked
+
+68
+00:06:06,920 --> 00:06:10,400
+to some people about this, too,
+there can only be A to the S.
+
+69
+00:06:10,400 --> 00:06:12,620
+So in policy iteration,
+there is at most A to the S
+
+70
+00:06:12,620 --> 00:06:14,700
+because you only go
+through each policy once.
+
+71
+00:06:14,700 --> 00:06:16,680
+But for value iteration,
+it can be more.
+
+72
+00:06:16,680 --> 00:06:19,700
+And I'll give you an example.
+
+73
+00:06:19,700 --> 00:06:21,325
+So one way I would
+think, in general,
+
+74
+00:06:21,325 --> 00:06:23,700
+if you see this sort of question
+is to think about, well,
+
+75
+00:06:23,700 --> 00:06:25,520
+can I come up with
+a counter example
+
+76
+00:06:25,520 --> 00:06:27,350
+to say where this
+would be different.
+
+77
+00:06:27,350 --> 00:06:30,830
+So consider a really silly
+Markov decision process
+
+78
+00:06:30,830 --> 00:06:32,785
+where there's just one
+state and one action.
+
+79
+00:06:32,785 --> 00:06:34,410
+So if there's one
+state and one action,
+
+80
+00:06:34,410 --> 00:06:36,060
+there is literally one policy.
+
+81
+00:06:36,060 --> 00:06:38,268
+You can only do one thing,
+and there's only one state
+
+82
+00:06:38,268 --> 00:06:38,780
+to do it in.
+
+83
+00:06:38,780 --> 00:06:40,310
+So that means that
+policy iteration
+
+84
+00:06:40,310 --> 00:06:41,840
+is going to take one round.
+
+85
+00:06:41,840 --> 00:06:44,990
+But for what value
+iteration is going to do,
+
+86
+00:06:44,990 --> 00:06:47,900
+is it's going to keep going
+until the value function stops
+
+87
+00:06:47,900 --> 00:06:51,740
+changing or stops changing
+within a very small amount.
+
+88
+00:06:51,740 --> 00:06:53,840
+And so what would happen
+in value iteration,
+
+89
+00:06:53,840 --> 00:06:56,090
+and feel free to go back to
+your notes from last time,
+
+90
+00:06:56,090 --> 00:06:57,410
+is we would start off.
+
+91
+00:06:57,410 --> 00:07:01,520
+And let's say the reward
+is 1, and the gamma is 0.9,
+
+92
+00:07:01,520 --> 00:07:04,980
+and we initialize the
+value function to 0.
+
+93
+00:07:04,980 --> 00:07:06,580
+So then if you use
+a geometric series,
+
+94
+00:07:06,580 --> 00:07:08,080
+and if you haven't
+seen that before,
+
+95
+00:07:08,080 --> 00:07:09,413
+just come chat with me about it.
+
+96
+00:07:09,413 --> 00:07:10,860
+I'm happy to say.
+
+97
+00:07:10,860 --> 00:07:13,950
+The V star of this date
+is 1 over 1 minus gamma,
+
+98
+00:07:13,950 --> 00:07:17,520
+because you get 1 plus
+gamma times 1 plus gamma
+
+99
+00:07:17,520 --> 00:07:20,550
+squared times 1 dot, dot dot.
+
+100
+00:07:20,550 --> 00:07:22,140
+Because you're always
+staying in that
+
+101
+00:07:22,140 --> 00:07:23,973
+state, and you're always
+taking that action.
+
+102
+00:07:23,973 --> 00:07:26,700
+And day in and day out,
+that's what you get forever.
+
+103
+00:07:26,700 --> 00:07:30,210
+So the actual value function
+that you get eventually
+
+104
+00:07:30,210 --> 00:07:34,530
+is 1 over 1 minus
+gamma, or about 10.
+
+105
+00:07:34,530 --> 00:07:38,430
+But after the first iteration,
+value iteration V1 of s
+
+106
+00:07:38,430 --> 00:07:40,770
+is just 1.
+
+107
+00:07:40,770 --> 00:07:44,530
+So that means 1 is not close
+to 10, or not that close to 10.
+
+108
+00:07:44,530 --> 00:07:45,940
+So we haven't converged yet.
+
+109
+00:07:45,940 --> 00:07:48,660
+So we'll have to continue to do
+a bunch of iterations of value
+
+110
+00:07:48,660 --> 00:07:51,780
+iteration, whereas
+at that point,
+
+111
+00:07:51,780 --> 00:07:54,330
+policy iteration would stop
+because it would just evaluate
+
+112
+00:07:54,330 --> 00:07:56,260
+the value of the
+one policy we have,
+
+113
+00:07:56,260 --> 00:07:59,227
+which is to take that one
+action, and you'd be done.
+
+114
+00:07:59,227 --> 00:08:00,810
+And I bring this up
+just to illustrate
+
+115
+00:08:00,810 --> 00:08:02,893
+that, even though both
+of those algorithms
+
+116
+00:08:02,893 --> 00:08:05,310
+are guaranteed to converge to
+the right thing, eventually,
+
+117
+00:08:05,310 --> 00:08:08,620
+they can have quite different
+behavior in the short term.
+
+118
+00:08:08,620 --> 00:08:10,200
+You got a question?
+
+119
+00:08:10,200 --> 00:08:14,850
+I was just going to ask, is it
+only converging in the limit?
+
+120
+00:08:14,850 --> 00:08:16,770
+All of them are only
+converging limit.
+
+121
+00:08:16,770 --> 00:08:20,442
+So all of them are
+converging asymptotically
+
+122
+00:08:20,442 --> 00:08:21,900
+as you do this over
+and over again.
+
+123
+00:08:21,900 --> 00:08:22,483
+Good question.
+
+124
+00:08:25,110 --> 00:08:26,503
+Great well, welcome back.
+
+125
+00:08:26,503 --> 00:08:28,920
+If you just came in, feel free
+to go through the questions
+
+126
+00:08:28,920 --> 00:08:29,500
+later.
+
+127
+00:08:29,500 --> 00:08:30,917
+What we're going
+to be doing today
+
+128
+00:08:30,917 --> 00:08:33,539
+is to continue in this more
+simple setting where we don't
+
+129
+00:08:33,539 --> 00:08:35,520
+do any function approximation.
+
+130
+00:08:35,520 --> 00:08:38,070
+But we are now going
+to think about the fact
+
+131
+00:08:38,070 --> 00:08:39,961
+where we don't have
+models of the world.
+
+132
+00:08:39,961 --> 00:08:41,669
+And what I mean by
+that is that we're not
+
+133
+00:08:41,669 --> 00:08:44,590
+given a dynamics model, and
+we're not given a reward model.
+
+134
+00:08:44,590 --> 00:08:46,950
+Our agent just has to try
+things out in the world
+
+135
+00:08:46,950 --> 00:08:48,480
+to learn how good they are.
+
+136
+00:08:48,480 --> 00:08:52,470
+And we're going to start with
+model free policy evaluation,
+
+137
+00:08:52,470 --> 00:08:55,170
+in the case where we still
+have a small enough number
+
+138
+00:08:55,170 --> 00:08:58,080
+of contexts or states
+that we could write down
+
+139
+00:08:58,080 --> 00:09:00,630
+a value for every single
+one of them separately.
+
+140
+00:09:00,630 --> 00:09:04,320
+So that's why we
+call it tabular.
+
+141
+00:09:04,320 --> 00:09:06,520
+I'll just say one thing
+in terms of logistics.
+
+142
+00:09:06,520 --> 00:09:08,330
+So office hours
+are on the website.
+
+143
+00:09:08,330 --> 00:09:10,280
+We'll try to keep
+that calendar updated.
+
+144
+00:09:10,280 --> 00:09:11,810
+It's just a Google Calendar.
+
+145
+00:09:11,810 --> 00:09:13,076
+It'll include the location.
+
+146
+00:09:13,076 --> 00:09:17,150
+And if you go to Q status for
+the one-on-one office hours,
+
+147
+00:09:17,150 --> 00:09:19,150
+we'll make sure that the
+Zoom is either on that
+
+148
+00:09:19,150 --> 00:09:21,370
+or on the website.
+
+149
+00:09:21,370 --> 00:09:24,370
+I'll have office hours starting
+this week on Thursdays.
+
+150
+00:09:24,370 --> 00:09:26,900
+And mine are for project
+and conceptual questions.
+
+151
+00:09:26,900 --> 00:09:29,830
+So feel free to come ask
+me about anything in class.
+
+152
+00:09:29,830 --> 00:09:32,230
+I won't be going through
+code, but you can go talk
+
+153
+00:09:32,230 --> 00:09:33,675
+to the TAs about that.
+
+154
+00:09:33,675 --> 00:09:35,050
+Or you can come
+in and brainstorm
+
+155
+00:09:35,050 --> 00:09:37,120
+about projects or
+general questions
+
+156
+00:09:37,120 --> 00:09:39,790
+about reinforcement learning.
+
+157
+00:09:39,790 --> 00:09:41,230
+I'm sure some of
+you are starting
+
+158
+00:09:41,230 --> 00:09:42,520
+to think about projects.
+
+159
+00:09:42,520 --> 00:09:44,330
+Just in general, some
+people are asking,
+
+160
+00:09:44,330 --> 00:09:45,970
+so what's kind of in scope.
+
+161
+00:09:45,970 --> 00:09:47,617
+I put something
+on Ed about that.
+
+162
+00:09:47,617 --> 00:09:50,200
+But also, in general, it can be
+a new idea for a reinforcement
+
+163
+00:09:50,200 --> 00:09:52,442
+learning, a new application.
+
+164
+00:09:52,442 --> 00:09:55,150
+It can be something you're doing
+if you're already doing research
+
+165
+00:09:55,150 --> 00:09:56,510
+in reinforcement learning.
+
+166
+00:09:56,510 --> 00:10:00,520
+It can also be replicating
+part of an existing paper.
+
+167
+00:10:00,520 --> 00:10:02,200
+And this is really
+helpful, actually.
+
+168
+00:10:02,200 --> 00:10:03,700
+It's helpful for
+the whole community
+
+169
+00:10:03,700 --> 00:10:06,640
+because there is a
+lot of work going on,
+
+170
+00:10:06,640 --> 00:10:09,910
+and people are making different
+choices about hyperparams,
+
+171
+00:10:09,910 --> 00:10:11,570
+and seeds and things like that.
+
+172
+00:10:11,570 --> 00:10:13,390
+So it really is
+very valuable to see
+
+173
+00:10:13,390 --> 00:10:15,960
+what things we can replicate.
+
+174
+00:10:15,960 --> 00:10:17,710
+Does anybody have any
+questions about that
+
+175
+00:10:17,710 --> 00:10:19,877
+or other logistics of the
+class before we get going?
+
+176
+00:10:22,550 --> 00:10:23,050
+All right.
+
+177
+00:10:23,050 --> 00:10:26,250
+So let's get into
+policy evaluation.
+
+178
+00:10:26,250 --> 00:10:28,650
+So as I said, what we're
+going to be doing today
+
+179
+00:10:28,650 --> 00:10:31,990
+is to think about how do we
+learn through direct experience
+
+180
+00:10:31,990 --> 00:10:33,360
+how good decisions are.
+
+181
+00:10:33,360 --> 00:10:35,820
+And we're going to assume
+that we have a fixed policy.
+
+182
+00:10:35,820 --> 00:10:37,470
+So again, like our
+boss says, how good
+
+183
+00:10:37,470 --> 00:10:40,090
+is this way of
+advertising to customers.
+
+184
+00:10:40,090 --> 00:10:41,730
+Or maybe you're
+in a setting where
+
+185
+00:10:41,730 --> 00:10:44,190
+you're trying to see how
+good is the patient outcomes
+
+186
+00:10:44,190 --> 00:10:46,350
+from the current protocol.
+
+187
+00:10:46,350 --> 00:10:48,750
+And the idea is that we're
+only going to be using data
+
+188
+00:10:48,750 --> 00:10:50,912
+from the environment.
+
+189
+00:10:50,912 --> 00:10:52,590
+And today, this
+experience is going
+
+190
+00:10:52,590 --> 00:10:54,250
+to come from
+executing that policy.
+
+191
+00:10:54,250 --> 00:10:58,040
+Let me just move this up so
+you can see a bit better.
+
+192
+00:10:58,040 --> 00:10:58,567
+OK.
+
+193
+00:10:58,567 --> 00:11:00,900
+Today, we're going to assume
+that when we get this data,
+
+194
+00:11:00,900 --> 00:11:04,440
+it's from directly executing
+a particular policy.
+
+195
+00:11:04,440 --> 00:11:09,200
+Later, we'll talk about
+other relaxations to this.
+
+196
+00:11:09,200 --> 00:11:11,150
+And so I'm going to
+try to motivate today
+
+197
+00:11:11,150 --> 00:11:15,140
+why this is a useful thing to
+do and what sort of properties
+
+198
+00:11:15,140 --> 00:11:18,080
+we would want to try to
+compare different algorithms.
+
+199
+00:11:18,080 --> 00:11:20,060
+So it will turn out
+that this type of thing
+
+200
+00:11:20,060 --> 00:11:21,420
+comes up all the time.
+
+201
+00:11:21,420 --> 00:11:23,962
+It comes up when we actually
+want to make decisions and learn
+
+202
+00:11:23,962 --> 00:11:25,010
+better policies.
+
+203
+00:11:25,010 --> 00:11:28,100
+And it's going to be an
+important part of much more
+
+204
+00:11:28,100 --> 00:11:31,250
+complicated algorithms,
+like deep Q-learning,
+
+205
+00:11:31,250 --> 00:11:33,050
+and policy gradient
+and other things,
+
+206
+00:11:33,050 --> 00:11:36,080
+where we want to be able to see
+how good our current things so
+
+207
+00:11:36,080 --> 00:11:39,295
+that then we can take gradient
+steps or improve our policy.
+
+208
+00:11:42,590 --> 00:11:44,895
+So this is what we're going
+to try to cover today.
+
+209
+00:11:44,895 --> 00:11:46,520
+We're going to cover
+Monte Carlo policy
+
+210
+00:11:46,520 --> 00:11:49,760
+evaluation, temporal difference
+learning, certainty equivalence,
+
+211
+00:11:49,760 --> 00:11:51,650
+and batch policy evaluation.
+
+212
+00:11:51,650 --> 00:11:53,720
+And maybe raise
+your hand if you've
+
+213
+00:11:53,720 --> 00:11:57,320
+seen temporal difference
+learning before.
+
+214
+00:11:57,320 --> 00:11:59,990
+OK, raise your hand if
+you've seen Q-learning.
+
+215
+00:11:59,990 --> 00:12:01,080
+OK, great.
+
+216
+00:12:01,080 --> 00:12:03,017
+Q-learning is the control
+version, basically,
+
+217
+00:12:03,017 --> 00:12:04,350
+of temporal difference learning.
+
+218
+00:12:04,350 --> 00:12:08,050
+So you'll see a lot
+of similarities there.
+
+219
+00:12:08,050 --> 00:12:08,550
+All right.
+
+220
+00:12:08,550 --> 00:12:10,175
+Before we dive into
+this, I just wanted
+
+221
+00:12:10,175 --> 00:12:12,290
+to recall a couple of
+definitions we'll have.
+
+222
+00:12:12,290 --> 00:12:14,270
+We're going to use G
+for the return, which
+
+223
+00:12:14,270 --> 00:12:16,910
+means that, from this
+particular state, what
+
+224
+00:12:16,910 --> 00:12:21,140
+is the discounted sum of rewards
+we get for a particular episode.
+
+225
+00:12:21,140 --> 00:12:24,480
+The state value function
+is saying, on average,
+
+226
+00:12:24,480 --> 00:12:26,160
+what is that reward we get.
+
+227
+00:12:26,160 --> 00:12:29,160
+And the state action value
+says, if I start in this state,
+
+228
+00:12:29,160 --> 00:12:32,100
+take this action and then
+follow this policy, what
+
+229
+00:12:32,100 --> 00:12:33,850
+is the expected
+discounted sum of rewards.
+
+230
+00:12:36,740 --> 00:12:39,230
+So we saw last
+week that we might
+
+231
+00:12:39,230 --> 00:12:42,500
+want to do dynamic programming
+for policy evaluation
+
+232
+00:12:42,500 --> 00:12:44,770
+when we do have
+access to the models.
+
+233
+00:12:44,770 --> 00:12:47,690
+So again, what I mean by that
+is that where someone gives you
+
+234
+00:12:47,690 --> 00:12:51,980
+a function for the reward and a
+function for the dynamics model.
+
+235
+00:12:51,980 --> 00:12:54,260
+And so we saw we could
+do this sort of Bellman
+
+236
+00:12:54,260 --> 00:12:56,488
+like backup for a
+particular policy.
+
+237
+00:12:56,488 --> 00:12:58,280
+So it's different than
+the Bellman equation
+
+238
+00:12:58,280 --> 00:12:59,730
+because there's no max.
+
+239
+00:12:59,730 --> 00:13:02,070
+I'm not trying to take a
+max over different actions.
+
+240
+00:13:02,070 --> 00:13:04,190
+We're just taking
+whatever action
+
+241
+00:13:04,190 --> 00:13:06,470
+is specified by the policy.
+
+242
+00:13:06,470 --> 00:13:08,900
+And in this equation
+here, this is
+
+243
+00:13:08,900 --> 00:13:10,450
+for like a deterministic policy.
+
+244
+00:13:13,120 --> 00:13:15,460
+Otherwise, we'd need
+some additional averaging
+
+245
+00:13:15,460 --> 00:13:18,970
+over all the actions that
+could be taken by that policy.
+
+246
+00:13:18,970 --> 00:13:22,930
+And just to remind ourselves
+here, before we converge,
+
+247
+00:13:22,930 --> 00:13:26,920
+this policy, this V
+pi k, is an estimate
+
+248
+00:13:26,920 --> 00:13:28,980
+of the value of the policy.
+
+249
+00:13:28,980 --> 00:13:30,433
+It's not the actual value yet.
+
+250
+00:13:30,433 --> 00:13:32,850
+It's just an estimate, and
+it's, hopefully, improving over
+
+251
+00:13:32,850 --> 00:13:34,286
+as we do more iterations.
+
+252
+00:13:37,410 --> 00:13:40,650
+And another good thing
+to remind ourselves of
+
+253
+00:13:40,650 --> 00:13:45,240
+is that this is here, this
+sort of expected discounted sum
+
+254
+00:13:45,240 --> 00:13:48,210
+of rewards, what we're
+doing in this equation
+
+255
+00:13:48,210 --> 00:13:54,120
+is we are plugging in this term
+as an estimate of the expected
+
+256
+00:13:54,120 --> 00:13:57,725
+discounted rewards
+for the future.
+
+257
+00:13:57,725 --> 00:14:00,350
+So we're saying, we've got this
+estimate of the value function.
+
+258
+00:14:00,350 --> 00:14:02,450
+We're going to plug-in
+and say, my reward
+
+259
+00:14:02,450 --> 00:14:04,280
+is my immediate reward
+plus my discounted
+
+260
+00:14:04,280 --> 00:14:05,640
+sum of future rewards.
+
+261
+00:14:05,640 --> 00:14:07,700
+And this is what I'm
+using for my discounted
+
+262
+00:14:07,700 --> 00:14:09,680
+sum of future rewards.
+
+263
+00:14:09,680 --> 00:14:12,380
+And so this is known as
+bootstrapping because we're
+
+264
+00:14:12,380 --> 00:14:14,420
+plugging in one
+estimate in order
+
+265
+00:14:14,420 --> 00:14:17,130
+to help us do another estimate.
+
+266
+00:14:17,130 --> 00:14:20,200
+And we'll see a picture
+of this graphically later.
+
+267
+00:14:20,200 --> 00:14:20,700
+All right.
+
+268
+00:14:20,700 --> 00:14:23,790
+Monte Carlo policy evaluation
+is a really simple idea,
+
+269
+00:14:23,790 --> 00:14:28,490
+but it's very useful
+and it is commonly done.
+
+270
+00:14:28,490 --> 00:14:31,940
+So essentially, the idea with
+Monte Carlo policy evaluation
+
+271
+00:14:31,940 --> 00:14:35,390
+is, we are just going
+to simulate or act
+
+272
+00:14:35,390 --> 00:14:36,210
+in the real world.
+
+273
+00:14:36,210 --> 00:14:37,585
+So this is just
+saying you've got
+
+274
+00:14:37,585 --> 00:14:40,800
+a policy, which means what
+action to take in every state.
+
+275
+00:14:40,800 --> 00:14:43,520
+Today, we'll mostly focus on
+deterministic policies just
+
+276
+00:14:43,520 --> 00:14:45,650
+to make it easier.
+
+277
+00:14:45,650 --> 00:14:53,450
+So I'll just say that,
+for most of today,
+
+278
+00:14:53,450 --> 00:14:57,766
+assume pi is deterministic.
+
+279
+00:15:00,840 --> 00:15:02,948
+But all of these ideas
+can easily be extended.
+
+280
+00:15:02,948 --> 00:15:04,740
+Just easy to write that
+down without having
+
+281
+00:15:04,740 --> 00:15:07,410
+to do an expectation
+over actions everywhere.
+
+282
+00:15:07,410 --> 00:15:09,580
+OK, so what's the
+idea in this case?
+
+283
+00:15:09,580 --> 00:15:15,050
+Well, the value function is just
+an average over the returns.
+
+284
+00:15:15,050 --> 00:15:17,870
+It's an expectation over the
+trajectories or the returns
+
+285
+00:15:17,870 --> 00:15:21,170
+you could get by
+following the policy.
+
+286
+00:15:21,170 --> 00:15:25,640
+And therefore, the value is
+just the mean of returns.
+
+287
+00:15:25,640 --> 00:15:27,260
+And we know how to
+approximate means.
+
+288
+00:15:27,260 --> 00:15:31,820
+We just do things a bunch
+of times and we average.
+
+289
+00:15:31,820 --> 00:15:34,110
+And so as an example of
+this, it might be something
+
+290
+00:15:34,110 --> 00:15:36,440
+that someone says,
+OK, I want to know
+
+291
+00:15:36,440 --> 00:15:41,030
+if we, say, give a particular
+set of patient treatments,
+
+292
+00:15:41,030 --> 00:15:43,680
+and maybe those treatments
+take a year, for example.
+
+293
+00:15:43,680 --> 00:15:46,650
+And someone wants to on
+average, how good is that.
+
+294
+00:15:46,650 --> 00:15:49,260
+Well, what you could do is
+you could have 100 patients.
+
+295
+00:15:49,260 --> 00:15:52,130
+I'll go through that
+particular protocol for a year
+
+296
+00:15:52,130 --> 00:15:54,470
+and then average their outcomes.
+
+297
+00:15:54,470 --> 00:15:58,190
+And that would be an example of
+Monte Carlo policy evaluation,
+
+298
+00:15:58,190 --> 00:16:00,500
+because you just
+execute the policy
+
+299
+00:16:00,500 --> 00:16:04,633
+for many different episodes,
+and then you average.
+
+300
+00:16:04,633 --> 00:16:06,050
+And one thing just
+to note here is
+
+301
+00:16:06,050 --> 00:16:09,230
+that you can have cases here
+where not all the trajectories
+
+302
+00:16:09,230 --> 00:16:11,260
+are the same length.
+
+303
+00:16:11,260 --> 00:16:13,660
+So imagine, in the
+patient case I just gave,
+
+304
+00:16:13,660 --> 00:16:15,340
+you might have that
+some people drop out
+
+305
+00:16:15,340 --> 00:16:16,690
+of a trial during the year.
+
+306
+00:16:16,690 --> 00:16:19,790
+Or maybe they finish their
+treatment successfully,
+
+307
+00:16:19,790 --> 00:16:21,760
+and so then they're also done.
+
+308
+00:16:21,760 --> 00:16:24,290
+So all the trajectories
+may not be the same length,
+
+309
+00:16:24,290 --> 00:16:26,950
+but essentially, you can
+just think of it as you just
+
+310
+00:16:26,950 --> 00:16:28,840
+have many, many trajectories.
+
+311
+00:16:28,840 --> 00:16:31,790
+Maybe this one
+has a G equals 10.
+
+312
+00:16:31,790 --> 00:16:33,410
+This had a G equals 5.
+
+313
+00:16:33,410 --> 00:16:35,020
+This has a G equals 10.
+
+314
+00:16:35,020 --> 00:16:36,970
+And you just average
+over all of them.
+
+315
+00:16:36,970 --> 00:16:39,645
+And that is your value function.
+
+316
+00:16:43,106 --> 00:16:45,850
+Now, one of the benefits of
+this is that, when we do this,
+
+317
+00:16:45,850 --> 00:16:47,280
+we're not actually--
+
+318
+00:16:47,280 --> 00:16:48,280
+benefits or drawbacks.
+
+319
+00:16:48,280 --> 00:16:49,510
+And we'll talk about this.
+
+320
+00:16:49,510 --> 00:16:52,920
+This is making no assumption
+that the system is a Markov
+
+321
+00:16:52,920 --> 00:16:54,130
+decision process.
+
+322
+00:16:54,130 --> 00:16:55,980
+It's just averaging.
+
+323
+00:16:55,980 --> 00:17:00,660
+So your system
+might not be Markov.
+
+324
+00:17:00,660 --> 00:17:02,970
+What I mean by that is
+that you, in general,
+
+325
+00:17:02,970 --> 00:17:06,380
+will have a finite set of
+features to describe the state.
+
+326
+00:17:06,380 --> 00:17:08,130
+So if we think about
+that patient example
+
+327
+00:17:08,130 --> 00:17:11,339
+I just had, maybe you have
+different vitals of the patient.
+
+328
+00:17:11,339 --> 00:17:13,680
+Maybe you have static
+demographic variables.
+
+329
+00:17:13,680 --> 00:17:16,323
+But we do not have all the
+features that are probably
+
+330
+00:17:16,323 --> 00:17:18,240
+going to describe how
+someone's going to react
+
+331
+00:17:18,240 --> 00:17:20,040
+to a set of treatments.
+
+332
+00:17:20,040 --> 00:17:22,589
+And so because of that,
+you may or may not
+
+333
+00:17:22,589 --> 00:17:24,960
+think that, in the features
+you have access to,
+
+334
+00:17:24,960 --> 00:17:27,089
+the system is Markov.
+
+335
+00:17:27,089 --> 00:17:29,260
+But this doesn't require
+the state to be Markov.
+
+336
+00:17:29,260 --> 00:17:30,610
+It's just averaging.
+
+337
+00:17:30,610 --> 00:17:34,410
+You just roll out your policy
+many times and you average.
+
+338
+00:17:34,410 --> 00:17:35,850
+Now, a really
+important thing here
+
+339
+00:17:35,850 --> 00:17:39,790
+is that it can only be
+applied to episodic MDPs.
+
+340
+00:17:39,790 --> 00:17:41,150
+So what do I mean by that?
+
+341
+00:17:41,150 --> 00:17:44,140
+I mean your episode has
+to end in order for you
+
+342
+00:17:44,140 --> 00:17:48,060
+to see what the
+total return was.
+
+343
+00:17:48,060 --> 00:17:51,240
+So if you have horizon
+lengths or episodes that
+
+344
+00:17:51,240 --> 00:17:52,830
+last for a year, that's OK.
+
+345
+00:17:52,830 --> 00:17:55,112
+It's a little bit slow,
+but you could do that.
+
+346
+00:17:55,112 --> 00:17:56,820
+But if you want to
+just think of how good
+
+347
+00:17:56,820 --> 00:18:00,150
+a policy is, if you just are
+going to act forever and never
+
+348
+00:18:00,150 --> 00:18:03,560
+stop, this wouldn't
+work, or not without
+
+349
+00:18:03,560 --> 00:18:07,093
+some additional approximations.
+
+350
+00:18:07,093 --> 00:18:08,760
+Somebody have any
+questions about either
+
+351
+00:18:08,760 --> 00:18:10,927
+of these two things, about
+it not assuming the state
+
+352
+00:18:10,927 --> 00:18:11,740
+is Markov?
+
+353
+00:18:11,740 --> 00:18:12,700
+Yeah.
+
+354
+00:18:12,700 --> 00:18:14,950
+You were talking about
+medical treatments.
+
+355
+00:18:14,950 --> 00:18:19,320
+So does this only work
+if the treatment only
+
+356
+00:18:19,320 --> 00:18:22,480
+lasts the same amount of
+time for every patient,
+
+357
+00:18:22,480 --> 00:18:24,030
+like six months?
+
+358
+00:18:24,030 --> 00:18:26,320
+Because they have
+different lengths.
+
+359
+00:18:26,320 --> 00:18:28,230
+How can that be episodic?
+
+360
+00:18:28,230 --> 00:18:28,900
+Great question.
+
+361
+00:18:28,900 --> 00:18:30,852
+Yeah, so what [INAUDIBLE]
+is like, well,
+
+362
+00:18:30,852 --> 00:18:33,310
+could it be episodic if the
+episodes are different lengths?
+
+363
+00:18:33,310 --> 00:18:33,990
+It could be.
+
+364
+00:18:33,990 --> 00:18:36,430
+So it could be that you
+have a fixed policy.
+
+365
+00:18:36,430 --> 00:18:38,970
+And maybe that policy says,
+if someone doesn't respond
+
+366
+00:18:38,970 --> 00:18:41,280
+to this type of treatment,
+we do this additional type
+
+367
+00:18:41,280 --> 00:18:41,830
+of treatment.
+
+368
+00:18:41,830 --> 00:18:43,680
+In a clinic, that's very common.
+
+369
+00:18:43,680 --> 00:18:47,165
+As long as the episode
+is guaranteed to end,
+
+370
+00:18:47,165 --> 00:18:49,770
+you know the treatment could
+only last, say for a year total,
+
+371
+00:18:49,770 --> 00:18:51,990
+you can still average
+over all those outcomes.
+
+372
+00:18:51,990 --> 00:18:55,980
+You just sum over the return
+for those different ones.
+
+373
+00:18:55,980 --> 00:18:57,060
+Yeah.
+
+374
+00:18:57,060 --> 00:19:00,750
+For each of these
+trajectories, are we
+
+375
+00:19:00,750 --> 00:19:03,540
+supposed to begin with
+this different state?
+
+376
+00:19:03,540 --> 00:19:05,880
+Or we can actually start
+with the same state?
+
+377
+00:19:05,880 --> 00:19:06,710
+Great question.
+
+378
+00:19:06,710 --> 00:19:09,740
+So if we want to get a value
+function for all states,
+
+379
+00:19:09,740 --> 00:19:12,250
+we need to see all the states
+inside of these trajectories.
+
+380
+00:19:12,250 --> 00:19:14,542
+And we'll talk about how we
+estimate these in a second.
+
+381
+00:19:14,542 --> 00:19:17,170
+So I think this
+will be answered.
+
+382
+00:19:17,170 --> 00:19:19,940
+So for example, how
+might we compute this?
+
+383
+00:19:19,940 --> 00:19:23,590
+So we would like to get the
+value for all the states
+
+384
+00:19:23,590 --> 00:19:25,900
+that are reachable
+inside of your policy.
+
+385
+00:19:25,900 --> 00:19:28,630
+So what you could do
+is, we can initialize
+
+386
+00:19:28,630 --> 00:19:29,750
+two different variables.
+
+387
+00:19:29,750 --> 00:19:33,280
+One, N of s is just going to be
+the counts, the number of times
+
+388
+00:19:33,280 --> 00:19:36,550
+that we've updated our
+estimate for state s.
+
+389
+00:19:36,550 --> 00:19:40,450
+G of s here is going to start
+with 0, which we've never seen
+
+390
+00:19:40,450 --> 00:19:42,760
+any returns from this state.
+
+391
+00:19:42,760 --> 00:19:46,730
+So what every visit Monte Carlo
+does is it samples an episode.
+
+392
+00:19:46,730 --> 00:19:50,740
+So this goes up to
+some time step T, TI.
+
+393
+00:19:50,740 --> 00:19:52,360
+And this has to
+be finite, but it
+
+394
+00:19:52,360 --> 00:19:55,850
+could be different on
+different episodes.
+
+395
+00:19:55,850 --> 00:19:58,060
+And then we compute
+the discounted sum
+
+396
+00:19:58,060 --> 00:20:00,680
+of rewards for that episode.
+
+397
+00:20:00,680 --> 00:20:05,710
+OK, so starting at time
+step T, how much reward
+
+398
+00:20:05,710 --> 00:20:08,130
+do we get till the
+end of the episode?
+
+399
+00:20:08,130 --> 00:20:10,720
+And then for every time
+step until the end,
+
+400
+00:20:10,720 --> 00:20:14,050
+we see, is this is the first
+time that state's been visited.
+
+401
+00:20:14,050 --> 00:20:16,200
+Then we update the
+total number of times
+
+402
+00:20:16,200 --> 00:20:20,310
+we visited this state for the
+first time per in each episode.
+
+403
+00:20:20,310 --> 00:20:22,990
+We increment the total
+return and we average.
+
+404
+00:20:25,710 --> 00:20:30,120
+So it steps along, and it just
+says, OK, maybe the first time
+
+405
+00:20:30,120 --> 00:20:32,400
+I reached-- if you think
+of the Mars Rover example,
+
+406
+00:20:32,400 --> 00:20:33,483
+I have it in the next one.
+
+407
+00:20:33,483 --> 00:20:35,490
+No, I think I put it--
+so for a lot of today
+
+408
+00:20:35,490 --> 00:20:37,200
+I've moved a lot of
+the worked examples
+
+409
+00:20:37,200 --> 00:20:38,470
+till the end of the slides.
+
+410
+00:20:38,470 --> 00:20:41,940
+But if you want to go through
+them later, I encourage you to.
+
+411
+00:20:41,940 --> 00:20:44,140
+So for example, in the
+case of the Mars Rover,
+
+412
+00:20:44,140 --> 00:20:46,590
+you might imagine you
+start in state S3.
+
+413
+00:20:46,590 --> 00:20:50,310
+And then on that particular
+one, you get a reward of 1
+
+414
+00:20:50,310 --> 00:20:51,580
+for that episode.
+
+415
+00:20:51,580 --> 00:20:55,650
+And so then you would average
+in 1, starting in that state S3
+
+416
+00:20:55,650 --> 00:20:56,345
+till the end.
+
+417
+00:21:00,360 --> 00:21:03,160
+So this is first visit
+Monte Carlo evaluation,
+
+418
+00:21:03,160 --> 00:21:05,220
+which means you only
+update a state at most
+
+419
+00:21:05,220 --> 00:21:07,130
+once in each episode.
+
+420
+00:21:07,130 --> 00:21:12,840
+So if you had something like
+this, S1 went to S2, went to S3,
+
+421
+00:21:12,840 --> 00:21:15,940
+went to S2, went to S3.
+
+422
+00:21:15,940 --> 00:21:21,870
+So in this case, dot, dot,
+dot, you would update S1 once
+
+423
+00:21:21,870 --> 00:21:24,660
+in this trajectory, and
+you would update S2 once,
+
+424
+00:21:24,660 --> 00:21:28,260
+and S3 once, even though you,
+in fact, visit those states
+
+425
+00:21:28,260 --> 00:21:29,140
+multiple times.
+
+426
+00:21:29,140 --> 00:21:32,240
+You only update them for
+the first time you visit.
+
+427
+00:21:32,240 --> 00:21:33,330
+Yeah.
+
+428
+00:21:33,330 --> 00:21:37,380
+So this have the problem
+where the state is really
+
+429
+00:21:37,380 --> 00:21:41,490
+rare or uncommon, then we
+get a really bad [INAUDIBLE]
+
+430
+00:21:41,490 --> 00:21:44,010
+or we just never
+visit it at all?
+
+431
+00:21:44,010 --> 00:21:47,110
+So if you don't ever visit
+a state under the policy,
+
+432
+00:21:47,110 --> 00:21:49,360
+that's OK, because then you
+don't have a value for it.
+
+433
+00:21:49,360 --> 00:21:51,402
+But then it's kind of
+undefined because you never
+
+434
+00:21:51,402 --> 00:21:53,850
+would reach it.
+
+435
+00:21:53,850 --> 00:21:55,750
+In this case, as
+[INAUDIBLE] says,
+
+436
+00:21:55,750 --> 00:21:58,330
+if there's a state that's
+really rare for you
+
+437
+00:21:58,330 --> 00:22:00,340
+to reach inside
+of your policy, it
+
+438
+00:22:00,340 --> 00:22:02,260
+might take a lot of
+trajectories in order
+
+439
+00:22:02,260 --> 00:22:04,090
+to get a good estimate of it.
+
+440
+00:22:04,090 --> 00:22:07,970
+So maybe there's some rare side
+effect of a treatment plan,
+
+441
+00:22:07,970 --> 00:22:11,288
+and it's going to take a lot of
+trajectories to observe that.
+
+442
+00:22:11,288 --> 00:22:13,330
+And that was one of the
+challenges with the COVID
+
+443
+00:22:13,330 --> 00:22:16,030
+vaccine, is that, of course, it
+was a finite number of people.
+
+444
+00:22:16,030 --> 00:22:18,350
+It was a pretty large
+number, but pretty finite.
+
+445
+00:22:18,350 --> 00:22:20,110
+And some side
+effects don't show up
+
+446
+00:22:20,110 --> 00:22:22,478
+until you get many, many more.
+
+447
+00:22:22,478 --> 00:22:24,020
+It's true, generally,
+for treatments,
+
+448
+00:22:24,020 --> 00:22:25,600
+even if on average
+they're totally fine.
+
+449
+00:22:25,600 --> 00:22:27,642
+But you won't see some of
+those rare side effects
+
+450
+00:22:27,642 --> 00:22:30,130
+until you get an enormous
+number of trajectories.
+
+451
+00:22:30,130 --> 00:22:32,440
+Now, COVID vaccine
+certainly had--
+
+452
+00:22:32,440 --> 00:22:35,480
+the benefits there way
+outweigh side effects.
+
+453
+00:22:35,480 --> 00:22:37,510
+But my point is
+just to highlight
+
+454
+00:22:37,510 --> 00:22:40,100
+that, depending on how
+frequently you see the states,
+
+455
+00:22:40,100 --> 00:22:42,850
+it will take you more or less
+a number of total episodes
+
+456
+00:22:42,850 --> 00:22:44,240
+in order to observe.
+
+457
+00:22:44,240 --> 00:22:44,840
+Yeah.
+
+458
+00:22:44,840 --> 00:22:48,880
+Is it fine if it doesn't matter
+that I saw S2 again or S3 again
+
+459
+00:22:48,880 --> 00:22:49,990
+in this trajectory?
+
+460
+00:22:49,990 --> 00:22:52,190
+For this algorithm, no.
+
+461
+00:22:52,190 --> 00:22:53,860
+It probably affects
+the reward still.
+
+462
+00:22:53,860 --> 00:22:55,540
+It's just that you
+don't use that data.
+
+463
+00:22:55,540 --> 00:22:58,480
+So an alternative is
+called every visit, where
+
+464
+00:22:58,480 --> 00:23:01,230
+every time you see the state in
+that trajectory, you update it.
+
+465
+00:23:04,302 --> 00:23:06,010
+And as you might
+imagine there, let's say
+
+466
+00:23:06,010 --> 00:23:08,200
+you see it's a really
+long trajectory,
+
+467
+00:23:08,200 --> 00:23:09,835
+and you see S too many times.
+
+468
+00:23:09,835 --> 00:23:11,460
+Then you would update
+for all of those.
+
+469
+00:23:14,326 --> 00:23:17,330
+So I'm just going to show you
+three common different ones.
+
+470
+00:23:17,330 --> 00:23:20,620
+So this is a worked example
+you can go through later
+
+471
+00:23:20,620 --> 00:23:24,290
+if you want, which is, if you
+imagine this is the Mars Rover,
+
+472
+00:23:24,290 --> 00:23:25,970
+the rewards are on either side.
+
+473
+00:23:25,970 --> 00:23:27,490
+This is the
+particular trajectory.
+
+474
+00:23:27,490 --> 00:23:30,310
+You can compute the first visit
+and the every visit Monte Carlo
+
+475
+00:23:30,310 --> 00:23:32,620
+estimates.
+
+476
+00:23:32,620 --> 00:23:35,310
+So both of those are totally
+reasonable things to do.
+
+477
+00:23:35,310 --> 00:23:37,750
+Perhaps more common is what's
+known as incremental Monte
+
+478
+00:23:37,750 --> 00:23:39,280
+Carlo.
+
+479
+00:23:39,280 --> 00:23:41,630
+And this does kind of what
+you would expect it to do,
+
+480
+00:23:41,630 --> 00:23:44,260
+which is you maintain a
+running estimate for what
+
+481
+00:23:44,260 --> 00:23:47,210
+is the value under a policy
+for a particular state,
+
+482
+00:23:47,210 --> 00:23:51,310
+and you smoothly update
+that as you get more data.
+
+483
+00:23:51,310 --> 00:23:53,530
+So what we would
+do in this case is
+
+484
+00:23:53,530 --> 00:23:57,220
+you keep track of the number of
+times you visited that state,
+
+485
+00:23:57,220 --> 00:24:00,370
+and then you weigh
+your old estimate
+
+486
+00:24:00,370 --> 00:24:03,100
+by the number of times you've
+visit the state minus 1 divided
+
+487
+00:24:03,100 --> 00:24:07,720
+by N s, plus your new return you
+just observed divided by N s.
+
+488
+00:24:07,720 --> 00:24:09,790
+So that's just sort
+of your way you're
+
+489
+00:24:09,790 --> 00:24:13,570
+kind of constantly updating your
+value function for this state
+
+490
+00:24:13,570 --> 00:24:16,250
+as you get more data.
+
+491
+00:24:16,250 --> 00:24:18,713
+And for those of you who have
+done machine learning, which
+
+492
+00:24:18,713 --> 00:24:21,130
+is probably most of you, this
+should look pretty familiar.
+
+493
+00:24:21,130 --> 00:24:22,672
+This is kind of like
+a learning rate.
+
+494
+00:24:25,320 --> 00:24:29,960
+This is your updated value,
+and this is your old value.
+
+495
+00:24:29,960 --> 00:24:32,490
+And in fact, that's what
+we're going to see here.
+
+496
+00:24:32,490 --> 00:24:33,810
+OK?
+
+497
+00:24:33,810 --> 00:24:35,520
+So you can think
+of this in general.
+
+498
+00:24:35,520 --> 00:24:39,470
+It doesn't have to be 1 over N.
+It can just be any alpha here.
+
+499
+00:24:39,470 --> 00:24:45,670
+So any sort of alpha here
+is just a learning rate.
+
+500
+00:24:45,670 --> 00:24:48,010
+And we're just smoothly
+updating our estimate
+
+501
+00:24:48,010 --> 00:24:50,760
+of what is the value function
+for a particular state.
+
+502
+00:24:54,600 --> 00:24:57,160
+And we'll see lots, lots and
+lots of algorithms like this,
+
+503
+00:24:57,160 --> 00:25:01,240
+similar to probably what
+you saw in machine learning.
+
+504
+00:25:01,240 --> 00:25:04,280
+The key thing here is the
+estimates that we're using,
+
+505
+00:25:04,280 --> 00:25:08,380
+which we also might use
+the reward targets often.
+
+506
+00:25:08,380 --> 00:25:13,440
+We have this estimate here, and
+then we have our old estimate.
+
+507
+00:25:13,440 --> 00:25:16,310
+So this is one sample
+of what is the return,
+
+508
+00:25:16,310 --> 00:25:18,660
+starting in this state till
+the end of the episode.
+
+509
+00:25:22,007 --> 00:25:24,340
+So I think it's helpful to
+think a little bit about what
+
+510
+00:25:24,340 --> 00:25:25,790
+this looks like pictorially.
+
+511
+00:25:25,790 --> 00:25:27,670
+And this also relates a lot to--
+
+512
+00:25:27,670 --> 00:25:29,955
+we'll see this when we talk
+about things like AlphaGo.
+
+513
+00:25:32,600 --> 00:25:33,890
+So I think it's helpful today.
+
+514
+00:25:33,890 --> 00:25:35,600
+And it'll look somewhat
+familiar to you
+
+515
+00:25:35,600 --> 00:25:38,540
+if you've seen things like
+minimax trees or expectimax
+
+516
+00:25:38,540 --> 00:25:39,380
+trees.
+
+517
+00:25:39,380 --> 00:25:43,161
+Who here has seen
+expectimax trees before?
+
+518
+00:25:43,161 --> 00:25:44,407
+OK, so maybe one person.
+
+519
+00:25:44,407 --> 00:25:45,240
+So most people, not.
+
+520
+00:25:45,240 --> 00:25:48,750
+So this might be a
+useful representation.
+
+521
+00:25:48,750 --> 00:25:50,660
+So I think one way to
+think about this is,
+
+522
+00:25:50,660 --> 00:25:52,400
+what we're trying to
+do is we're trying
+
+523
+00:25:52,400 --> 00:25:55,790
+to think of what the value is
+starting in a certain state.
+
+524
+00:25:55,790 --> 00:25:59,000
+And we know what
+the action is we're
+
+525
+00:25:59,000 --> 00:26:00,930
+going to take because
+we've got to fix policy.
+
+526
+00:26:00,930 --> 00:26:02,690
+So that says we start
+in this state s.
+
+527
+00:26:02,690 --> 00:26:04,480
+We take this action a.
+
+528
+00:26:04,480 --> 00:26:06,540
+This is prescribed
+by our policy,
+
+529
+00:26:06,540 --> 00:26:11,750
+so this is pi of s
+is going to equal.
+
+530
+00:26:11,750 --> 00:26:14,060
+And then after we do that,
+because the world might
+
+531
+00:26:14,060 --> 00:26:16,640
+be stochastic, we're going to
+have a bunch of next states
+
+532
+00:26:16,640 --> 00:26:18,110
+we could reach.
+
+533
+00:26:18,110 --> 00:26:23,810
+So we have probability of
+s prime, given s and a.
+
+534
+00:26:23,810 --> 00:26:27,560
+And what we're trying to do
+when we do policy evaluation is
+
+535
+00:26:27,560 --> 00:26:29,630
+we're trying to get an
+expectation over all
+
+536
+00:26:29,630 --> 00:26:31,340
+the potential futures
+we might end up
+
+537
+00:26:31,340 --> 00:26:33,380
+in by following this policy.
+
+538
+00:26:33,380 --> 00:26:36,143
+Maybe in some cases, there's
+really good patient outcomes,
+
+539
+00:26:36,143 --> 00:26:37,310
+hopefully, most of the time.
+
+540
+00:26:37,310 --> 00:26:39,643
+And maybe sometimes, there's
+less good patient outcomes.
+
+541
+00:26:39,643 --> 00:26:42,290
+And we want to do an
+expectation over all of this.
+
+542
+00:26:42,290 --> 00:26:43,920
+So we can think
+of that as a tree,
+
+543
+00:26:43,920 --> 00:26:46,410
+as just, we start in a
+state, we take an action,
+
+544
+00:26:46,410 --> 00:26:49,170
+we look at the branching factor
+of all possible next states,
+
+545
+00:26:49,170 --> 00:26:51,590
+and then we repeat.
+
+546
+00:26:51,590 --> 00:26:53,300
+Excuse me.
+
+547
+00:26:53,300 --> 00:26:55,610
+So if we think of what the
+policy evaluation diagram is
+
+548
+00:26:55,610 --> 00:26:59,700
+doing, for each state, we know
+what the next action is we take.
+
+549
+00:26:59,700 --> 00:27:03,020
+And then we branch again
+in terms of states.
+
+550
+00:27:03,020 --> 00:27:06,295
+So this is like s prime,
+and this is s double prime.
+
+551
+00:27:13,280 --> 00:27:16,890
+And so we can just think of this
+tree of possibilities going out.
+
+552
+00:27:16,890 --> 00:27:19,370
+But we don't have any there's
+no branching on the actions
+
+553
+00:27:19,370 --> 00:27:22,778
+because the actions are
+fixed by our policy.
+
+554
+00:27:22,778 --> 00:27:25,320
+So then if we go all the way
+out, and then what we want to do
+
+555
+00:27:25,320 --> 00:27:27,640
+is we want to figure out
+what the value function is,
+
+556
+00:27:27,640 --> 00:27:29,670
+you can think of this
+as an expensive way
+
+557
+00:27:29,670 --> 00:27:31,440
+to do dynamic programming.
+
+558
+00:27:31,440 --> 00:27:33,030
+What you would do
+is you would take
+
+559
+00:27:33,030 --> 00:27:35,550
+an expectation over the
+states, and then you
+
+560
+00:27:35,550 --> 00:27:39,570
+would propagate those
+values back up to the root.
+
+561
+00:27:39,570 --> 00:27:41,850
+And if you don't find this
+a useful conceptual way
+
+562
+00:27:41,850 --> 00:27:43,320
+to think about it, it's fine.
+
+563
+00:27:43,320 --> 00:27:44,640
+I think it can be
+helpful to then think
+
+564
+00:27:44,640 --> 00:27:46,598
+about what these different
+algorithms are doing
+
+565
+00:27:46,598 --> 00:27:48,510
+in terms of approximations.
+
+566
+00:27:48,510 --> 00:27:53,808
+So this is what we would like
+to do in order to get v pi of s.
+
+567
+00:27:53,808 --> 00:27:55,350
+But we want to do
+this in a much more
+
+568
+00:27:55,350 --> 00:28:00,920
+computationally efficient way,
+and also, sample efficient way.
+
+569
+00:28:00,920 --> 00:28:04,190
+So what Monte Carlo policy
+evaluation is going to do
+
+570
+00:28:04,190 --> 00:28:07,340
+is it's going to look like
+that particular equation here.
+
+571
+00:28:07,340 --> 00:28:09,860
+And what it is
+doing here is it is
+
+572
+00:28:09,860 --> 00:28:17,800
+going to approximate these
+full expectations via sample.
+
+573
+00:28:17,800 --> 00:28:20,242
+So in particular,
+what it's doing here
+
+574
+00:28:20,242 --> 00:28:21,700
+is it's updating
+the value estimate
+
+575
+00:28:21,700 --> 00:28:26,356
+by using a sample of the return
+to approximate an expectation.
+
+576
+00:28:28,980 --> 00:28:30,240
+And we do this many times.
+
+577
+00:28:30,240 --> 00:28:31,980
+We average over
+many such returns.
+
+578
+00:28:31,980 --> 00:28:33,480
+So it's kind of
+like saying you have
+
+579
+00:28:33,480 --> 00:28:35,200
+this enormous branching tree.
+
+580
+00:28:35,200 --> 00:28:38,460
+You could do an expectation
+over all of that explicitly up
+
+581
+00:28:38,460 --> 00:28:40,830
+from the roots, or you could
+just sample many times,
+
+582
+00:28:40,830 --> 00:28:43,560
+and that's also going
+to approximate the tree.
+
+583
+00:28:43,560 --> 00:28:45,240
+And the more samples
+you get, the better
+
+584
+00:28:45,240 --> 00:28:48,970
+that's going to be as an
+approximation of the tree.
+
+585
+00:28:48,970 --> 00:28:52,330
+And this type of idea has been
+used in many different types
+
+586
+00:28:52,330 --> 00:28:53,200
+of algorithms.
+
+587
+00:28:53,200 --> 00:28:56,920
+There's some really nice work in
+the mid 2000s by Michael Kearns
+
+588
+00:28:56,920 --> 00:28:57,700
+and others.
+
+589
+00:28:57,700 --> 00:28:59,410
+And then similar
+ideas were really
+
+590
+00:28:59,410 --> 00:29:01,060
+the foundation that
+then led to some
+
+591
+00:29:01,060 --> 00:29:03,250
+of the advances of
+Monte Carlo tree search,
+
+592
+00:29:03,250 --> 00:29:06,670
+and then that went into AlphaGo.
+
+593
+00:29:06,670 --> 00:29:10,690
+So this is what Monte
+Carlo tree search is doing.
+
+594
+00:29:10,690 --> 00:29:13,870
+So notice, it's not doing
+any form of bootstrapping.
+
+595
+00:29:13,870 --> 00:29:16,070
+There's no dynamic programming
+that's going on here.
+
+596
+00:29:16,070 --> 00:29:17,330
+It's just rolling out.
+
+597
+00:29:17,330 --> 00:29:25,666
+And then what we have here
+is, it is using this here,
+
+598
+00:29:25,666 --> 00:29:29,770
+this sample as an approximation.
+
+599
+00:29:29,770 --> 00:29:31,370
+OK?
+
+600
+00:29:31,370 --> 00:29:31,870
+All right.
+
+601
+00:29:31,870 --> 00:29:34,360
+So that's how Monte Carlo
+policy evaluation works.
+
+602
+00:29:34,360 --> 00:29:35,790
+One natural question
+in this case
+
+603
+00:29:35,790 --> 00:29:37,227
+is, how good is that estimate.
+
+604
+00:29:37,227 --> 00:29:39,060
+So we're going to see
+lots of different ways
+
+605
+00:29:39,060 --> 00:29:42,400
+and lots of algorithms for
+trying to do policy evaluation.
+
+606
+00:29:42,400 --> 00:29:45,580
+And so you might now ask,
+well, how do I pick among them.
+
+607
+00:29:45,580 --> 00:29:47,910
+What are the properties
+I should think about?
+
+608
+00:29:47,910 --> 00:29:50,730
+So one pretty basic
+property that you might want
+
+609
+00:29:50,730 --> 00:29:53,250
+is consistency, which
+means that, as you
+
+610
+00:29:53,250 --> 00:29:56,280
+get more and more data,
+does your estimate actually
+
+611
+00:29:56,280 --> 00:30:03,473
+converge to the true value of
+the policy for all the states.
+
+612
+00:30:03,473 --> 00:30:04,890
+And this is something
+you probably
+
+613
+00:30:04,890 --> 00:30:07,350
+want in many cases, at
+least, because otherwise, it
+
+614
+00:30:07,350 --> 00:30:09,550
+means that, even if
+you had infinite data,
+
+615
+00:30:09,550 --> 00:30:11,303
+your estimate is still
+going to be wrong.
+
+616
+00:30:11,303 --> 00:30:13,720
+Now, as we start to think about
+more complicated settings,
+
+617
+00:30:13,720 --> 00:30:19,510
+we might have to be satisfied
+with this less good objective.
+
+618
+00:30:19,510 --> 00:30:22,260
+But here, for right
+now, we're hoping
+
+619
+00:30:22,260 --> 00:30:24,450
+we can just write down
+the value of every state
+
+620
+00:30:24,450 --> 00:30:26,280
+as an entry in a
+table that we should
+
+621
+00:30:26,280 --> 00:30:28,650
+be able to get consistency.
+
+622
+00:30:28,650 --> 00:30:31,980
+A second thing we might want
+is computational efficiency.
+
+623
+00:30:31,980 --> 00:30:35,010
+We'd like this not to be too
+expensive for us to compute.
+
+624
+00:30:35,010 --> 00:30:38,190
+We'd like us not to
+require too much memory.
+
+625
+00:30:38,190 --> 00:30:42,630
+And we'd like it to have
+statistical efficiency, which
+
+626
+00:30:42,630 --> 00:30:45,720
+is, essentially, how does the
+accuracy of the estimate change
+
+627
+00:30:45,720 --> 00:30:48,390
+with the amount of data.
+
+628
+00:30:48,390 --> 00:30:50,440
+And what that means
+here is, more formally,
+
+629
+00:30:50,440 --> 00:30:53,490
+we'd like to know how quickly
+do these things converge
+
+630
+00:30:53,490 --> 00:30:56,130
+as you get more and more data.
+
+631
+00:30:56,130 --> 00:30:59,160
+And then in reality, we often
+care about empirical accuracy,
+
+632
+00:30:59,160 --> 00:31:01,920
+just what is our mean
+squared error for our types
+
+633
+00:31:01,920 --> 00:31:03,630
+of our estimators.
+
+634
+00:31:03,630 --> 00:31:05,590
+So how good is Monte Carlo?
+
+635
+00:31:05,590 --> 00:31:08,730
+Well, let's just first
+quickly remind ourselves
+
+636
+00:31:08,730 --> 00:31:11,260
+that the bias of an
+estimator is this.
+
+637
+00:31:11,260 --> 00:31:13,140
+So if we have an
+estimator theta, which
+
+638
+00:31:13,140 --> 00:31:16,840
+we're going to be thinking
+of as our value function
+
+639
+00:31:16,840 --> 00:31:20,130
+approximation, it's going to
+be the difference between,
+
+640
+00:31:20,130 --> 00:31:23,370
+on average, what our estimator
+is versus the true value.
+
+641
+00:31:23,370 --> 00:31:25,740
+That's our bias.
+
+642
+00:31:25,740 --> 00:31:28,170
+And the variance of an
+estimator is the difference
+
+643
+00:31:28,170 --> 00:31:31,210
+between this and its
+expectation squared,
+
+644
+00:31:31,210 --> 00:31:32,562
+the expectation of that.
+
+645
+00:31:32,562 --> 00:31:34,020
+And the mean squared
+error is going
+
+646
+00:31:34,020 --> 00:31:35,525
+to be variance
+plus bias squared.
+
+647
+00:31:38,752 --> 00:31:40,460
+So generally, you
+would like an estimator
+
+648
+00:31:40,460 --> 00:31:42,043
+that has low mean
+squared error, which
+
+649
+00:31:42,043 --> 00:31:44,665
+means we want it to have low
+or zero bias and low variance.
+
+650
+00:31:47,640 --> 00:31:50,140
+Something to think about if
+you're less familiar with these,
+
+651
+00:31:50,140 --> 00:31:53,260
+is whether or not if an
+estimator is unbiased,
+
+652
+00:31:53,260 --> 00:31:54,900
+is it consistent.
+
+653
+00:31:54,900 --> 00:31:58,750
+It is not necessarily
+consistent, just so you know.
+
+654
+00:31:58,750 --> 00:32:02,910
+So what we would like here
+is that, asymptotically,
+
+655
+00:32:02,910 --> 00:32:05,195
+the probability that
+our estimator-- so N
+
+656
+00:32:05,195 --> 00:32:07,320
+here is the amount of data
+we're using to construct
+
+657
+00:32:07,320 --> 00:32:10,650
+that estimator-- the
+probability that, as we get
+
+658
+00:32:10,650 --> 00:32:13,440
+an infinite amount of
+data, that our estimate is
+
+659
+00:32:13,440 --> 00:32:16,360
+different than the true
+value by more than epsilon.
+
+660
+00:32:16,360 --> 00:32:17,240
+It has to go to 0.
+
+661
+00:32:19,850 --> 00:32:22,580
+OK, so we would like
+it to be consistent.
+
+662
+00:32:22,580 --> 00:32:26,660
+So how does Monte Carlo fare
+on these sort of properties?
+
+663
+00:32:26,660 --> 00:32:31,810
+Well, first visit is unbiased.
+
+664
+00:32:31,810 --> 00:32:34,100
+So it's an unbiased
+estimate of the true policy.
+
+665
+00:32:34,100 --> 00:32:36,880
+And by the law of large
+numbers, as the amount of data
+
+666
+00:32:36,880 --> 00:32:39,710
+you have goes to
+infinity per state,
+
+667
+00:32:39,710 --> 00:32:41,600
+so if you have
+really rare states,
+
+668
+00:32:41,600 --> 00:32:43,560
+you're still going to
+need a number of samples
+
+669
+00:32:43,560 --> 00:32:44,630
+to estimate them.
+
+670
+00:32:44,630 --> 00:32:46,880
+But as the amount of data
+you have goes to infinity,
+
+671
+00:32:46,880 --> 00:32:47,930
+you'll converge.
+
+672
+00:32:47,930 --> 00:32:51,800
+So it's consistent
+and it's unbiased.
+
+673
+00:32:51,800 --> 00:32:55,070
+Every visit Monte
+Carlo is biased.
+
+674
+00:32:55,070 --> 00:32:58,680
+One way to think about
+that is, in the first case,
+
+675
+00:32:58,680 --> 00:33:01,340
+all your data is IID,
+independent and identically
+
+676
+00:33:01,340 --> 00:33:04,680
+distributed, in that
+every visit case--
+
+677
+00:33:04,680 --> 00:33:08,690
+imagine that you visit state s2,
+and then four steps later, you
+
+678
+00:33:08,690 --> 00:33:10,340
+visit s2.
+
+679
+00:33:10,340 --> 00:33:13,370
+Well, their returns are going
+to be correlated because they're
+
+680
+00:33:13,370 --> 00:33:17,155
+both in the same trajectory,
+so they're not IID anymore.
+
+681
+00:33:17,155 --> 00:33:19,530
+So that's just some intuition
+for why it might be biased.
+
+682
+00:33:19,530 --> 00:33:21,170
+But it's also
+consistent and it often
+
+683
+00:33:21,170 --> 00:33:23,000
+has better mean squared
+error because you
+
+684
+00:33:23,000 --> 00:33:26,480
+get to use more of your data
+inside of a single trajectory
+
+685
+00:33:26,480 --> 00:33:28,280
+to do more updates.
+
+686
+00:33:28,280 --> 00:33:30,320
+And then incremental
+Monte Carlo methods
+
+687
+00:33:30,320 --> 00:33:35,520
+depend on the learning
+rate, as you might expect.
+
+688
+00:33:35,520 --> 00:33:38,110
+So see that here?
+
+689
+00:33:38,110 --> 00:33:40,950
+So let's imagine
+that we are going
+
+690
+00:33:40,950 --> 00:33:43,620
+to have our alpha parameter,
+which is our learning
+
+691
+00:33:43,620 --> 00:33:45,880
+rate, which is trading off
+between our new estimate
+
+692
+00:33:45,880 --> 00:33:48,340
+and our old estimate.
+
+693
+00:33:48,340 --> 00:33:50,283
+It can actually
+change per time step.
+
+694
+00:33:50,283 --> 00:33:51,700
+So just like how
+you can generally
+
+695
+00:33:51,700 --> 00:33:53,590
+decay your learning rate, you
+can change your learning rate
+
+696
+00:33:53,590 --> 00:33:54,340
+here.
+
+697
+00:33:54,340 --> 00:33:56,260
+And if your learning
+rate is such
+
+698
+00:33:56,260 --> 00:33:59,600
+that if you sum up all of its
+values for a particular state,
+
+699
+00:33:59,600 --> 00:34:02,650
+it goes to infinity, but the
+square is less than infinity,
+
+700
+00:34:02,650 --> 00:34:05,100
+then you will converge
+to the true value.
+
+701
+00:34:08,520 --> 00:34:13,350
+And again, these are pretty
+common types of criteria
+
+702
+00:34:13,350 --> 00:34:14,850
+we'll see for some
+of the algorithms
+
+703
+00:34:14,850 --> 00:34:17,860
+we have that, under
+some sort of smoothness,
+
+704
+00:34:17,860 --> 00:34:20,563
+guarantees for the
+learning rates we'll
+
+705
+00:34:20,563 --> 00:34:21,730
+have some decent properties.
+
+706
+00:34:21,730 --> 00:34:23,909
+Yeah, remind me of your name.
+
+707
+00:34:23,909 --> 00:34:27,455
+If those conditions aren't
+met, do you definitely
+
+708
+00:34:27,455 --> 00:34:29,580
+not have a guarantee, or
+are there other conditions
+
+709
+00:34:29,580 --> 00:34:31,622
+that can give you a
+guarantee, and those are just
+
+710
+00:34:31,622 --> 00:34:32,790
+some other queries?
+
+711
+00:34:32,790 --> 00:34:33,550
+Great question.
+
+712
+00:34:33,550 --> 00:34:39,330
+So he's asking, is it required
+to have these conditions.
+
+713
+00:34:39,330 --> 00:34:41,100
+These are sufficient.
+
+714
+00:34:41,100 --> 00:34:43,330
+They aren't necessary always.
+
+715
+00:34:43,330 --> 00:34:46,330
+A lot of that will depend on the
+particular problem domain, too,
+
+716
+00:34:46,330 --> 00:34:48,306
+and what the dynamics
+and the reward is.
+
+717
+00:34:48,306 --> 00:34:49,889
+To my knowledge, I'm
+not sure if there
+
+718
+00:34:49,889 --> 00:34:52,300
+are other really general
+conditions like that,
+
+719
+00:34:52,300 --> 00:34:54,389
+but there might be for
+specific problem classes.
+
+720
+00:34:54,389 --> 00:34:55,264
+It's a good question.
+
+721
+00:34:59,463 --> 00:35:00,880
+Now, one of the
+problems with this
+
+722
+00:35:00,880 --> 00:35:04,300
+is that, in general, it's a
+pretty high variance estimator.
+
+723
+00:35:04,300 --> 00:35:07,690
+So you're kind of getting,
+certainly, with every visit,
+
+724
+00:35:07,690 --> 00:35:11,990
+or certainly, for first
+visit Monte Carlo,
+
+725
+00:35:11,990 --> 00:35:15,060
+you're only updating the state
+at most once per episode.
+
+726
+00:35:15,060 --> 00:35:16,340
+So it can take a long time.
+
+727
+00:35:16,340 --> 00:35:20,020
+So you can imagine that, if you
+have very different outcomes
+
+728
+00:35:20,020 --> 00:35:24,100
+from the same starting state,
+so maybe most of the time,
+
+729
+00:35:24,100 --> 00:35:25,930
+you have pretty average
+outcomes, but maybe
+
+730
+00:35:25,930 --> 00:35:28,570
+one in 100 times you have
+a really bad outcome.
+
+731
+00:35:28,570 --> 00:35:31,660
+It's going to take a long time
+for that estimator to converge.
+
+732
+00:35:31,660 --> 00:35:34,820
+So in general, this is a
+pretty high variance estimator,
+
+733
+00:35:34,820 --> 00:35:39,370
+even though it is often
+unbiased and it is consistent.
+
+734
+00:35:39,370 --> 00:35:40,900
+And then the other
+big requirement
+
+735
+00:35:40,900 --> 00:35:42,860
+is that it requires
+episodic settings.
+
+736
+00:35:42,860 --> 00:35:45,310
+So you have to wait till
+the end of the episode
+
+737
+00:35:45,310 --> 00:35:47,590
+to update your estimate.
+
+738
+00:35:47,590 --> 00:35:50,150
+And for here right now, that
+might not seem that bad.
+
+739
+00:35:50,150 --> 00:35:53,050
+But when we start getting into
+control and decision making,
+
+740
+00:35:53,050 --> 00:35:56,020
+you might want to use the data
+you have already in that episode
+
+741
+00:35:56,020 --> 00:35:59,140
+to change the
+behavior of the agent.
+
+742
+00:35:59,140 --> 00:36:01,390
+So you can imagine
+something like, if you're
+
+743
+00:36:01,390 --> 00:36:04,790
+doing self driving
+cars or something,
+
+744
+00:36:04,790 --> 00:36:07,300
+you're already getting some
+evidence that the car is not
+
+745
+00:36:07,300 --> 00:36:10,120
+working as expected within
+a single episode, that
+
+746
+00:36:10,120 --> 00:36:10,995
+might be really long.
+
+747
+00:36:10,995 --> 00:36:12,578
+You might want to
+use that information
+
+748
+00:36:12,578 --> 00:36:14,475
+to change how you're
+steering, for example.
+
+749
+00:36:17,800 --> 00:36:18,300
+All right.
+
+750
+00:36:18,300 --> 00:36:20,000
+So just to summarize
+here, what it does
+
+751
+00:36:20,000 --> 00:36:22,438
+is it's not using
+the Markov process.
+
+752
+00:36:22,438 --> 00:36:24,230
+It's updating your
+value function estimate,
+
+753
+00:36:24,230 --> 00:36:27,810
+using a sample of the return
+to approximate the expectation.
+
+754
+00:36:27,810 --> 00:36:29,670
+And under some pretty
+mild conditions,
+
+755
+00:36:29,670 --> 00:36:33,730
+it converges to the
+true value of the state.
+
+756
+00:36:33,730 --> 00:36:36,460
+And in some cases,
+it will turn out
+
+757
+00:36:36,460 --> 00:36:38,650
+that, even if you actually
+know the true dynamics
+
+758
+00:36:38,650 --> 00:36:40,733
+model and reward, you might
+still want to do this.
+
+759
+00:36:43,058 --> 00:36:45,350
+And I think one thing that's
+useful to think about here
+
+760
+00:36:45,350 --> 00:36:49,040
+is systems which you think
+the Markov property might
+
+761
+00:36:49,040 --> 00:36:51,320
+be violated, at least
+with the features
+
+762
+00:36:51,320 --> 00:36:53,470
+that you'd be using to
+represent the state.
+
+763
+00:36:56,640 --> 00:36:57,370
+All right.
+
+764
+00:36:57,370 --> 00:36:59,590
+Now let's go on to temporal
+difference learning.
+
+765
+00:36:59,590 --> 00:37:01,840
+And this is, again, sort
+of related to Q-learning,
+
+766
+00:37:01,840 --> 00:37:05,530
+which we'll get to
+in the next lecture.
+
+767
+00:37:05,530 --> 00:37:08,320
+So Sutton and Barto,
+which is a textbook that
+
+768
+00:37:08,320 --> 00:37:09,640
+is an optional one for--
+
+769
+00:37:09,640 --> 00:37:10,140
+yeah.
+
+770
+00:37:13,552 --> 00:37:14,510
+I had a quick question.
+
+771
+00:37:14,510 --> 00:37:16,690
+So if we don't
+the rewards model,
+
+772
+00:37:16,690 --> 00:37:19,825
+how do we calculate the
+rewards for the trajectory?
+
+773
+00:37:19,825 --> 00:37:20,450
+Great question.
+
+774
+00:37:20,450 --> 00:37:22,540
+So the assumption
+here is that it's
+
+775
+00:37:22,540 --> 00:37:26,290
+kind of like you either
+are in a real setting
+
+776
+00:37:26,290 --> 00:37:28,275
+where you can sample
+these from an oracle,
+
+777
+00:37:28,275 --> 00:37:30,400
+or something in the real
+world is giving you these.
+
+778
+00:37:30,400 --> 00:37:32,942
+So you may not have an explicit
+representation for the reward
+
+779
+00:37:32,942 --> 00:37:35,890
+model, but you can get them, so
+if your customer buys something
+
+780
+00:37:35,890 --> 00:37:38,568
+or they don't, or you
+have a side effect.
+
+781
+00:37:38,568 --> 00:37:40,610
+So you don't necessarily
+have a parametric model,
+
+782
+00:37:40,610 --> 00:37:42,590
+but you are getting
+real rewards.
+
+783
+00:37:42,590 --> 00:37:45,268
+That's a good question.
+
+784
+00:37:45,268 --> 00:37:47,560
+Anybody else have any other
+questions about Monte Carlo
+
+785
+00:37:47,560 --> 00:37:51,453
+before we go on to temporal
+difference learning?
+
+786
+00:37:51,453 --> 00:37:53,870
+And I'm going to call it just
+temporal difference learning
+
+787
+00:37:53,870 --> 00:37:56,130
+now, and then I'll
+specify that it's actually
+
+788
+00:37:56,130 --> 00:37:59,220
+TD0 for most of what
+I'm going to talk about.
+
+789
+00:37:59,220 --> 00:38:06,100
+So I'll just specify,
+mostly discuss TD0.
+
+790
+00:38:06,100 --> 00:38:09,610
+And I'll specify what I
+mean by the 0 shortly.
+
+791
+00:38:09,610 --> 00:38:12,190
+So Sutton and Barto, which is
+one of the optional textbooks
+
+792
+00:38:12,190 --> 00:38:16,150
+for the class, says, if one had
+to identify one idea as central
+
+793
+00:38:16,150 --> 00:38:18,070
+and novel to RL, it
+would undoubtedly be
+
+794
+00:38:18,070 --> 00:38:20,110
+temporal difference learning.
+
+795
+00:38:20,110 --> 00:38:24,280
+And what their point is, is
+that it really is sort of a way
+
+796
+00:38:24,280 --> 00:38:28,660
+still to construct estimators,
+both for control and for policy
+
+797
+00:38:28,660 --> 00:38:29,660
+evaluation.
+
+798
+00:38:29,660 --> 00:38:32,470
+And the idea is, if we think
+back to that tree I showed you,
+
+799
+00:38:32,470 --> 00:38:33,970
+and I'll show you
+some more, there's
+
+800
+00:38:33,970 --> 00:38:37,180
+going to be a way to combine
+between the idea of sampling
+
+801
+00:38:37,180 --> 00:38:40,510
+to approximate expectations
+and bootstrapping
+
+802
+00:38:40,510 --> 00:38:43,210
+to approximate future returns.
+
+803
+00:38:43,210 --> 00:38:44,800
+And we'll see that in a second.
+
+804
+00:38:44,800 --> 00:38:46,630
+It is model free,
+meaning you don't
+
+805
+00:38:46,630 --> 00:38:49,180
+need to have a parametric
+representation of the reward
+
+806
+00:38:49,180 --> 00:38:51,050
+function or the dynamics model.
+
+807
+00:38:51,050 --> 00:38:54,070
+And the nice thing is you can
+use it in episodic settings,
+
+808
+00:38:54,070 --> 00:38:56,750
+or in infinite discounted
+horizon settings.
+
+809
+00:38:56,750 --> 00:38:58,750
+You just set off your
+robot, and then it's
+
+810
+00:38:58,750 --> 00:39:02,757
+just going to have to
+learn to act forever.
+
+811
+00:39:02,757 --> 00:39:04,340
+And one of the key
+ideas is that we're
+
+812
+00:39:04,340 --> 00:39:06,980
+going to update our estimates
+of the value of a state
+
+813
+00:39:06,980 --> 00:39:07,875
+immediately.
+
+814
+00:39:07,875 --> 00:39:09,500
+So I'll put pi here
+because we're still
+
+815
+00:39:09,500 --> 00:39:13,340
+talking about a policy after
+every single tuple of state
+
+816
+00:39:13,340 --> 00:39:16,720
+action reward next state.
+
+817
+00:39:16,720 --> 00:39:19,550
+So let's see how that works.
+
+818
+00:39:19,550 --> 00:39:21,380
+So again, remember,
+our goal is just
+
+819
+00:39:21,380 --> 00:39:24,080
+to compute the expected
+discounted sum of rewards
+
+820
+00:39:24,080 --> 00:39:26,330
+for a particular policy.
+
+821
+00:39:26,330 --> 00:39:28,410
+Now, let's think back
+to the Bellman operator.
+
+822
+00:39:28,410 --> 00:39:32,010
+So if we know the MDP models,
+and we have a particular policy,
+
+823
+00:39:32,010 --> 00:39:35,290
+we could write the Bellman
+operator like that.
+
+824
+00:39:35,290 --> 00:39:37,810
+And what we were doing in
+incremental every visit
+
+825
+00:39:37,810 --> 00:39:40,720
+Monte Carlo is we were
+updating the estimate using
+
+826
+00:39:40,720 --> 00:39:44,290
+one sample of the return.
+
+827
+00:39:44,290 --> 00:39:49,300
+And the idea now is to say,
+well, this was one sample.
+
+828
+00:39:49,300 --> 00:39:51,430
+But maybe we could just
+maintain-- we have access
+
+829
+00:39:51,430 --> 00:39:52,750
+to a value function.
+
+830
+00:39:52,750 --> 00:39:54,580
+Why couldn't we
+look up and instead
+
+831
+00:39:54,580 --> 00:39:57,550
+of having what the
+rewards were starting
+
+832
+00:39:57,550 --> 00:40:00,190
+the state till the
+end of the trajectory,
+
+833
+00:40:00,190 --> 00:40:03,400
+we observed a particular reward.
+
+834
+00:40:03,400 --> 00:40:06,560
+We got to a
+particular next state.
+
+835
+00:40:06,560 --> 00:40:08,875
+Why don't we use the value
+function for that state?
+
+836
+00:40:12,580 --> 00:40:15,440
+So what we're doing in this
+case is, instead of using G,
+
+837
+00:40:15,440 --> 00:40:17,980
+we're plugging in the
+immediate reward plus gamma
+
+838
+00:40:17,980 --> 00:40:20,290
+times the discounted
+sum of future rewards,
+
+839
+00:40:20,290 --> 00:40:22,870
+using our current estimate
+of the value function
+
+840
+00:40:22,870 --> 00:40:24,495
+for that next state we reached.
+
+841
+00:40:29,030 --> 00:40:30,920
+And here, the reason,
+one of the things
+
+842
+00:40:30,920 --> 00:40:33,440
+is that we don't have to wait.
+
+843
+00:40:33,440 --> 00:40:41,790
+We can do this immediately,
+as soon as we reach s prime.
+
+844
+00:40:41,790 --> 00:40:44,367
+So as soon as we
+reach s prime, as soon
+
+845
+00:40:44,367 --> 00:40:46,200
+as we see the next
+state, we can immediately
+
+846
+00:40:46,200 --> 00:40:47,997
+update the value of
+our current state.
+
+847
+00:40:47,997 --> 00:40:50,080
+So we'll have to wait till
+the end of the episode.
+
+848
+00:40:50,080 --> 00:40:51,997
+We can use this for
+infinite horizon problems.
+
+849
+00:40:56,880 --> 00:40:59,940
+So this is what that looks like.
+
+850
+00:40:59,940 --> 00:41:03,647
+And we're also going to
+call that the TD target.
+
+851
+00:41:03,647 --> 00:41:05,730
+And again, that should
+look like machine learning,
+
+852
+00:41:05,730 --> 00:41:09,000
+and it should look like what
+we just did with Monte Carlo
+
+853
+00:41:09,000 --> 00:41:11,550
+that what we're plugging
+in here is we're saying,
+
+854
+00:41:11,550 --> 00:41:13,910
+we're taking our old estimate.
+
+855
+00:41:13,910 --> 00:41:15,132
+And we are moving it.
+
+856
+00:41:15,132 --> 00:41:17,090
+We are shifting it a
+little bit by our learning
+
+857
+00:41:17,090 --> 00:41:22,120
+rate towards our target,
+which is our reward,
+
+858
+00:41:22,120 --> 00:41:24,180
+plus our discount sum
+of future rewards,
+
+859
+00:41:24,180 --> 00:41:28,350
+using that plug-in estimate.
+
+860
+00:41:28,350 --> 00:41:32,440
+And when we think of how much
+our estimate is changing,
+
+861
+00:41:32,440 --> 00:41:36,660
+we often call that
+the TD0 error, which
+
+862
+00:41:36,660 --> 00:41:40,110
+looks at how different
+is my current estimate
+
+863
+00:41:40,110 --> 00:41:42,990
+of the value of a state
+versus the estimate
+
+864
+00:41:42,990 --> 00:41:46,200
+that I'm plugging in.
+
+865
+00:41:46,200 --> 00:41:48,190
+And again, if you've
+seen Q-learning before,
+
+866
+00:41:48,190 --> 00:41:50,680
+this is going to look really
+similar to what we had,
+
+867
+00:41:50,680 --> 00:41:52,893
+but there's no max
+or things like that.
+
+868
+00:41:52,893 --> 00:41:53,810
+You'll see those soon.
+
+869
+00:41:58,434 --> 00:42:03,110
+So the TD0 learning algorithm
+just looks like the following.
+
+870
+00:42:03,110 --> 00:42:07,870
+You sample a tuple of a state
+action rewards next state.
+
+871
+00:42:07,870 --> 00:42:12,150
+You update the value for that
+starting state, and you repeat.
+
+872
+00:42:12,150 --> 00:42:17,540
+And so your t goes to t plus 1,
+and then you get the next tuple.
+
+873
+00:42:17,540 --> 00:42:19,540
+You just do this over,
+and over, and over again.
+
+874
+00:42:19,540 --> 00:42:22,860
+So in our Mars Rover example,
+you have state action reward,
+
+875
+00:42:22,860 --> 00:42:25,775
+next state, you update, and
+then you just shift along.
+
+876
+00:42:31,390 --> 00:42:33,760
+Let's see what that
+might look like here.
+
+877
+00:42:33,760 --> 00:42:38,790
+So in this case, let's imagine
+we have a policy where we always
+
+878
+00:42:38,790 --> 00:42:40,650
+take action a1.
+
+879
+00:42:40,650 --> 00:42:44,700
+We're going to make our discount
+factor 1 to make the math easy,
+
+880
+00:42:44,700 --> 00:42:47,580
+and we're going to assume
+that any action from state 1
+
+881
+00:42:47,580 --> 00:42:50,750
+or s7 terminates the episode.
+
+882
+00:42:50,750 --> 00:42:52,460
+And then what we
+see in this case is,
+
+883
+00:42:52,460 --> 00:42:54,000
+we have the
+following trajectory.
+
+884
+00:42:54,000 --> 00:42:57,030
+We start in state s3,
+we take action a1.
+
+885
+00:42:57,030 --> 00:42:58,560
+We get a reward of 0.
+
+886
+00:42:58,560 --> 00:42:59,870
+So this is the reward.
+
+887
+00:42:59,870 --> 00:43:03,320
+We transition to
+state s2, and so forth
+
+888
+00:43:03,320 --> 00:43:05,730
+till the end of the episode.
+
+889
+00:43:05,730 --> 00:43:07,740
+So what we would
+have in this case
+
+890
+00:43:07,740 --> 00:43:12,960
+is that we would make it so that
+the first update we would do
+
+891
+00:43:12,960 --> 00:43:15,470
+be V of s3.
+
+892
+00:43:15,470 --> 00:43:17,540
+And what we would say is
+that's my old estimate
+
+893
+00:43:17,540 --> 00:43:21,400
+of V of s3 times 1 minus alpha.
+
+894
+00:43:21,400 --> 00:43:23,750
+I've just rewritten
+the above equation here
+
+895
+00:43:23,750 --> 00:43:27,770
+because this was basically
+1, and this is alpha times
+
+896
+00:43:27,770 --> 00:43:31,640
+minus V. Plus alpha times
+the immediate reward
+
+897
+00:43:31,640 --> 00:43:33,680
+plus gamma times V of s2.
+
+898
+00:43:37,190 --> 00:43:39,260
+So that's what that
+would look like.
+
+899
+00:43:39,260 --> 00:43:44,950
+And here, imagine that I've
+initialized all of them
+
+900
+00:43:44,950 --> 00:43:46,600
+to be 0 to start.
+
+901
+00:43:46,600 --> 00:43:50,480
+So this would still
+just look like 0.
+
+902
+00:43:50,480 --> 00:43:52,830
+And, in fact, what
+would be the only state
+
+903
+00:43:52,830 --> 00:43:55,540
+I would update to not
+be 0 in this episode?
+
+904
+00:44:13,810 --> 00:44:15,670
+For it to be
+updated, not to be 0,
+
+905
+00:44:15,670 --> 00:44:17,920
+either its immediate
+reward has to be 1,
+
+906
+00:44:17,920 --> 00:44:22,080
+or it has to be transitioning
+to a state whose value is not 0.
+
+907
+00:44:30,500 --> 00:44:31,130
+Yeah.
+
+908
+00:44:31,130 --> 00:44:34,800
+So what we're seeing here
+is that, in this case,
+
+909
+00:44:34,800 --> 00:44:37,170
+we have state action
+reward next state.
+
+910
+00:44:37,170 --> 00:44:39,300
+And so this is the TD update.
+
+911
+00:44:39,300 --> 00:44:41,480
+And what I was saying
+here is that we've
+
+912
+00:44:41,480 --> 00:44:45,230
+initialized all of them to be
+0, which means that, in order
+
+913
+00:44:45,230 --> 00:44:48,110
+for their value to
+change from being 0,
+
+914
+00:44:48,110 --> 00:44:51,830
+either their immediate
+reward has to be non-zero,
+
+915
+00:44:51,830 --> 00:44:55,760
+or we have to transition to
+a state whose value is not 0,
+
+916
+00:44:55,760 --> 00:44:58,720
+because all of them,
+their current value is 0.
+
+917
+00:45:05,670 --> 00:45:07,620
+Were you going to guess
+which state is up?
+
+918
+00:45:07,620 --> 00:45:10,140
+Which one?
+
+919
+00:45:10,140 --> 00:45:14,640
+Well, when you're in state
+1, you have a reward 1.
+
+920
+00:45:14,640 --> 00:45:15,430
+That's right.
+
+921
+00:45:15,430 --> 00:45:20,460
+Yes, so you don't see any reward
+here until you get to state s1.
+
+922
+00:45:20,460 --> 00:45:23,190
+I'll just highlight it here.
+
+923
+00:45:23,190 --> 00:45:26,620
+So at that point is when you
+update your value function.
+
+924
+00:45:26,620 --> 00:45:29,910
+That's the first time that you
+get to anything that any reward
+
+925
+00:45:29,910 --> 00:45:31,000
+becomes non-zero.
+
+926
+00:45:31,000 --> 00:45:32,970
+So in that case,
+what you get is s1
+
+927
+00:45:32,970 --> 00:45:38,490
+is equal to V of s1, 1 minus
+alpha, plus alpha times
+
+928
+00:45:38,490 --> 00:45:43,020
+1 plus, gamma V of s terminal.
+
+929
+00:45:43,020 --> 00:45:45,030
+s terminal is always 0.
+
+930
+00:45:45,030 --> 00:45:47,450
+So it just becomes
+alpha times 1.
+
+931
+00:45:50,940 --> 00:45:54,100
+So why am I making you guys
+do a lot of algebra here?
+
+932
+00:45:54,100 --> 00:45:57,098
+I want to do it because,
+if you work this out,
+
+933
+00:45:57,098 --> 00:45:58,890
+and I won't go through
+it here, but I think
+
+934
+00:45:58,890 --> 00:46:03,210
+it's a useful exercise,
+the TD episode,
+
+935
+00:46:03,210 --> 00:46:05,830
+TD estimate you would
+get for your whole value
+
+936
+00:46:05,830 --> 00:46:07,660
+function at the
+end of this episode
+
+937
+00:46:07,660 --> 00:46:10,900
+is quite different than what
+you get with Monte Carlo.
+
+938
+00:46:10,900 --> 00:46:14,180
+So TD updates after
+every single tuple,
+
+939
+00:46:14,180 --> 00:46:16,940
+every single state action
+reward next state tuple.
+
+940
+00:46:16,940 --> 00:46:19,490
+And so that means, when you
+reach the end of the episode,
+
+941
+00:46:19,490 --> 00:46:21,670
+if you look at what your
+value function would be,
+
+942
+00:46:21,670 --> 00:46:24,920
+and I've written the value
+function here just as a vector,
+
+943
+00:46:24,920 --> 00:46:26,510
+but this is the value of s1.
+
+944
+00:46:26,510 --> 00:46:27,850
+This is the value of s7.
+
+945
+00:46:27,850 --> 00:46:29,800
+So I've just written
+it as a vector.
+
+946
+00:46:29,800 --> 00:46:32,140
+This is what your value
+function would be.
+
+947
+00:46:32,140 --> 00:46:35,320
+It would say, my current
+estimate for s1 is 1,
+
+948
+00:46:35,320 --> 00:46:37,090
+and everything else is 0.
+
+949
+00:46:37,090 --> 00:46:39,650
+But if you look at
+first visit Monte Carlo,
+
+950
+00:46:39,650 --> 00:46:41,530
+it's quite different.
+
+951
+00:46:41,530 --> 00:46:44,870
+And if we make gamma equal to 1
+here, which I said it would be,
+
+952
+00:46:44,870 --> 00:46:48,670
+it would be 1,1, 1, 0, 0, 0, 0.
+
+953
+00:46:48,670 --> 00:46:49,700
+Why is this?
+
+954
+00:46:49,700 --> 00:46:52,900
+Because Monte Carlo waits till
+the end of the episode, and then
+
+955
+00:46:52,900 --> 00:46:57,610
+it uses the returns to update
+any state that was visited once
+
+956
+00:46:57,610 --> 00:47:00,070
+in that episode.
+
+957
+00:47:00,070 --> 00:47:02,020
+And the reason that's
+important is that, now,
+
+958
+00:47:02,020 --> 00:47:05,270
+actually, we filled in a lot
+more things because we knew.
+
+959
+00:47:05,270 --> 00:47:07,570
+We observed in that
+case that, not just did
+
+960
+00:47:07,570 --> 00:47:10,310
+we get a reward here, but
+then we saw what s2 got,
+
+961
+00:47:10,310 --> 00:47:12,680
+which was also a reward
+of 1 and what s3 got,
+
+962
+00:47:12,680 --> 00:47:14,890
+which was also a reward of 1.
+
+963
+00:47:14,890 --> 00:47:16,300
+And the reason I
+bring this up is
+
+964
+00:47:16,300 --> 00:47:18,040
+that there's going to be
+different choices about how
+
+965
+00:47:18,040 --> 00:47:19,360
+these behave,
+particularly when you
+
+966
+00:47:19,360 --> 00:47:21,360
+don't have a lot of data
+at the beginning, which
+
+967
+00:47:21,360 --> 00:47:25,270
+may be more or less data
+efficient or sample efficient.
+
+968
+00:47:25,270 --> 00:47:27,803
+And ideas of sample
+efficiency will come up a lot.
+
+969
+00:47:27,803 --> 00:47:29,470
+We'll see that a lot
+later on, but we'll
+
+970
+00:47:29,470 --> 00:47:32,890
+see it on Thursday, as well.
+
+971
+00:47:32,890 --> 00:47:33,390
+All right.
+
+972
+00:47:33,390 --> 00:47:36,110
+So what does this look
+like in terms of the tree?
+
+973
+00:47:36,110 --> 00:47:38,030
+So if we go back
+to our tree, which
+
+974
+00:47:38,030 --> 00:47:41,540
+is like expanding out potential
+futures, what we can see here
+
+975
+00:47:41,540 --> 00:47:45,920
+is that TD is updating the value
+estimate using a sample of st
+
+976
+00:47:45,920 --> 00:47:49,490
+plus 1 to approximate
+an expectation.
+
+977
+00:47:49,490 --> 00:47:52,260
+So in reality, if you're
+doing dynamic programming,
+
+978
+00:47:52,260 --> 00:47:54,320
+you would want to do
+a weighted expectation
+
+979
+00:47:54,320 --> 00:47:56,450
+over all the next
+states you could reach,
+
+980
+00:47:56,450 --> 00:47:59,030
+weighted by the probability
+of getting there.
+
+981
+00:47:59,030 --> 00:48:03,560
+What TD is doing is it's
+just sampling one of those.
+
+982
+00:48:03,560 --> 00:48:06,380
+And that sample is
+an approximation
+
+983
+00:48:06,380 --> 00:48:07,730
+of that expectation.
+
+984
+00:48:07,730 --> 00:48:13,820
+So we're going from this
+to sampling the next state.
+
+985
+00:48:13,820 --> 00:48:15,780
+But similar to
+dynamic programming,
+
+986
+00:48:15,780 --> 00:48:17,040
+it is then bootstrapping.
+
+987
+00:48:17,040 --> 00:48:20,030
+So unlike Monte Carlo,
+which goes all the way out
+
+988
+00:48:20,030 --> 00:48:23,545
+to get a sample of
+that value function,
+
+989
+00:48:23,545 --> 00:48:26,545
+here, we're just plugging in
+V. So this part looks the same.
+
+990
+00:48:29,270 --> 00:48:34,010
+So TD does both sampling to
+approximate expectations,
+
+991
+00:48:34,010 --> 00:48:37,115
+and it bootstraps by using your
+existing estimate of the value
+
+992
+00:48:37,115 --> 00:48:37,615
+function.
+
+993
+00:48:45,300 --> 00:48:49,080
+All right, so let's just do
+a Check Your Understanding.
+
+994
+00:48:49,080 --> 00:48:50,592
+So this is a poll.
+
+995
+00:48:50,592 --> 00:48:52,050
+So what I'd like
+you to think about
+
+996
+00:48:52,050 --> 00:48:54,400
+is how this learning
+rate might affect things.
+
+997
+00:48:54,400 --> 00:48:57,360
+So whether different
+choices of this
+
+998
+00:48:57,360 --> 00:49:01,050
+is going to weigh the TD
+target or more or less
+
+999
+00:49:01,050 --> 00:49:04,620
+than the past V
+estimate, and what
+
+1000
+00:49:04,620 --> 00:49:08,862
+might happen when your
+state space is stochastic,
+
+1001
+00:49:08,862 --> 00:49:10,570
+meaning that when you
+start in one state,
+
+1002
+00:49:10,570 --> 00:49:12,990
+you might end up in
+multiple next states.
+
+1003
+00:49:12,990 --> 00:49:16,350
+What does that mean about
+convergence and the implication
+
+1004
+00:49:16,350 --> 00:49:19,950
+for learning rates,
+as well as thinking
+
+1005
+00:49:19,950 --> 00:49:22,810
+about deterministic
+Markov decision processes?
+
+1006
+00:49:22,810 --> 00:49:25,410
+Deterministic Markov
+decision processes,
+
+1007
+00:49:25,410 --> 00:49:32,790
+what I mean by that is that
+p of s prime, given s, a,
+
+1008
+00:49:32,790 --> 00:49:39,600
+is equal to 1 for
+exactly 1 s prime,
+
+1009
+00:49:39,600 --> 00:49:41,615
+meaning that there's
+no stochasticity.
+
+1010
+00:49:41,615 --> 00:49:42,990
+When you're in a
+state in action,
+
+1011
+00:49:42,990 --> 00:49:46,460
+you always go to one
+particular next state.
+
+1012
+00:49:46,460 --> 00:49:49,640
+So that's a deterministic
+Markov decision process.
+
+1013
+00:49:49,640 --> 00:49:53,340
+So just take a few minutes
+now and look into this.
+
+1014
+00:50:04,340 --> 00:50:07,080
+And you should be able to
+select all that are true.
+
+1015
+00:50:07,080 --> 00:50:09,920
+But if you can't, let me know.
+
+1016
+00:50:09,920 --> 00:50:11,000
+You cannot?
+
+1017
+00:50:11,000 --> 00:50:13,010
+OK.
+
+1018
+00:50:13,010 --> 00:50:13,770
+All right.
+
+1019
+00:50:13,770 --> 00:50:16,290
+Well, then, again, these
+are only for your thoughts.
+
+1020
+00:50:16,290 --> 00:50:18,920
+So just try to write down for
+yourself which of these you
+
+1021
+00:50:18,920 --> 00:50:21,950
+think are true, and then
+we'll talk about in a second.
+
+1022
+00:50:21,950 --> 00:50:23,510
+I'll check into
+these for next time.
+
+1023
+00:51:10,090 --> 00:51:12,150
+I don't think we can
+select multiple answers.
+
+1024
+00:51:12,150 --> 00:51:13,702
+Yes, that's what I just heard.
+
+1025
+00:51:13,702 --> 00:51:14,410
+Sorry about that.
+
+1026
+00:51:14,410 --> 00:51:15,730
+So I'll try to fix
+that for next time.
+
+1027
+00:51:15,730 --> 00:51:18,090
+Just try to have in your
+head of which ones you think
+
+1028
+00:51:18,090 --> 00:51:19,440
+are correct, and I'll
+ask you to compare
+
+1029
+00:51:19,440 --> 00:51:20,500
+with someone in a second.
+
+1030
+00:51:20,500 --> 00:51:21,625
+Thanks for letting me know.
+
+1031
+00:51:58,320 --> 00:52:01,420
+All right, turn to your
+neighbor and check,
+
+1032
+00:52:01,420 --> 00:52:06,678
+and particularly,
+focus on the last two
+
+1033
+00:52:06,678 --> 00:52:08,595
+and see if you agree on
+your answers for this.
+
+1034
+00:52:33,900 --> 00:52:36,960
+[INDISTINCT SPEECH]
+
+1035
+00:55:57,270 --> 00:55:58,750
+All right, great.
+
+1036
+00:55:58,750 --> 00:56:00,670
+I had some great discussions.
+
+1037
+00:56:00,670 --> 00:56:03,820
+OK, so for the
+first one, this is
+
+1038
+00:56:03,820 --> 00:56:09,380
+going to be false because,
+if we have alpha equals 0,
+
+1039
+00:56:09,380 --> 00:56:12,040
+then we don't care about
+the TD target at all.
+
+1040
+00:56:12,040 --> 00:56:17,590
+It just totally drops
+out, so we never update.
+
+1041
+00:56:17,590 --> 00:56:23,020
+In the second case, this
+is true because this means,
+
+1042
+00:56:23,020 --> 00:56:26,320
+if alpha is equal to 1,
+then this part and this part
+
+1043
+00:56:26,320 --> 00:56:29,810
+cancels out, and
+we just have this.
+
+1044
+00:56:29,810 --> 00:56:33,590
+So that means whenever we see
+an update, we always update.
+
+1045
+00:56:33,590 --> 00:56:36,290
+We totally change our
+estimate, potentially.
+
+1046
+00:56:36,290 --> 00:56:38,510
+The third one is a
+little bit subtle.
+
+1047
+00:56:38,510 --> 00:56:39,553
+This is true.
+
+1048
+00:56:39,553 --> 00:56:42,220
+Does somebody want to give me an
+example where this might occur?
+
+1049
+00:56:46,110 --> 00:56:47,190
+Yeah.
+
+1050
+00:56:47,190 --> 00:56:49,530
+If you had two states
+where they just
+
+1051
+00:56:49,530 --> 00:56:52,960
+keep pointing at each other,
+is that the case for this one?
+
+1052
+00:56:52,960 --> 00:56:53,460
+Yes.
+
+1053
+00:56:53,460 --> 00:56:57,360
+And in particular, if you could
+go to either of those states
+
+1054
+00:56:57,360 --> 00:56:59,430
+with some probability.
+
+1055
+00:56:59,430 --> 00:56:59,940
+Yeah.
+
+1056
+00:56:59,940 --> 00:57:05,080
+So I sometimes think of
+it as like a coin flip.
+
+1057
+00:57:05,080 --> 00:57:08,160
+So imagine that you have one
+state where, after this, you
+
+1058
+00:57:08,160 --> 00:57:09,600
+either go to a state.
+
+1059
+00:57:09,600 --> 00:57:12,750
+Maybe it's 50% probability
+you get plus 1,
+
+1060
+00:57:12,750 --> 00:57:17,000
+and 50% probability
+you get minus 1.
+
+1061
+00:57:17,000 --> 00:57:18,800
+And then your
+problem just resets.
+
+1062
+00:57:18,800 --> 00:57:20,730
+So imagine, it's like
+a really short problem.
+
+1063
+00:57:20,730 --> 00:57:23,188
+You start off, you get 0 reward,
+you transition to a state,
+
+1064
+00:57:23,188 --> 00:57:24,780
+and then your episode resets.
+
+1065
+00:57:24,780 --> 00:57:27,770
+So in this case,
+either on that round,
+
+1066
+00:57:27,770 --> 00:57:30,440
+you're going to get plus 1, or
+you're going to get minus 1.
+
+1067
+00:57:30,440 --> 00:57:32,603
+So you either get plus
+1 or minus 1 here,
+
+1068
+00:57:32,603 --> 00:57:34,895
+and so you'll just flip back
+and forth between the plus
+
+1069
+00:57:34,895 --> 00:57:37,400
+1, minus 1, plus 1,
+minus 1, plus 1, minus 1.
+
+1070
+00:57:37,400 --> 00:57:38,840
+So that's just to
+highlight that,
+
+1071
+00:57:38,840 --> 00:57:42,110
+if you do have systems which
+are stochastic, the fact
+
+1072
+00:57:42,110 --> 00:57:43,820
+that, in your
+target, you are using
+
+1073
+00:57:43,820 --> 00:57:45,950
+a single sample of
+that stochasticity
+
+1074
+00:57:45,950 --> 00:57:50,150
+to approximate the
+expectation can be bad.
+
+1075
+00:57:50,150 --> 00:57:54,030
+But that does not mean-- and
+I guess this gets to, I think,
+
+1076
+00:57:54,030 --> 00:57:59,608
+that was asking before that,
+in many of these cases,
+
+1077
+00:57:59,608 --> 00:58:04,100
+there's the cases where it might
+be possible that this would
+
+1078
+00:58:04,100 --> 00:58:05,370
+happen, but it won't always.
+
+1079
+00:58:05,370 --> 00:58:08,480
+So in this case, there do
+exist deterministic systems
+
+1080
+00:58:08,480 --> 00:58:13,010
+where, even if alpha is
+equal to 1, you can converge.
+
+1081
+00:58:13,010 --> 00:58:14,330
+So again, think of something.
+
+1082
+00:58:14,330 --> 00:58:16,590
+I like often to think
+about really small MDPs
+
+1083
+00:58:16,590 --> 00:58:18,040
+to get some intuition for this.
+
+1084
+00:58:18,040 --> 00:58:21,000
+If you have a case where
+there's just a terminal state
+
+1085
+00:58:21,000 --> 00:58:24,780
+and there's no more transitions,
+so you get to some point
+
+1086
+00:58:24,780 --> 00:58:26,640
+where you always go
+to some terminal state
+
+1087
+00:58:26,640 --> 00:58:30,120
+and it's plus 10 there, and
+there's no more updates,
+
+1088
+00:58:30,120 --> 00:58:32,080
+then it's just plus 10.
+
+1089
+00:58:32,080 --> 00:58:34,430
+There's no more expectation.
+
+1090
+00:58:34,430 --> 00:58:37,040
+And in general, any case where,
+if there's no stochasticity,
+
+1091
+00:58:37,040 --> 00:58:38,540
+and you're near the
+end, and there's
+
+1092
+00:58:38,540 --> 00:58:41,000
+no more stochasticity
+in that episode,
+
+1093
+00:58:41,000 --> 00:58:44,760
+those can be cases where
+you'll still converge.
+
+1094
+00:58:44,760 --> 00:58:45,460
+OK, great.
+
+1095
+00:58:45,460 --> 00:58:49,620
+So I encourage you to go through
+some of the worked examples,
+
+1096
+00:58:49,620 --> 00:58:51,300
+if you want to, just
+to see some more
+
+1097
+00:58:51,300 --> 00:58:55,110
+comparisons over the difference
+between Monte Carlo and TD
+
+1098
+00:58:55,110 --> 00:58:57,330
+methods in this case.
+
+1099
+00:58:57,330 --> 00:58:59,650
+Just to summarize what
+we're doing in TD learning,
+
+1100
+00:58:59,650 --> 00:59:01,290
+we are bootstrapping
+and sampling.
+
+1101
+00:59:01,290 --> 00:59:03,600
+We're sampling to
+approximate our expectation
+
+1102
+00:59:03,600 --> 00:59:05,040
+over all the stochasticity.
+
+1103
+00:59:05,040 --> 00:59:08,760
+We're bootstrapping because we
+don't want to use a full return.
+
+1104
+00:59:08,760 --> 00:59:12,510
+We are, instead, taking
+V to approximate that.
+
+1105
+00:59:12,510 --> 00:59:15,280
+It can be used in episodic
+or infinite horizon settings.
+
+1106
+00:59:15,280 --> 00:59:17,910
+It is generally lower variance
+for doing lots, and lots,
+
+1107
+00:59:17,910 --> 00:59:19,830
+and lots of updates.
+
+1108
+00:59:19,830 --> 00:59:22,650
+It is a consistent estimator
+if your learning rate alpha
+
+1109
+00:59:22,650 --> 00:59:25,620
+satisfies the same conditions
+specified for incremental Monte
+
+1110
+00:59:25,620 --> 00:59:28,990
+Carlo policy evaluation.
+
+1111
+00:59:28,990 --> 00:59:32,350
+I here today only
+introduced TD0.
+
+1112
+00:59:32,350 --> 00:59:35,950
+What TD0 refers to is, you
+take the immediate reward,
+
+1113
+00:59:35,950 --> 00:59:38,020
+and then you immediately
+bootstrap and plug
+
+1114
+00:59:38,020 --> 00:59:41,720
+in the value of the next state.
+
+1115
+00:59:41,720 --> 00:59:44,130
+So we did r plus--
+
+1116
+00:59:52,420 --> 00:59:58,600
+we did r plus gamma V of
+s prime versus summing up
+
+1117
+00:59:58,600 --> 01:00:00,717
+all your discounted rewards
+for the whole episode.
+
+1118
+01:00:00,717 --> 01:00:03,050
+In general, you could have
+something kind of in between.
+
+1119
+01:00:03,050 --> 01:00:10,660
+So you could have plus rt
+plus 1 plus gamma squared.
+
+1120
+01:00:10,660 --> 01:00:12,520
+So you could have
+something like this.
+
+1121
+01:00:12,520 --> 01:00:15,010
+So in general, you
+could do some sort
+
+1122
+01:00:15,010 --> 01:00:20,260
+of combination of using partial
+returns, and then bootstrapping.
+
+1123
+01:00:20,260 --> 01:00:22,000
+There's a lot of
+different TD methods
+
+1124
+01:00:22,000 --> 01:00:24,880
+that interpolate
+between taking one step
+
+1125
+01:00:24,880 --> 01:00:28,000
+and then plugging in the
+value versus only plugging,
+
+1126
+01:00:28,000 --> 01:00:30,730
+not using any value
+function approximation.
+
+1127
+01:00:30,730 --> 01:00:32,810
+And if you want to think
+about this graphically,
+
+1128
+01:00:32,810 --> 01:00:38,090
+it's kind of thinking about do
+you plug-in v of s prime here,
+
+1129
+01:00:38,090 --> 01:00:39,920
+or do you plug it in--
+
+1130
+01:00:39,920 --> 01:00:43,405
+no, way lower.
+
+1131
+01:00:43,405 --> 01:00:43,905
+Yeah.
+
+1132
+01:00:47,200 --> 01:00:51,670
+Is there an empirical estimate
+of what a good trade off
+
+1133
+01:00:51,670 --> 01:00:57,760
+for TD for computational
+complexity versus performance?
+
+1134
+01:00:57,760 --> 01:01:00,580
+Have they found a
+good number for it?
+
+1135
+01:01:00,580 --> 01:01:01,180
+Good question.
+
+1136
+01:01:01,180 --> 01:01:05,980
+Unfortunately, in many cases, it
+will be depending on the domain.
+
+1137
+01:01:05,980 --> 01:01:08,300
+One thing, I think, to
+think about here, too,
+
+1138
+01:01:08,300 --> 01:01:12,850
+is that you can think of this
+part doesn't require the Markov
+
+1139
+01:01:12,850 --> 01:01:14,050
+assumption.
+
+1140
+01:01:14,050 --> 01:01:17,300
+So if you have a system
+where you're not confident,
+
+1141
+01:01:17,300 --> 01:01:20,800
+but maybe you're
+like, well, maybe I'm
+
+1142
+01:01:20,800 --> 01:01:23,560
+willing to say that I'll plug-in
+a Markov assumption eventually,
+
+1143
+01:01:23,560 --> 01:01:25,670
+because it's going
+to be lower variance,
+
+1144
+01:01:25,670 --> 01:01:28,300
+but I want to preserve the fact
+that maybe it's not Markov,
+
+1145
+01:01:28,300 --> 01:01:30,430
+then I sort of have
+a short horizon.
+
+1146
+01:01:30,430 --> 01:01:32,850
+Often people do use
+something in between the two.
+
+1147
+01:01:32,850 --> 01:01:36,530
+So they often do consider this
+between for multiple reasons,
+
+1148
+01:01:36,530 --> 01:01:38,340
+but it gives you some
+of this flexibility.
+
+1149
+01:01:38,340 --> 01:01:41,230
+It often is a lower bias.
+
+1150
+01:01:41,230 --> 01:01:44,400
+That's a great question.
+
+1151
+01:01:44,400 --> 01:01:44,900
+All right.
+
+1152
+01:01:44,900 --> 01:01:46,270
+What we're going to do
+now is think about also
+
+1153
+01:01:46,270 --> 01:01:49,000
+how some of these ideas relate
+to dynamic programming, which
+
+1154
+01:01:49,000 --> 01:01:51,260
+is what we saw in
+an earlier lecture,
+
+1155
+01:01:51,260 --> 01:01:53,780
+because we could use this
+also for policy evaluation.
+
+1156
+01:01:53,780 --> 01:01:56,260
+We know how to use it
+for policy evaluation
+
+1157
+01:01:56,260 --> 01:01:58,433
+if we are given the models.
+
+1158
+01:01:58,433 --> 01:02:00,350
+But some of you guys
+might have been thinking,
+
+1159
+01:02:00,350 --> 01:02:01,760
+well, we have data now.
+
+1160
+01:02:01,760 --> 01:02:03,490
+If we have data,
+because we're taking
+
+1161
+01:02:03,490 --> 01:02:05,530
+the policy in the
+environment, couldn't we
+
+1162
+01:02:05,530 --> 01:02:07,180
+use that to estimate
+a reward model,
+
+1163
+01:02:07,180 --> 01:02:09,940
+or couldn't we use that to
+estimate the dynamics model?
+
+1164
+01:02:09,940 --> 01:02:11,800
+And that's what's
+known as certainty
+
+1165
+01:02:11,800 --> 01:02:14,530
+equivalence approaches.
+
+1166
+01:02:14,530 --> 01:02:16,900
+So the idea here is that
+you're going to be getting data
+
+1167
+01:02:16,900 --> 01:02:20,890
+as you execute this policy, and
+you can compute a dynamics model
+
+1168
+01:02:20,890 --> 01:02:22,240
+from that data.
+
+1169
+01:02:22,240 --> 01:02:25,640
+So you could use a maximum
+likelihood MDP model.
+
+1170
+01:02:25,640 --> 01:02:28,010
+Remember, right now, we're
+in the tabular setting.
+
+1171
+01:02:28,010 --> 01:02:30,950
+So we can have a parameter for
+every single state in action.
+
+1172
+01:02:30,950 --> 01:02:32,090
+So we can just count.
+
+1173
+01:02:32,090 --> 01:02:34,540
+We can just say, how many
+times was I in this state,
+
+1174
+01:02:34,540 --> 01:02:37,480
+took this action, and
+transition to this next state,
+
+1175
+01:02:37,480 --> 01:02:40,810
+divided by the number of times
+I was in that state in action.
+
+1176
+01:02:40,810 --> 01:02:43,993
+So this just gives you a
+maximum likelihood estimate
+
+1177
+01:02:43,993 --> 01:02:46,160
+of the dynamics model, and
+you can do the same thing
+
+1178
+01:02:46,160 --> 01:02:47,780
+for the reward model.
+
+1179
+01:02:47,780 --> 01:02:49,280
+And of course, as
+you might imagine,
+
+1180
+01:02:49,280 --> 01:02:51,405
+you can do this with much
+more complicated function
+
+1181
+01:02:51,405 --> 01:02:54,200
+approximators, like deep
+neural networks, too.
+
+1182
+01:02:54,200 --> 01:02:57,740
+But the idea is that,
+once you have this model,
+
+1183
+01:02:57,740 --> 01:03:01,130
+and it's called a certainty
+equivalence model because we're
+
+1184
+01:03:01,130 --> 01:03:04,290
+now going to ignore any
+error in these models.
+
+1185
+01:03:04,290 --> 01:03:05,977
+So we have finite data.
+
+1186
+01:03:05,977 --> 01:03:07,560
+These models will
+definitely be wrong,
+
+1187
+01:03:07,560 --> 01:03:08,860
+but let's ignore that for now.
+
+1188
+01:03:08,860 --> 01:03:12,480
+So once you have this
+maximum likelihood MDP model,
+
+1189
+01:03:12,480 --> 01:03:15,650
+you can just compute
+the value of a policy,
+
+1190
+01:03:15,650 --> 01:03:18,740
+using the same methods we
+saw last week, because you
+
+1191
+01:03:18,740 --> 01:03:21,950
+have a dynamics model
+now and a reward model.
+
+1192
+01:03:21,950 --> 01:03:23,700
+And you can see some
+examples about this
+
+1193
+01:03:23,700 --> 01:03:25,075
+at the end of the
+lecture slides.
+
+1194
+01:03:30,330 --> 01:03:33,390
+So one of the benefits of this,
+and this gets to the question,
+
+1195
+01:03:33,390 --> 01:03:35,510
+is this is really
+data efficient.
+
+1196
+01:03:35,510 --> 01:03:37,560
+So I showed you an
+example for the Mars Rover
+
+1197
+01:03:37,560 --> 01:03:40,980
+before, where we only
+updated one of the states
+
+1198
+01:03:40,980 --> 01:03:42,240
+with TD learning.
+
+1199
+01:03:42,240 --> 01:03:46,510
+We updated three of the
+states with Monte Carlo.
+
+1200
+01:03:46,510 --> 01:03:49,240
+What this does here
+is it tries to update.
+
+1201
+01:03:49,240 --> 01:03:50,850
+It computes a
+dynamic small reward
+
+1202
+01:03:50,850 --> 01:03:52,960
+model for all
+states and actions,
+
+1203
+01:03:52,960 --> 01:03:56,200
+and then it tries to
+update all of them.
+
+1204
+01:03:56,200 --> 01:04:00,160
+OK, so it's going to compute a
+value for every single state.
+
+1205
+01:04:00,160 --> 01:04:02,500
+Now, the downside of
+that is that now we're
+
+1206
+01:04:02,500 --> 01:04:05,140
+doing policy evaluation with
+a full model, which is either
+
+1207
+01:04:05,140 --> 01:04:07,930
+going to be something like s
+squared a for iterative methods,
+
+1208
+01:04:07,930 --> 01:04:09,910
+or maybe even worse.
+
+1209
+01:04:09,910 --> 01:04:11,480
+So it's computationally
+expensive,
+
+1210
+01:04:11,480 --> 01:04:14,890
+but it's really data efficient.
+
+1211
+01:04:14,890 --> 01:04:18,100
+Because as soon as you reach
+any state for which you
+
+1212
+01:04:18,100 --> 01:04:21,130
+get, say, a positive reward,
+you can kind of propagate that
+
+1213
+01:04:21,130 --> 01:04:23,790
+to any other state that is
+possible to reach from there.
+
+1214
+01:04:26,340 --> 01:04:27,780
+It's still consistent.
+
+1215
+01:04:27,780 --> 01:04:32,780
+It's going to converge to the
+right thing for Markov models,
+
+1216
+01:04:32,780 --> 01:04:36,110
+and it can easily generally be
+used for all policy evaluation,
+
+1217
+01:04:36,110 --> 01:04:37,360
+which we're going to get into.
+
+1218
+01:04:37,360 --> 01:04:37,800
+Yeah.
+
+1219
+01:04:37,800 --> 01:04:38,300
+Sorry.
+
+1220
+01:04:38,300 --> 01:04:40,480
+What is Nsa in this equation.
+
+1221
+01:04:40,480 --> 01:04:40,980
+Sorry.
+
+1222
+01:04:40,980 --> 01:04:41,430
+Great question.
+
+1223
+01:04:41,430 --> 01:04:43,763
+Nsa here is the number of
+times we've been in that state
+
+1224
+01:04:43,763 --> 01:04:46,045
+and taken that action.
+
+1225
+01:04:46,045 --> 01:04:47,045
+Yeah, so this is counts.
+
+1226
+01:04:59,910 --> 01:05:00,570
+Yeah.
+
+1227
+01:05:00,570 --> 01:05:04,230
+It seems pretty
+similar to Monte Carlo.
+
+1228
+01:05:04,230 --> 01:05:08,220
+So is just the difference that
+you're generating probability,
+
+1229
+01:05:08,220 --> 01:05:10,590
+as opposed to calculating G?
+
+1230
+01:05:10,590 --> 01:05:11,525
+Great question.
+
+1231
+01:05:11,525 --> 01:05:12,900
+We're going to
+hold that thought.
+
+1232
+01:05:12,900 --> 01:05:14,858
+He's asking how similar
+is this to Monte Carlo.
+
+1233
+01:05:14,858 --> 01:05:16,650
+It's actually going to
+be pretty different.
+
+1234
+01:05:16,650 --> 01:05:18,510
+We're going to see
+this in a second.
+
+1235
+01:05:18,510 --> 01:05:22,720
+We are using our data
+similar to Monte Carlo.
+
+1236
+01:05:22,720 --> 01:05:26,500
+We're going to use the data
+here to compute models and then
+
+1237
+01:05:26,500 --> 01:05:27,513
+propagate information.
+
+1238
+01:05:27,513 --> 01:05:28,930
+But they're going
+to end up making
+
+1239
+01:05:28,930 --> 01:05:30,500
+some interesting
+different decisions.
+
+1240
+01:05:30,500 --> 01:05:31,700
+So let's see that now.
+
+1241
+01:05:31,700 --> 01:05:34,150
+It's a great precursor.
+
+1242
+01:05:34,150 --> 01:05:34,650
+OK.
+
+1243
+01:05:34,650 --> 01:05:37,002
+So let's get into batch
+policy evaluation.
+
+1244
+01:05:37,002 --> 01:05:38,960
+So I've said there are
+these different methods.
+
+1245
+01:05:38,960 --> 01:05:41,085
+They might have different
+computational complexity.
+
+1246
+01:05:41,085 --> 01:05:43,570
+They might be more or
+less data efficient.
+
+1247
+01:05:43,570 --> 01:05:46,060
+So one thing that you
+might imagine doing,
+
+1248
+01:05:46,060 --> 01:05:48,850
+and we'll see this a lot
+shortly, a lot more next time,
+
+1249
+01:05:48,850 --> 01:05:51,820
+is, well, if I
+have some data, how
+
+1250
+01:05:51,820 --> 01:05:53,923
+could I best use the
+data that I have.
+
+1251
+01:05:53,923 --> 01:05:56,590
+And this comes a lot up a lot in
+the research that me and my lab
+
+1252
+01:05:56,590 --> 01:05:59,260
+do, because we're often dealing
+with patient data, or student
+
+1253
+01:05:59,260 --> 01:06:01,480
+data, or legal data,
+or others, where
+
+1254
+01:06:01,480 --> 01:06:03,910
+it's really expensive to get
+the data, or it's costly,
+
+1255
+01:06:03,910 --> 01:06:04,910
+or it could be harmful.
+
+1256
+01:06:04,910 --> 01:06:06,670
+And we want to get
+as much information
+
+1257
+01:06:06,670 --> 01:06:08,620
+as we can out of
+the data we have.
+
+1258
+01:06:08,620 --> 01:06:10,810
+So when I say batch,
+what I mean is,
+
+1259
+01:06:10,810 --> 01:06:13,090
+imagine that you have
+a set of k episodes.
+
+1260
+01:06:13,090 --> 01:06:14,590
+And now what you
+want to do is you
+
+1261
+01:06:14,590 --> 01:06:19,115
+want to do policy evaluation
+just with that data.
+
+1262
+01:06:19,115 --> 01:06:20,740
+So what we're going
+to do is repeatedly
+
+1263
+01:06:20,740 --> 01:06:23,620
+sample one of the episodes
+that we have of those k,
+
+1264
+01:06:23,620 --> 01:06:27,052
+and we're going to apply Monte
+Carlo or TD0 to that episode.
+
+1265
+01:06:27,052 --> 01:06:29,260
+We're just going to do that
+over, and over, and over,
+
+1266
+01:06:29,260 --> 01:06:30,320
+and over again.
+
+1267
+01:06:30,320 --> 01:06:32,700
+And we'll see this a lot
+more next time, as well.
+
+1268
+01:06:32,700 --> 01:06:35,440
+And so the idea is
+to just understand,
+
+1269
+01:06:35,440 --> 01:06:39,250
+if we do this, given that finite
+amount of data, what will Monte
+
+1270
+01:06:39,250 --> 01:06:41,620
+Carlo and TD0
+converge to, in terms
+
+1271
+01:06:41,620 --> 01:06:44,410
+of the evaluation of the policy.
+
+1272
+01:06:44,410 --> 01:06:45,760
+So let's go through that.
+
+1273
+01:06:45,760 --> 01:06:48,010
+There's this really nice
+example from Sutton and Barto
+
+1274
+01:06:48,010 --> 01:06:49,780
+to illustrate this.
+
+1275
+01:06:49,780 --> 01:06:51,650
+We have a really small domain.
+
+1276
+01:06:51,650 --> 01:06:52,678
+We have two states.
+
+1277
+01:06:52,678 --> 01:06:54,470
+And we're going to say
+gamma is equal to 1.
+
+1278
+01:06:54,470 --> 01:06:55,810
+There's no discounting.
+
+1279
+01:06:55,810 --> 01:06:58,310
+And we have eight
+episodes of experience.
+
+1280
+01:06:58,310 --> 01:07:05,480
+So in one episode, we started in
+state A, we got a reward of 0,
+
+1281
+01:07:05,480 --> 01:07:08,840
+we transitioned to B, and
+we got another reward of 0.
+
+1282
+01:07:08,840 --> 01:07:09,550
+OK?
+
+1283
+01:07:09,550 --> 01:07:12,430
+So in this case, you
+can think of it as this.
+
+1284
+01:07:12,430 --> 01:07:14,980
+You get a trajectory like that.
+
+1285
+01:07:14,980 --> 01:07:19,270
+In some episodes, we
+started in state B,
+
+1286
+01:07:19,270 --> 01:07:21,880
+and we just got an
+immediate reward of 1,
+
+1287
+01:07:21,880 --> 01:07:23,690
+and we observed that six times.
+
+1288
+01:07:23,690 --> 01:07:26,440
+So in six trajectories we just
+happened to start in state B,
+
+1289
+01:07:26,440 --> 01:07:27,980
+and we got a reward of 1.
+
+1290
+01:07:27,980 --> 01:07:30,850
+And then in one trajectory,
+we started in state B,
+
+1291
+01:07:30,850 --> 01:07:33,930
+and we got our reward of 0.
+
+1292
+01:07:33,930 --> 01:07:37,710
+So first, imagine if you ran
+TD updates over this data
+
+1293
+01:07:37,710 --> 01:07:39,720
+an infinite amount of time.
+
+1294
+01:07:39,720 --> 01:07:42,485
+What do you think the
+estimate of VB would be?
+
+1295
+01:07:45,630 --> 01:07:47,520
+Try to remember what
+it works for there,
+
+1296
+01:07:47,520 --> 01:07:52,280
+as we have 1 minus alpha
+times our old estimate.
+
+1297
+01:07:52,280 --> 01:07:56,510
+So that's VB plus alpha
+times our immediate reward,
+
+1298
+01:07:56,510 --> 01:07:58,830
+plus gamma, times
+the next state.
+
+1299
+01:07:58,830 --> 01:08:05,590
+But here, it's just terminal
+because we always terminate.
+
+1300
+01:08:05,590 --> 01:08:07,310
+After B, we always terminate.
+
+1301
+01:08:07,310 --> 01:08:10,210
+So you never get any future
+discounted rewards in this case.
+
+1302
+01:08:10,210 --> 01:08:12,528
+So what the updates look
+like for TD learning
+
+1303
+01:08:12,528 --> 01:08:15,070
+is that you would have 1 minus
+alpha times your old estimate,
+
+1304
+01:08:15,070 --> 01:08:19,359
+plus alpha times whatever
+reward you get in B.
+
+1305
+01:08:19,359 --> 01:08:21,670
+And imagine you just
+iterate over these
+
+1306
+01:08:21,670 --> 01:08:24,529
+over, and over, and over again.
+
+1307
+01:08:24,529 --> 01:08:26,029
+Somebody have any
+guesses of what
+
+1308
+01:08:26,029 --> 01:08:28,376
+the reward would be for V of B?
+
+1309
+01:08:38,410 --> 01:08:41,460
+Would it be 0.75?
+
+1310
+01:08:41,460 --> 01:08:41,960
+Yeah.
+
+1311
+01:08:41,960 --> 01:08:52,990
+Somebody else want to
+explain now why it's 0.75?
+
+1312
+01:08:52,990 --> 01:08:55,450
+The season mods?
+
+1313
+01:08:55,450 --> 01:08:58,810
+Yeah, because in this case,
+we had eight episodes.
+
+1314
+01:08:58,810 --> 01:09:03,710
+In two of them, when we
+started in B, we got 0.
+
+1315
+01:09:03,710 --> 01:09:06,670
+And in six of them, we got 1.
+
+1316
+01:09:06,670 --> 01:09:09,010
+So we just average
+those rewards.
+
+1317
+01:09:09,010 --> 01:09:12,170
+And imagine, we're just doing
+this many, many, many, many,
+
+1318
+01:09:12,170 --> 01:09:14,500
+many, many times.
+
+1319
+01:09:14,500 --> 01:09:18,160
+So eventually, you would just
+converge to this estimate
+
+1320
+01:09:18,160 --> 01:09:22,130
+being 0.75.
+
+1321
+01:09:22,130 --> 01:09:24,800
+What about for Monte Carlo?
+
+1322
+01:09:24,800 --> 01:09:30,890
+So let's do Monte Carlo for V
+of B. What would that look like?
+
+1323
+01:09:30,890 --> 01:09:32,750
+So remember, for
+Monte Carlo, it would
+
+1324
+01:09:32,750 --> 01:09:40,130
+be 1 minus alpha times V
+of B, plus alpha times G,
+
+1325
+01:09:40,130 --> 01:09:50,540
+where you start in state B. Is
+it going to be the same thing?
+
+1326
+01:09:50,540 --> 01:09:51,720
+Is it going to be different?
+
+1327
+01:10:00,200 --> 01:10:06,320
+So Monte Carlo, we're
+averaging over all the returns
+
+1328
+01:10:06,320 --> 01:10:07,675
+we get starting in that state.
+
+1329
+01:10:18,410 --> 01:10:19,880
+Yeah.
+
+1330
+01:10:19,880 --> 01:10:24,020
+So when we start at B, so
+then wouldn't it be 6 over 7?
+
+1331
+01:10:24,020 --> 01:10:25,025
+6 over 8.
+
+1332
+01:10:25,025 --> 01:10:26,190
+6 over 8, yeah.
+
+1333
+01:10:26,190 --> 01:10:26,900
+Yeah.
+
+1334
+01:10:26,900 --> 01:10:30,245
+But don't we start at
+A in the first one?
+
+1335
+01:10:30,245 --> 01:10:32,120
+In one episode, we start
+in A. But we're just
+
+1336
+01:10:32,120 --> 01:10:33,912
+trying to compute the
+value of B right now.
+
+1337
+01:10:33,912 --> 01:10:35,390
+We'll get to A in
+a second, yeah.
+
+1338
+01:10:35,390 --> 01:10:37,340
+You're thinking ahead.
+
+1339
+01:10:37,340 --> 01:10:38,010
+Yeah.
+
+1340
+01:10:38,010 --> 01:10:39,805
+So the Monte Carlo estimate.
+
+1341
+01:10:39,805 --> 01:10:41,180
+So we're just
+trying to contrast.
+
+1342
+01:10:41,180 --> 01:10:42,590
+So just to recap,
+what we're trying
+
+1343
+01:10:42,590 --> 01:10:43,730
+to do here is we're
+trying to see,
+
+1344
+01:10:43,730 --> 01:10:46,070
+will these two algorithms
+converge to the same thing
+
+1345
+01:10:46,070 --> 01:10:46,710
+or not.
+
+1346
+01:10:46,710 --> 01:10:49,085
+We're going to start off and
+look at what the value would
+
+1347
+01:10:49,085 --> 01:10:51,890
+be of state B. In
+TD, we would converge
+
+1348
+01:10:51,890 --> 01:10:56,960
+to 0.75 because the immediate
+reward is either 1 or 0,
+
+1349
+01:10:56,960 --> 01:11:00,830
+and the discounted sum of future
+woods is 0 because we terminate.
+
+1350
+01:11:00,830 --> 01:11:03,410
+And in Monte Carlo
+we just average over
+
+1351
+01:11:03,410 --> 01:11:05,390
+all the returns we get
+when we started in B,
+
+1352
+01:11:05,390 --> 01:11:09,250
+and that is also 6 divided by 8.
+
+1353
+01:11:09,250 --> 01:11:12,040
+All right, so now
+this is the hard one.
+
+1354
+01:11:12,040 --> 01:11:12,760
+OK.
+
+1355
+01:11:12,760 --> 01:11:15,610
+What about of V of A?
+
+1356
+01:11:15,610 --> 01:11:19,090
+What will we converge
+to in these two cases?
+
+1357
+01:11:19,090 --> 01:11:21,277
+So let's do Check
+Your Understanding,
+
+1358
+01:11:21,277 --> 01:11:22,610
+and you can respond in the poll.
+
+1359
+01:11:22,610 --> 01:11:24,485
+And feel free to talk
+to someone next to you.
+
+1360
+01:11:26,982 --> 01:11:28,690
+And again, the intent
+of this is to think
+
+1361
+01:11:28,690 --> 01:11:31,420
+about, are these actually
+computing the same thing
+
+1362
+01:11:31,420 --> 01:11:32,535
+or not in this case.
+
+1363
+01:11:35,080 --> 01:11:36,910
+And remember, this is
+a different setting
+
+1364
+01:11:36,910 --> 01:11:39,160
+than what I told you before,
+that both of these things
+
+1365
+01:11:39,160 --> 01:11:40,610
+can be consistent.
+
+1366
+01:11:40,610 --> 01:11:42,695
+But that was if you
+get infinite data.
+
+1367
+01:11:42,695 --> 01:11:44,320
+What this is looking
+at is, if you only
+
+1368
+01:11:44,320 --> 01:11:46,930
+have a finite amount of
+data, and you just go over it
+
+1369
+01:11:46,930 --> 01:11:50,050
+over, and over again, either
+with Monte Carlo updates
+
+1370
+01:11:50,050 --> 01:11:53,040
+or with TD, will you
+converge to the same thing.
+
+1371
+01:11:56,250 --> 01:11:58,000
+And if you're not sure
+or you're confused,
+
+1372
+01:11:58,000 --> 01:11:59,625
+feel free to put that
+in the poll, too.
+
+1373
+01:13:19,960 --> 01:13:22,360
+There's lots of
+different answers here.
+
+1374
+01:13:22,360 --> 01:13:24,718
+So this is a great one to
+talk to somebody nearby you.
+
+1375
+01:13:24,718 --> 01:13:27,010
+So why don't you see if you're
+getting the same things?
+
+1376
+01:13:27,010 --> 01:13:29,420
+And we can use our
+collective intelligence.
+
+1377
+01:13:37,228 --> 01:13:40,786
+[INDISTINCT SPEECH]
+
+1378
+01:15:04,582 --> 01:15:06,290
+OK, I'm hearing a lot
+of good discussion,
+
+1379
+01:15:06,290 --> 01:15:07,373
+so I'm sorry to interrupt.
+
+1380
+01:15:07,373 --> 01:15:08,840
+But this is kind of a fun one.
+
+1381
+01:15:08,840 --> 01:15:13,420
+So let's start with TD.
+
+1382
+01:15:13,420 --> 01:15:18,733
+So someone want to explain
+why it's 0.75 for TD?
+
+1383
+01:15:18,733 --> 01:15:20,400
+There are multiple
+people that got that.
+
+1384
+01:15:23,107 --> 01:15:25,690
+Yeah, would you explain what you
+and your partner were saying?
+
+1385
+01:15:25,690 --> 01:15:26,230
+Yeah.
+
+1386
+01:15:26,230 --> 01:15:28,180
+So I think if you just--
+
+1387
+01:15:28,180 --> 01:15:31,100
+so we're just looking at this.
+
+1388
+01:15:31,100 --> 01:15:33,620
+And remind me your name.
+
+1389
+01:15:33,620 --> 01:15:34,120
+Sorry.
+
+1390
+01:15:34,120 --> 01:15:34,620
+Yeah.
+
+1391
+01:15:34,620 --> 01:15:40,100
+There's this one episode where
+we're at A. So in that episode,
+
+1392
+01:15:40,100 --> 01:15:42,080
+the immediate reward
+is 0, but then we
+
+1393
+01:15:42,080 --> 01:15:47,270
+have to do plus gamma times the
+reward of the next state, B.
+
+1394
+01:15:47,270 --> 01:15:50,580
+And then V pi of B is 0.75.
+
+1395
+01:15:50,580 --> 01:15:51,960
+We got it in the previous part.
+
+1396
+01:15:51,960 --> 01:15:54,710
+So the value is 0.75.
+
+1397
+01:15:54,710 --> 01:15:55,610
+That's right.
+
+1398
+01:15:55,610 --> 01:15:57,990
+So Monte Carlo is
+not that estimate.
+
+1399
+01:15:57,990 --> 01:16:00,450
+So TD gives you 0.75.
+
+1400
+01:16:00,450 --> 01:16:02,622
+What does Monte Carlo give you?
+
+1401
+01:16:02,622 --> 01:16:09,400
+It's not 0.75.
+
+1402
+01:16:09,400 --> 01:16:12,400
+And again, multiple of
+you guys got it correct.
+
+1403
+01:16:12,400 --> 01:16:13,480
+I just have a question.
+
+1404
+01:16:13,480 --> 01:16:15,940
+Is gamma that same
+as alpha here?
+
+1405
+01:16:15,940 --> 01:16:17,280
+Good question.
+
+1406
+01:16:17,280 --> 01:16:17,780
+No.
+
+1407
+01:16:17,780 --> 01:16:19,697
+Here, I'm assuming
+that gamma is 1.
+
+1408
+01:16:19,697 --> 01:16:20,780
+And it's a great question.
+
+1409
+01:16:20,780 --> 01:16:22,550
+So someone else was
+asking this, too.
+
+1410
+01:16:22,550 --> 01:16:29,770
+So I'm assuming that
+alpha is set correctly
+
+1411
+01:16:29,770 --> 01:16:33,070
+for these to converge.
+
+1412
+01:16:33,070 --> 01:16:34,195
+Yeah, it's a good question.
+
+1413
+01:16:34,195 --> 01:16:35,180
+Sorry, someone
+else had that, too.
+
+1414
+01:16:35,180 --> 01:16:37,160
+So I'm assuming that
+we're going over our data
+
+1415
+01:16:37,160 --> 01:16:39,327
+an infinite amount of time,
+but we're decaying alpha
+
+1416
+01:16:39,327 --> 01:16:40,630
+correctly as we do that.
+
+1417
+01:16:40,630 --> 01:16:41,948
+It's a good question.
+
+1418
+01:16:41,948 --> 01:16:43,740
+Do you want to explain
+what Monte Carlo is?
+
+1419
+01:16:43,740 --> 01:16:48,210
+It's not 0.75.
+
+1420
+01:16:48,210 --> 01:16:49,290
+Going to be 0?
+
+1421
+01:16:49,290 --> 01:16:50,798
+Yes, it is.
+
+1422
+01:16:50,798 --> 01:16:51,340
+That's great.
+
+1423
+01:16:51,340 --> 01:16:52,798
+Someone want to
+explain why it's 0?
+
+1424
+01:16:55,410 --> 01:16:56,735
+So Monte Carlo is 0.
+
+1425
+01:17:00,030 --> 01:17:01,580
+Yeah.
+
+1426
+01:17:01,580 --> 01:17:04,680
+So when we see one
+trajectory where A shows up,
+
+1427
+01:17:04,680 --> 01:17:06,318
+and [INAUDIBLE].
+
+1428
+01:17:06,318 --> 01:17:06,860
+That's right.
+
+1429
+01:17:06,860 --> 01:17:08,567
+Remind me of your name.
+
+1430
+01:17:08,567 --> 01:17:10,400
+Yeah, so what [MUTED]
+said is exactly right.
+
+1431
+01:17:10,400 --> 01:17:12,130
+So we've only seen
+one trajectory,
+
+1432
+01:17:12,130 --> 01:17:14,540
+and I know some other people
+made the same observation.
+
+1433
+01:17:14,540 --> 01:17:16,240
+So we've only seen
+one trajectory
+
+1434
+01:17:16,240 --> 01:17:18,220
+where there was A at all.
+
+1435
+01:17:18,220 --> 01:17:21,670
+We, for Monte Carlo, we just
+average over all the returns
+
+1436
+01:17:21,670 --> 01:17:23,030
+we've seen where that.
+
+1437
+01:17:23,030 --> 01:17:24,110
+So that's only 0.
+
+1438
+01:17:24,110 --> 01:17:28,030
+So I bring this up because,
+even though, asymptotically, all
+
+1439
+01:17:28,030 --> 01:17:30,010
+of these things converge
+to the right thing
+
+1440
+01:17:30,010 --> 01:17:32,822
+under some mild assumptions,
+with finite data, which
+
+1441
+01:17:32,822 --> 01:17:35,030
+is what we're almost always
+going to have in reality,
+
+1442
+01:17:35,030 --> 01:17:36,642
+even if you go over
+it multiple times,
+
+1443
+01:17:36,642 --> 01:17:38,350
+they're converging
+to, sometimes, totally
+
+1444
+01:17:38,350 --> 01:17:39,230
+different things.
+
+1445
+01:17:39,230 --> 01:17:42,010
+And here is what they are
+converging to, in general.
+
+1446
+01:17:42,010 --> 01:17:45,430
+Monte Carlo is converging
+to the minimum mean squared
+
+1447
+01:17:45,430 --> 01:17:48,610
+error with respect to the
+error observed returns.
+
+1448
+01:17:48,610 --> 01:17:50,830
+So it's just going to
+set it so it minimizes
+
+1449
+01:17:50,830 --> 01:17:53,320
+the error between the
+observed returns it's seeing
+
+1450
+01:17:53,320 --> 01:17:56,740
+and its value.
+
+1451
+01:17:56,740 --> 01:18:00,310
+So in this case, that
+would be V of A equals 0.
+
+1452
+01:18:00,310 --> 01:18:02,450
+So that is the minimum
+mean squared error.
+
+1453
+01:18:02,450 --> 01:18:05,740
+TD0 converges to the
+dynamic programming
+
+1454
+01:18:05,740 --> 01:18:09,170
+policy for the MDP with a
+maximum likelihood model
+
+1455
+01:18:09,170 --> 01:18:10,485
+estimates.
+
+1456
+01:18:10,485 --> 01:18:12,110
+So you guys remember
+how we just talked
+
+1457
+01:18:12,110 --> 01:18:13,800
+about certainty equivalence?
+
+1458
+01:18:13,800 --> 01:18:18,140
+What we were doing here is,
+we're taking all our data.
+
+1459
+01:18:18,140 --> 01:18:21,290
+The answer you get from TD0
+if you do this batch process
+
+1460
+01:18:21,290 --> 01:18:25,160
+is the same as if you had
+computed your maximum likelihood
+
+1461
+01:18:25,160 --> 01:18:28,230
+Markov decision process
+from the data you have,
+
+1462
+01:18:28,230 --> 01:18:30,890
+and then you did dynamic
+programming with it.
+
+1463
+01:18:30,890 --> 01:18:31,640
+OK?
+
+1464
+01:18:31,640 --> 01:18:36,260
+So that will be exactly
+the same as this.
+
+1465
+01:18:36,260 --> 01:18:38,840
+And so in particular, it
+is leveraging and using
+
+1466
+01:18:38,840 --> 01:18:40,660
+the Markov assumption.
+
+1467
+01:18:40,660 --> 01:18:44,720
+And that's why it could actually
+chain these things together.
+
+1468
+01:18:44,720 --> 01:18:47,810
+So you could see
+here, for Monte Carlo,
+
+1469
+01:18:47,810 --> 01:18:51,130
+it doesn't know
+that the value of A
+
+1470
+01:18:51,130 --> 01:18:53,650
+has to be related
+to the value of B
+
+1471
+01:18:53,650 --> 01:18:57,010
+in terms of this
+bootstrapping relationship.
+
+1472
+01:18:57,010 --> 01:19:00,730
+But TD is making that explicit.
+
+1473
+01:19:00,730 --> 01:19:03,520
+It's using the Markov decision
+process to say, the value of A
+
+1474
+01:19:03,520 --> 01:19:06,760
+has to exactly be equal to the
+immediate reward you get in A,
+
+1475
+01:19:06,760 --> 01:19:09,530
+plus gamma times the states
+that I could get into,
+
+1476
+01:19:09,530 --> 01:19:12,810
+which is always B,
+so the value of B.
+
+1477
+01:19:12,810 --> 01:19:16,530
+So TD learning is explicitly
+baking that into the solution
+
+1478
+01:19:16,530 --> 01:19:18,200
+you get, whereas
+Monte Carlo is not.
+
+1479
+01:19:18,200 --> 01:19:20,742
+Monte Carlo is just trying to
+minimize the mean squared error
+
+1480
+01:19:20,742 --> 01:19:22,050
+for the returns you see.
+
+1481
+01:19:22,050 --> 01:19:24,790
+So they can end up giving
+you very different solutions.
+
+1482
+01:19:24,790 --> 01:19:28,080
+And depending on whether your
+Markov property is really
+
+1483
+01:19:28,080 --> 01:19:30,185
+satisfied or not, you might
+want one or the other.
+
+1484
+01:19:33,200 --> 01:19:33,700
+Awesome.
+
+1485
+01:19:33,700 --> 01:19:36,820
+So this just summarizes quickly
+some of the different properties
+
+1486
+01:19:36,820 --> 01:19:38,290
+and approaches and
+just highlights
+
+1487
+01:19:38,290 --> 01:19:40,960
+here that temporal difference
+really does exploit this Markov
+
+1488
+01:19:40,960 --> 01:19:41,470
+structure.
+
+1489
+01:19:41,470 --> 01:19:43,095
+And that could be
+really helpful if you
+
+1490
+01:19:43,095 --> 01:19:45,880
+want to leverage that to get
+better estimates of earlier
+
+1491
+01:19:45,880 --> 01:19:48,610
+states, like in the
+case we just saw.
+
+1492
+01:19:48,610 --> 01:19:50,170
+So just to summarize,
+we finished
+
+1493
+01:19:50,170 --> 01:19:53,660
+going through policy evaluation
+with tabular settings.
+
+1494
+01:19:53,660 --> 01:19:56,110
+And then on Wednesday,
+what we're going to do
+
+1495
+01:19:56,110 --> 01:19:57,970
+is talk about control,
+and we'll start
+
+1496
+01:19:57,970 --> 01:19:59,940
+to talk about function
+approximation, as well.
+
+1497
+01:19:59,940 --> 01:20:00,440
+All right.
+
+1498
+01:20:00,440 --> 01:20:00,940
+Thanks.
+
+1499
+01:20:00,940 --> 01:20:02,520
+See you then.
+

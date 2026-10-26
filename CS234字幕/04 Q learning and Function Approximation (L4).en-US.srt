@@ -1,0 +1,7864 @@
+1
+00:00:05,910 --> 00:00:06,410
+All right.
+
+2
+00:00:06,410 --> 00:00:07,270
+Come back.
+
+3
+00:00:07,270 --> 00:00:10,700
+We're going to start lecture
+4 in reinforcement learning.
+
+4
+00:00:10,700 --> 00:00:13,160
+So we're going to be
+covering today Q-learning,
+
+5
+00:00:13,160 --> 00:00:15,080
+and we're going to
+cover Deep Q-learning.
+
+6
+00:00:15,080 --> 00:00:17,670
+This result came
+out in roughly 2014.
+
+7
+00:00:17,670 --> 00:00:19,420
+And I remember it being
+a really big deal,
+
+8
+00:00:19,420 --> 00:00:21,670
+because one of the big
+conferences, Neural Information
+
+9
+00:00:21,670 --> 00:00:24,040
+Processing Systems,
+DeepMind came
+
+10
+00:00:24,040 --> 00:00:26,890
+and had this amazing
+demonstration that they were
+
+11
+00:00:26,890 --> 00:00:29,800
+able to now have an agent
+that could learn to play
+
+12
+00:00:29,800 --> 00:00:31,570
+video games really well.
+
+13
+00:00:31,570 --> 00:00:33,070
+And an important
+thing to note here
+
+14
+00:00:33,070 --> 00:00:36,290
+is like they are doing video
+games from pixel input.
+
+15
+00:00:36,290 --> 00:00:38,840
+So like they're just getting
+the same input as what we do.
+
+16
+00:00:38,840 --> 00:00:40,450
+And what the agent
+was learning to do
+
+17
+00:00:40,450 --> 00:00:44,470
+is to control the game through
+this and through reinforcement
+
+18
+00:00:44,470 --> 00:00:45,430
+learning.
+
+19
+00:00:45,430 --> 00:00:47,260
+And so we'll talk today
+about the algorithm
+
+20
+00:00:47,260 --> 00:00:50,570
+that they did to do that, and
+we'll build up to that point.
+
+21
+00:00:50,570 --> 00:00:53,740
+And this is a short video
+they show to just illustrate
+
+22
+00:00:53,740 --> 00:00:58,120
+how the agent is learning
+through direct experience
+
+23
+00:00:58,120 --> 00:01:00,000
+to try to optimize the score.
+
+24
+00:01:00,000 --> 00:01:01,450
+And so what it
+learns in this case
+
+25
+00:01:01,450 --> 00:01:03,760
+is it starts to learn
+particular strategies that
+
+26
+00:01:03,760 --> 00:01:07,430
+allow it to do really
+well, which may or may not
+
+27
+00:01:07,430 --> 00:01:10,460
+be the same ones as
+what humans would use.
+
+28
+00:01:10,460 --> 00:01:11,940
+And so it was pretty incredible.
+
+29
+00:01:11,940 --> 00:01:15,410
+This was one of the sort of
+most impressive successes
+
+30
+00:01:15,410 --> 00:01:17,960
+of reinforcement
+learning at this point,
+
+31
+00:01:17,960 --> 00:01:20,630
+particularly at trying to
+do tasks that humans can do
+
+32
+00:01:20,630 --> 00:01:23,150
+as well and from pixel inputs.
+
+33
+00:01:23,150 --> 00:01:25,870
+So we're going to see today
+how that algorithm works.
+
+34
+00:01:28,750 --> 00:01:29,250
+All right.
+
+35
+00:01:29,250 --> 00:01:30,920
+But before we do that,
+let's start with a quick,
+
+36
+00:01:30,920 --> 00:01:32,280
+check your understanding.
+
+37
+00:01:32,280 --> 00:01:34,680
+These are posted inside of Ed.
+
+38
+00:01:34,680 --> 00:01:38,410
+And this asks you to think about
+the policy improvement stage.
+
+39
+00:01:38,410 --> 00:01:39,830
+So we're going to
+be talking today
+
+40
+00:01:39,830 --> 00:01:43,550
+a lot about learning through
+direct experience and scaling
+
+41
+00:01:43,550 --> 00:01:45,870
+up towards function
+approximation with doing that.
+
+42
+00:01:45,870 --> 00:01:48,350
+But first, let's
+think about when
+
+43
+00:01:48,350 --> 00:01:52,910
+we're doing this, what sort
+of form the policy has?
+
+44
+00:01:52,910 --> 00:01:55,338
+And then as we do
+this evaluation--
+
+45
+00:01:55,338 --> 00:01:57,380
+we do this sort of repeated
+evaluation and policy
+
+46
+00:01:57,380 --> 00:02:00,025
+improvement, what
+happens in this case?
+
+47
+00:02:07,181 --> 00:02:09,139
+These are the first two
+questions on the polls.
+
+48
+00:02:35,000 --> 00:02:36,355
+Sorry, I just joined the class.
+
+49
+00:02:36,355 --> 00:02:37,730
+The poll?
+
+50
+00:02:37,730 --> 00:02:39,140
+It's on Ed.
+
+51
+00:02:39,140 --> 00:02:40,370
+Yeah.
+
+52
+00:02:40,370 --> 00:02:42,110
+What's your name?
+
+53
+00:02:42,110 --> 00:02:42,750
+Thanks, yeah.
+
+54
+00:02:42,750 --> 00:02:46,058
+So if anybody is not-- is new
+to class, you can go to Ed.
+
+55
+00:02:46,058 --> 00:02:48,100
+You should be able to get
+to that through Canvas.
+
+56
+00:03:29,550 --> 00:03:30,050
+All right.
+
+57
+00:03:30,050 --> 00:03:31,717
+We have good agreement
+on the first one.
+
+58
+00:03:31,717 --> 00:03:34,270
+This policy is stochastic
+under the assumption
+
+59
+00:03:34,270 --> 00:03:37,070
+that for each state,
+there's a unique max.
+
+60
+00:03:37,070 --> 00:03:39,948
+And it means that the new
+policy will be deterministic.
+
+61
+00:03:39,948 --> 00:03:41,990
+So almost I think, everybody
+said that correctly,
+
+62
+00:03:41,990 --> 00:03:43,570
+which is great.
+
+63
+00:03:43,570 --> 00:03:47,848
+So now-- so this is the--
+
+64
+00:03:47,848 --> 00:03:48,890
+it's the answer for this.
+
+65
+00:03:48,890 --> 00:03:51,015
+But there's some disagreement
+about the second one.
+
+66
+00:03:51,015 --> 00:03:52,990
+So why don't you
+turn to a neighbor
+
+67
+00:03:52,990 --> 00:03:55,030
+and compare what you
+got for whether you
+
+68
+00:03:55,030 --> 00:03:59,230
+can compute Q pi i
+plus 1 by using this
+
+69
+00:03:59,230 --> 00:04:01,070
+to generate new trajectories?
+
+70
+00:04:25,170 --> 00:04:26,570
+And remember, what
+I mean by this
+
+71
+00:04:26,570 --> 00:04:29,112
+is I want to know whether or
+not you can get the state action
+
+72
+00:04:29,112 --> 00:04:33,830
+value for every state and action
+pair under this new policy.
+
+73
+00:04:33,830 --> 00:04:36,530
+So I want to know if you
+can compute Q of s, a
+
+74
+00:04:36,530 --> 00:04:38,740
+under this new policy.
+
+75
+00:05:09,140 --> 00:05:11,570
+So I'll give you a hint.
+
+76
+00:05:11,570 --> 00:05:16,323
+If a policy is deterministic,
+how many actions
+
+77
+00:05:16,323 --> 00:05:17,615
+does it take in the same state?
+
+78
+00:05:22,320 --> 00:05:22,820
+What?
+
+79
+00:05:22,820 --> 00:05:23,550
+Right.
+
+80
+00:05:23,550 --> 00:05:26,030
+So are you going to get any
+data about any other actions
+
+81
+00:05:26,030 --> 00:05:28,350
+in that state?
+
+82
+00:05:28,350 --> 00:05:34,160
+So can we compute the Q value
+of all actions in that state?
+
+83
+00:05:34,160 --> 00:05:35,770
+No.
+
+84
+00:05:35,770 --> 00:05:36,350
+That's right.
+
+85
+00:05:36,350 --> 00:05:36,850
+Yeah.
+
+86
+00:05:36,850 --> 00:05:39,940
+So this is false.
+
+87
+00:05:39,940 --> 00:05:44,300
+We can't compute it, because if
+we have a deterministic policy,
+
+88
+00:05:44,300 --> 00:05:47,390
+then we only ever take pi of s.
+
+89
+00:05:47,390 --> 00:05:52,380
+So we would only take
+pi of i plus 1 of s.
+
+90
+00:05:52,380 --> 00:05:55,590
+That would be the only action
+we'd ever take in that state.
+
+91
+00:05:55,590 --> 00:05:57,370
+Because the policy
+is deterministic,
+
+92
+00:05:57,370 --> 00:05:59,185
+it only takes that
+one-- that one action.
+
+93
+00:05:59,185 --> 00:06:00,810
+And so that means
+you're just not going
+
+94
+00:06:00,810 --> 00:06:03,060
+to get any data about what
+it would be like to take
+
+95
+00:06:03,060 --> 00:06:05,880
+other actions in that state.
+
+96
+00:06:05,880 --> 00:06:07,620
+And so it's useful
+to know, because it
+
+97
+00:06:07,620 --> 00:06:09,660
+means that if we had
+models of the dynamics
+
+98
+00:06:09,660 --> 00:06:12,363
+or if we had models
+of the reward
+
+99
+00:06:12,363 --> 00:06:13,780
+and we could do
+some other things,
+
+100
+00:06:13,780 --> 00:06:15,700
+then we might be able to
+compute these Q values.
+
+101
+00:06:15,700 --> 00:06:17,940
+But here, if we're going to
+start thinking about just
+
+102
+00:06:17,940 --> 00:06:20,950
+learning this from data
+and from direct experience,
+
+103
+00:06:20,950 --> 00:06:22,673
+that if we have a
+deterministic policy,
+
+104
+00:06:22,673 --> 00:06:24,090
+it's not going to
+give us any data
+
+105
+00:06:24,090 --> 00:06:27,450
+about trying different
+actions in the same state.
+
+106
+00:06:27,450 --> 00:06:30,270
+And so that's going to introduce
+some important challenges
+
+107
+00:06:30,270 --> 00:06:31,680
+that we have to
+tackle when we're
+
+108
+00:06:31,680 --> 00:06:33,780
+trying to get data
+about the world
+
+109
+00:06:33,780 --> 00:06:36,280
+in order to learn an
+optimal Q-function.
+
+110
+00:06:42,320 --> 00:06:42,820
+Great.
+
+111
+00:06:42,820 --> 00:06:44,220
+So what we're going
+to be doing today then
+
+112
+00:06:44,220 --> 00:06:46,500
+is try to think about
+building on what we learned
+
+113
+00:06:46,500 --> 00:06:48,880
+last time about
+policy evaluation,
+
+114
+00:06:48,880 --> 00:06:51,250
+where we're trying to learn
+directly from experience,
+
+115
+00:06:51,250 --> 00:06:54,400
+to be able to evaluate how good
+a particular decision policy is.
+
+116
+00:06:54,400 --> 00:06:55,860
+How do we leverage
+that information
+
+117
+00:06:55,860 --> 00:06:57,850
+to then actually learn
+an optimal policy,
+
+118
+00:06:57,850 --> 00:07:00,180
+to actually learn a
+good decision, you know,
+
+119
+00:07:00,180 --> 00:07:03,340
+a good policy without having to
+model of how the world works?
+
+120
+00:07:03,340 --> 00:07:05,850
+So we don't have access
+to an explicit parametric
+
+121
+00:07:05,850 --> 00:07:08,880
+representation of the dynamics
+model or the reward model.
+
+122
+00:07:08,880 --> 00:07:12,340
+And then we're also going
+to talk about value function
+
+123
+00:07:12,340 --> 00:07:13,060
+approximation.
+
+124
+00:07:13,060 --> 00:07:16,830
+And in particular, we're
+going to talk about Q-learning
+
+125
+00:07:16,830 --> 00:07:20,730
+with deep neural
+networks, a.k.a.
+
+126
+00:07:20,730 --> 00:07:24,240
+DQN, which led to this
+really seminal result
+
+127
+00:07:24,240 --> 00:07:28,110
+in having machines that can
+just play directly from vision
+
+128
+00:07:28,110 --> 00:07:30,583
+to learn how to play
+games like Atari.
+
+129
+00:07:30,583 --> 00:07:32,250
+But I'll just pause
+here in case anybody
+
+130
+00:07:32,250 --> 00:07:33,875
+has any questions or
+logistic questions
+
+131
+00:07:33,875 --> 00:07:35,210
+before we dive into this.
+
+132
+00:07:39,180 --> 00:07:39,730
+All right.
+
+133
+00:07:39,730 --> 00:07:42,660
+And we're going to cover a
+lot today, because next week,
+
+134
+00:07:42,660 --> 00:07:44,707
+we're going to start
+policy gradient methods.
+
+135
+00:07:44,707 --> 00:07:46,290
+And we're doing that,
+because we think
+
+136
+00:07:46,290 --> 00:07:49,500
+that that's a really
+important thing to focus on.
+
+137
+00:07:49,500 --> 00:07:52,200
+So-- but there will
+be quite a lot today.
+
+138
+00:07:52,200 --> 00:07:53,600
+And you're welcome to reach out.
+
+139
+00:07:53,600 --> 00:07:55,350
+I put a bunch of work
+examples at the end,
+
+140
+00:07:55,350 --> 00:07:57,392
+in case people want to
+step through some of those
+
+141
+00:07:57,392 --> 00:07:59,930
+with Mars Rover and others.
+
+142
+00:07:59,930 --> 00:08:00,450
+All right.
+
+143
+00:08:00,450 --> 00:08:02,780
+So these are we're going to
+assess a bunch of things.
+
+144
+00:08:02,780 --> 00:08:04,280
+And we're going to
+start by thinking
+
+145
+00:08:04,280 --> 00:08:06,107
+about staying in
+the tabular land,
+
+146
+00:08:06,107 --> 00:08:07,940
+so staying where we can
+write down the value
+
+147
+00:08:07,940 --> 00:08:10,340
+function as a vector,
+and then trying
+
+148
+00:08:10,340 --> 00:08:14,170
+to learn how to make optimal
+decisions in that case.
+
+149
+00:08:14,170 --> 00:08:17,410
+So let's first just talk about
+the idea of generalized policy
+
+150
+00:08:17,410 --> 00:08:18,340
+improvement.
+
+151
+00:08:18,340 --> 00:08:21,310
+So we've seen before
+this idea of alternating
+
+152
+00:08:21,310 --> 00:08:24,185
+between policy evaluation
+and policy improvement.
+
+153
+00:08:24,185 --> 00:08:26,560
+And now we're going to think
+about that for slightly more
+
+154
+00:08:26,560 --> 00:08:27,713
+general cases of policies.
+
+155
+00:08:30,250 --> 00:08:33,760
+So what we just said here
+is that if the policy is
+
+156
+00:08:33,760 --> 00:08:35,890
+deterministic, we can't
+compute the state action
+
+157
+00:08:35,890 --> 00:08:38,620
+value for any action
+that's not the policy.
+
+158
+00:08:38,620 --> 00:08:41,799
+And so what we'd like
+to be able to do now
+
+159
+00:08:41,799 --> 00:08:44,059
+is to have kind
+of more coverage.
+
+160
+00:08:44,059 --> 00:08:46,660
+And to do that, we're going
+to have stochastic policies.
+
+161
+00:08:46,660 --> 00:08:48,680
+Because if the
+policy is stochastic,
+
+162
+00:08:48,680 --> 00:08:51,050
+then we'll try multiple
+actions in the same state.
+
+163
+00:08:51,050 --> 00:08:54,610
+And we can use that data
+to estimate the Q-function.
+
+164
+00:08:54,610 --> 00:08:57,190
+So we're staying in what we're
+calling model-free policy
+
+165
+00:08:57,190 --> 00:08:59,560
+iteration, meaning we're not
+trying to explicitly build
+
+166
+00:08:59,560 --> 00:09:01,300
+a dynamics or reward model.
+
+167
+00:09:01,300 --> 00:09:04,130
+We're just trying to directly
+estimate a Q-function.
+
+168
+00:09:04,130 --> 00:09:05,920
+And once we have a
+Q-function, then we
+
+169
+00:09:05,920 --> 00:09:10,230
+can extract from it an argmax
+policy or something else.
+
+170
+00:09:10,230 --> 00:09:11,440
+Yeah.
+
+171
+00:09:11,440 --> 00:09:17,920
+And we're now going to be using
+an estimated Q, because we
+
+172
+00:09:17,920 --> 00:09:27,440
+will be estimating Q from
+data directly from experience.
+
+173
+00:09:29,900 --> 00:09:30,400
+All right.
+
+174
+00:09:30,400 --> 00:09:32,567
+So this is going to introduce
+this general challenge
+
+175
+00:09:32,567 --> 00:09:36,000
+of exploration, which is we can
+only learn about the things we
+
+176
+00:09:36,000 --> 00:09:36,960
+try in the world.
+
+177
+00:09:36,960 --> 00:09:39,850
+So this is just like the-- can't
+know how much better or worse
+
+178
+00:09:39,850 --> 00:09:42,720
+your life would be right now if
+you're drinking coffee at Coupa.
+
+179
+00:09:42,720 --> 00:09:43,540
+Same thing.
+
+180
+00:09:43,540 --> 00:09:46,500
+Like we can only learn about
+the actions that we take.
+
+181
+00:09:46,500 --> 00:09:50,530
+And so we need to learn
+about actions by trying them.
+
+182
+00:09:50,530 --> 00:09:52,470
+So we need to explore.
+
+183
+00:09:52,470 --> 00:09:55,390
+But the downside in general
+is if we try new actions,
+
+184
+00:09:55,390 --> 00:09:57,870
+we are spending less
+time using our knowledge
+
+185
+00:09:57,870 --> 00:10:00,390
+to make good decisions.
+
+186
+00:10:00,390 --> 00:10:04,240
+So you might imagine that
+you can act randomly always.
+
+187
+00:10:04,240 --> 00:10:06,870
+And that would work for like
+learning a lot about the world
+
+188
+00:10:06,870 --> 00:10:08,920
+and learning a lot
+about Q-functions.
+
+189
+00:10:08,920 --> 00:10:10,718
+But you wouldn't be finding--
+
+190
+00:10:10,718 --> 00:10:12,510
+you wouldn't be acting
+using that knowledge
+
+191
+00:10:12,510 --> 00:10:14,370
+to try to gain high reward.
+
+192
+00:10:14,370 --> 00:10:17,430
+So this is known as the general
+challenge between exploration
+
+193
+00:10:17,430 --> 00:10:20,250
+and exploitation.
+
+194
+00:10:20,250 --> 00:10:22,590
+How much time do we spend
+exploring and getting
+
+195
+00:10:22,590 --> 00:10:24,780
+new data about things
+that might be good?
+
+196
+00:10:24,780 --> 00:10:28,320
+Versus how much of the time do
+we exploit our knowledge of how
+
+197
+00:10:28,320 --> 00:10:31,030
+the world works, according
+to the data we have so far,
+
+198
+00:10:31,030 --> 00:10:33,190
+to try to make good decisions?
+
+199
+00:10:33,190 --> 00:10:34,850
+And this will come up a lot.
+
+200
+00:10:34,850 --> 00:10:38,920
+There's really deep questions
+around here about thinking of,
+
+201
+00:10:38,920 --> 00:10:41,480
+how do we quantify our
+uncertainty in our knowledge?
+
+202
+00:10:41,480 --> 00:10:43,450
+And then how do we
+propagate that uncertainty
+
+203
+00:10:43,450 --> 00:10:45,190
+into the value of
+that uncertainty
+
+204
+00:10:45,190 --> 00:10:46,838
+for downstream decision making?
+
+205
+00:10:46,838 --> 00:10:49,130
+So we'll see a lot more about
+that later in the course.
+
+206
+00:10:49,130 --> 00:10:52,340
+And this continues to be a
+really active area of research.
+
+207
+00:10:52,340 --> 00:10:53,752
+This is not at all solved.
+
+208
+00:10:53,752 --> 00:10:55,210
+But here, we're
+just going to start
+
+209
+00:10:55,210 --> 00:10:57,070
+to see some simple
+methods to try
+
+210
+00:10:57,070 --> 00:11:00,640
+to tackle this challenge of
+balancing between these two
+
+211
+00:11:00,640 --> 00:11:02,700
+things.
+
+212
+00:11:02,700 --> 00:11:05,310
+So one of the simplest things
+you could imagine doing
+
+213
+00:11:05,310 --> 00:11:08,130
+is what's called epsilon greedy.
+
+214
+00:11:08,130 --> 00:11:09,588
+And the idea with
+epsilon greedy is
+
+215
+00:11:09,588 --> 00:11:11,922
+you're going to just spend
+some of the time doing things
+
+216
+00:11:11,922 --> 00:11:14,250
+randomly and some of the
+times, doing things the best
+
+217
+00:11:14,250 --> 00:11:16,860
+way you know how,
+because you're kind
+
+218
+00:11:16,860 --> 00:11:18,420
+of exploiting that knowledge.
+
+219
+00:11:18,420 --> 00:11:20,160
+So if we just have
+a finite number
+
+220
+00:11:20,160 --> 00:11:22,982
+of actions, because right now,
+we're still in the tabular case.
+
+221
+00:11:22,982 --> 00:11:24,690
+So we just have a
+finite number of states
+
+222
+00:11:24,690 --> 00:11:26,170
+and a finite number of actions.
+
+223
+00:11:26,170 --> 00:11:31,640
+Then epsilon greedy policy
+says, with high probability--
+
+224
+00:11:31,640 --> 00:11:33,532
+so we have some epsilon here.
+
+225
+00:11:33,532 --> 00:11:34,990
+Epsilon is going
+to be less than 1.
+
+226
+00:11:34,990 --> 00:11:37,680
+It could be like probability--
+it could be 0.1, for example.
+
+227
+00:11:37,680 --> 00:11:39,270
+So with high
+probability, you're going
+
+228
+00:11:39,270 --> 00:11:42,480
+to take whatever
+action maximizes your Q
+
+229
+00:11:42,480 --> 00:11:44,653
+value in your current state.
+
+230
+00:11:44,653 --> 00:11:46,070
+So you're going
+to kind of exploit
+
+231
+00:11:46,070 --> 00:11:48,620
+your knowledge for whatever
+your state action value says.
+
+232
+00:11:48,620 --> 00:11:51,980
+And you're going to do that with
+probability 1 minus epsilon.
+
+233
+00:11:51,980 --> 00:11:55,740
+And then otherwise, you're going
+to take an action at random.
+
+234
+00:11:55,740 --> 00:11:58,840
+And so when you pick an
+action uniformly at random,
+
+235
+00:11:58,840 --> 00:12:00,970
+it might be one of-- the
+same one as the argmax,
+
+236
+00:12:00,970 --> 00:12:02,490
+or it might be a different one.
+
+237
+00:12:02,490 --> 00:12:04,890
+But either way, the main
+idea is that essentially, you
+
+238
+00:12:04,890 --> 00:12:08,130
+spend 1 minus epsilon
+percentage of the time
+
+239
+00:12:08,130 --> 00:12:11,130
+being greedy with
+respect to your knowledge
+
+240
+00:12:11,130 --> 00:12:13,205
+and epsilon percent spend
+time acting randomly.
+
+241
+00:12:16,710 --> 00:12:18,783
+So it's like maybe
+you say, OK, I'm
+
+242
+00:12:18,783 --> 00:12:20,950
+committed to trying out new
+things at my restaurant.
+
+243
+00:12:20,950 --> 00:12:22,740
+So once a week, I will
+try a random dish.
+
+244
+00:12:22,740 --> 00:12:25,410
+And the other six days,
+I'll pick whatever I like--
+
+245
+00:12:25,410 --> 00:12:29,510
+like whatever I've liked in the
+past, and it's always been good.
+
+246
+00:12:29,510 --> 00:12:31,140
+So this is a pretty
+simple strategy.
+
+247
+00:12:31,140 --> 00:12:34,160
+This is not trying to have
+a deep notion of uncertainty
+
+248
+00:12:34,160 --> 00:12:35,730
+or trying to quantify that.
+
+249
+00:12:35,730 --> 00:12:40,160
+But nevertheless, this
+can be pretty effective.
+
+250
+00:12:40,160 --> 00:12:43,970
+So in particular, we can prove
+things about policy improvement
+
+251
+00:12:43,970 --> 00:12:45,950
+with epsilon greedy policies.
+
+252
+00:12:45,950 --> 00:12:48,050
+So what we proved in
+the past is that if you
+
+253
+00:12:48,050 --> 00:12:51,500
+do policy iteration, when you
+know the dynamics and reward
+
+254
+00:12:51,500 --> 00:12:54,780
+models, you are guaranteed
+to monotonically improve.
+
+255
+00:12:54,780 --> 00:12:56,940
+So each round of
+policy iteration,
+
+256
+00:12:56,940 --> 00:12:59,180
+either you would stay the
+same, in which case, you'd
+
+257
+00:12:59,180 --> 00:13:00,710
+found the optimal policy.
+
+258
+00:13:00,710 --> 00:13:04,340
+Or you wouldn't change
+it, and in that case--
+
+259
+00:13:04,340 --> 00:13:07,010
+or you would improve.
+
+260
+00:13:07,010 --> 00:13:09,410
+But when we did that proof,
+we assumed policy improvement
+
+261
+00:13:09,410 --> 00:13:12,150
+using a deterministic policy.
+
+262
+00:13:12,150 --> 00:13:14,120
+And it turns out the
+same property holds
+
+263
+00:13:14,120 --> 00:13:16,860
+with epsilon greedy policies.
+
+264
+00:13:16,860 --> 00:13:19,990
+So if your policy is always
+like an epsilon greedy policy,
+
+265
+00:13:19,990 --> 00:13:22,750
+you can also get this kind
+of monotonic improvement.
+
+266
+00:13:25,800 --> 00:13:27,690
+So in particular,
+and I'm not going
+
+267
+00:13:27,690 --> 00:13:31,030
+to do the full proof today, but
+I'll leave it in just for time.
+
+268
+00:13:31,030 --> 00:13:33,660
+But what this shows
+here is imagine
+
+269
+00:13:33,660 --> 00:13:36,242
+that you have a Q-function,
+you have some policy pi i.
+
+270
+00:13:36,242 --> 00:13:38,700
+And you have a Q-function,
+which tells you the state action
+
+271
+00:13:38,700 --> 00:13:41,220
+value for that policy pi i.
+
+272
+00:13:41,220 --> 00:13:45,540
+And pi is e-greedy, which
+means some of the time,
+
+273
+00:13:45,540 --> 00:13:48,000
+it acts greedily with
+respect to that Q-function.
+
+274
+00:13:48,000 --> 00:13:51,210
+And some of the time, it
+selects an action at random.
+
+275
+00:13:51,210 --> 00:13:55,050
+So that's what it means to be
+an e-greedy policy with respect
+
+276
+00:13:55,050 --> 00:13:57,690
+to that Q. It's making
+those decisions when
+
+277
+00:13:57,690 --> 00:14:01,020
+it's being greedy with
+respect to that Q-function.
+
+278
+00:14:01,020 --> 00:14:03,090
+So what this says
+is that pi i plus 1
+
+279
+00:14:03,090 --> 00:14:07,500
+is a monotonic improvement,
+so that V pi i plus 1
+
+280
+00:14:07,500 --> 00:14:10,250
+is greater than V pi i.
+
+281
+00:14:10,250 --> 00:14:11,940
+And we can prove this here.
+
+282
+00:14:11,940 --> 00:14:14,030
+So essentially, we're
+trying to prove in this case
+
+283
+00:14:14,030 --> 00:14:17,120
+that the new policy that you
+extract through doing policy
+
+284
+00:14:17,120 --> 00:14:20,580
+improvement, which is
+still an e-greedy policy,
+
+285
+00:14:20,580 --> 00:14:24,830
+is going to be better than
+your old e-greedy policy.
+
+286
+00:14:24,830 --> 00:14:27,320
+And the main idea is just
+to say you can kind of also
+
+287
+00:14:27,320 --> 00:14:29,083
+do policy improvement
+when you don't
+
+288
+00:14:29,083 --> 00:14:31,250
+have deterministic policies,
+but you have these kind
+
+289
+00:14:31,250 --> 00:14:32,570
+of e-greedy policies.
+
+290
+00:14:32,570 --> 00:14:37,550
+And you could still get
+monotonic improvement.
+
+291
+00:14:37,550 --> 00:14:39,110
+And I'll leave that--
+
+292
+00:14:39,110 --> 00:14:43,740
+I'll put that at the end
+for later post proof.
+
+293
+00:14:43,740 --> 00:14:45,600
+So this is just to
+highlight like, here's
+
+294
+00:14:45,600 --> 00:14:46,710
+one thing we could do.
+
+295
+00:14:46,710 --> 00:14:47,910
+And we're going to see
+that this is actually
+
+296
+00:14:47,910 --> 00:14:49,618
+going to be a pretty
+helpful thing to do.
+
+297
+00:14:49,618 --> 00:14:52,260
+This is one thing we could
+do to try to get data
+
+298
+00:14:52,260 --> 00:14:53,560
+about other actions.
+
+299
+00:14:53,560 --> 00:14:56,813
+So we're not just taking a
+single action in a single state,
+
+300
+00:14:56,813 --> 00:14:58,980
+but we actually have some
+probability of drawing out
+
+301
+00:14:58,980 --> 00:15:00,778
+multiple actions.
+
+302
+00:15:00,778 --> 00:15:02,820
+And just to make that
+concrete, if you think back
+
+303
+00:15:02,820 --> 00:15:05,800
+to our Mars Rover example,
+there are only seven states.
+
+304
+00:15:05,800 --> 00:15:07,390
+So if you act in
+it for a long time,
+
+305
+00:15:07,390 --> 00:15:09,550
+you'd repeatedly
+reach the same states.
+
+306
+00:15:09,550 --> 00:15:11,253
+What this e-greedy
+policy is doing
+
+307
+00:15:11,253 --> 00:15:13,420
+is saying like, even when
+you get to the same state,
+
+308
+00:15:13,420 --> 00:15:14,650
+you might take
+different actions.
+
+309
+00:15:14,650 --> 00:15:16,025
+So over time,
+you're going to get
+
+310
+00:15:16,025 --> 00:15:17,970
+data that allows you
+to estimate the Q
+
+311
+00:15:17,970 --> 00:15:20,872
+value of that whole policy.
+
+312
+00:15:20,872 --> 00:15:22,330
+So now we're going
+to see is how we
+
+313
+00:15:22,330 --> 00:15:27,020
+can use these ideas of e-greedy
+policies to actually do control.
+
+314
+00:15:27,020 --> 00:15:28,540
+So what I mean by
+that is that we're
+
+315
+00:15:28,540 --> 00:15:30,790
+going to try to learn
+optimal ways of acting
+
+316
+00:15:30,790 --> 00:15:31,910
+in the environment.
+
+317
+00:15:31,910 --> 00:15:33,827
+And we're going to start--
+we're going to have
+
+318
+00:15:33,827 --> 00:15:35,150
+the same scenario as last time.
+
+319
+00:15:35,150 --> 00:15:37,690
+So we're going to either have
+Monte Carlo approaches, where
+
+320
+00:15:37,690 --> 00:15:39,370
+we simulate in the
+world, and then we
+
+321
+00:15:39,370 --> 00:15:42,940
+use that to try to improve, or
+temporal difference approaches,
+
+322
+00:15:42,940 --> 00:15:45,280
+which more directly try to
+use the Bellman and Markov
+
+323
+00:15:45,280 --> 00:15:48,270
+structure.
+
+324
+00:15:48,270 --> 00:15:51,710
+OK, so let's start
+with Monte Carlo.
+
+325
+00:15:51,710 --> 00:15:53,760
+So remember, what we had before.
+
+326
+00:15:53,760 --> 00:15:56,300
+We used to have this Monte
+Carlo policy evaluation
+
+327
+00:15:56,300 --> 00:15:59,580
+algorithm, where we
+would repeatedly loop,
+
+328
+00:15:59,580 --> 00:16:01,830
+we would sample the kth episode.
+
+329
+00:16:01,830 --> 00:16:05,180
+So we'd just like sample a
+series of states and actions
+
+330
+00:16:05,180 --> 00:16:07,400
+under a particular policy.
+
+331
+00:16:07,400 --> 00:16:08,120
+OK.
+
+332
+00:16:08,120 --> 00:16:12,800
+And then you could compute
+the return from each step
+
+333
+00:16:12,800 --> 00:16:14,592
+till the end of the episode.
+
+334
+00:16:14,592 --> 00:16:16,800
+And then what you would do
+is you would-- bless you--
+
+335
+00:16:16,800 --> 00:16:17,900
+you would update--
+
+336
+00:16:17,900 --> 00:16:20,820
+for the first time you visited
+a particular state action tuple,
+
+337
+00:16:20,820 --> 00:16:24,110
+you would update the Q
+value by a weighted average
+
+338
+00:16:24,110 --> 00:16:29,150
+between your old estimate
+and then your new target,
+
+339
+00:16:29,150 --> 00:16:31,232
+which was just
+the sum of rewards
+
+340
+00:16:31,232 --> 00:16:32,940
+you got starting in
+that state and action
+
+341
+00:16:32,940 --> 00:16:35,120
+till the end of the episode.
+
+342
+00:16:35,120 --> 00:16:35,620
+OK.
+
+343
+00:16:35,620 --> 00:16:38,445
+So this is where we often
+call it like our target.
+
+344
+00:16:41,360 --> 00:16:44,840
+And we were using that, because
+we knew from Monte Carlo
+
+345
+00:16:44,840 --> 00:16:47,900
+that what we want
+to do is really
+
+346
+00:16:47,900 --> 00:16:49,855
+estimate the value of
+starting in this state,
+
+347
+00:16:49,855 --> 00:16:51,230
+taking this action,
+and following
+
+348
+00:16:51,230 --> 00:16:53,420
+this policy to the end--
+
+349
+00:16:53,420 --> 00:16:57,170
+to the end of the episode, that
+we can get a sample of that
+
+350
+00:16:57,170 --> 00:16:58,110
+by doing this.
+
+351
+00:16:58,110 --> 00:17:02,600
+And this sample is an
+unbiased approximation
+
+352
+00:17:02,600 --> 00:17:04,641
+to the true expected
+sum of rewards
+
+353
+00:17:04,641 --> 00:17:06,599
+you would get starting
+in this state and action
+
+354
+00:17:06,599 --> 00:17:09,200
+and going till the
+end of the episode.
+
+355
+00:17:09,200 --> 00:17:09,770
+Yeah?
+
+356
+00:17:09,770 --> 00:17:13,010
+We can apply
+epsilon-greedy [INAUDIBLE]?
+
+357
+00:17:13,010 --> 00:17:14,010
+We're going to see that.
+
+358
+00:17:14,010 --> 00:17:14,670
+Yes, exactly.
+
+359
+00:17:14,670 --> 00:17:15,170
+Yeah.
+
+360
+00:17:15,170 --> 00:17:17,030
+So when we thought
+about this before,
+
+361
+00:17:17,030 --> 00:17:19,550
+we thought the policy was
+like a deterministic policy,
+
+362
+00:17:19,550 --> 00:17:20,849
+or that was the easiest
+way to think about it.
+
+363
+00:17:20,849 --> 00:17:22,670
+But now the policy
+could be stochastic,
+
+364
+00:17:22,670 --> 00:17:24,740
+and so it could be e-greedy.
+
+365
+00:17:24,740 --> 00:17:26,010
+Yeah, great question.
+
+366
+00:17:26,010 --> 00:17:29,270
+OK, so now, this policy--
+
+367
+00:17:29,270 --> 00:17:29,960
+good.
+
+368
+00:17:29,960 --> 00:17:33,590
+Well, here, we'll go
+on to the next one.
+
+369
+00:17:33,590 --> 00:17:39,290
+OK, so this was Monte
+Carlo policy evaluation.
+
+370
+00:17:39,290 --> 00:17:43,530
+Now, what we could try to do
+is Monte Carlo online control.
+
+371
+00:17:43,530 --> 00:17:45,320
+So what I'm going
+to do here is I'm
+
+372
+00:17:45,320 --> 00:17:47,720
+going to introduce a different--
+an additional line here
+
+373
+00:17:47,720 --> 00:17:51,510
+at the bottom, which says
+after I do an episode,
+
+374
+00:17:51,510 --> 00:17:53,830
+I'm going to potentially
+change my policy.
+
+375
+00:17:53,830 --> 00:17:57,090
+So you can think of this as
+like my policy evaluation part.
+
+376
+00:17:57,090 --> 00:17:59,210
+And this is my
+policy improvement.
+
+377
+00:17:59,210 --> 00:18:01,410
+And again, I'll just
+write out what this means.
+
+378
+00:18:01,410 --> 00:18:09,110
+So what this means is that
+for each state, for each s,
+
+379
+00:18:09,110 --> 00:18:16,935
+the policy for s is going to
+be equal to argmax Q of s,
+
+380
+00:18:16,935 --> 00:18:29,340
+a with probability 1 minus
+epsilon, else random.
+
+381
+00:18:29,340 --> 00:18:30,870
+So that's what I
+mean by say, we're
+
+382
+00:18:30,870 --> 00:18:33,910
+doing the policy improvement
+step is we take our Q-function.
+
+383
+00:18:33,910 --> 00:18:37,230
+We say either you would
+take the argmax action,
+
+384
+00:18:37,230 --> 00:18:40,230
+or you would act randomly.
+
+385
+00:18:40,230 --> 00:18:40,860
+Sorry.
+
+386
+00:18:40,860 --> 00:18:44,220
+What are we looping over
+in the outermost loop?
+
+387
+00:18:44,220 --> 00:18:45,510
+Is it a k or?
+
+388
+00:18:45,510 --> 00:18:48,370
+Yeah, this would be--
+yes, this would be k.
+
+389
+00:18:48,370 --> 00:18:48,870
+Yeah.
+
+390
+00:18:48,870 --> 00:18:50,912
+So this is just-- you can
+think of the loop here.
+
+391
+00:18:50,912 --> 00:18:53,490
+And I'll write that down.
+
+392
+00:18:53,490 --> 00:18:55,950
+Loop over the episodes.
+
+393
+00:18:55,950 --> 00:18:57,960
+So it's like I play
+one game of Atari.
+
+394
+00:18:57,960 --> 00:18:59,970
+And then I update my
+policy evaluation.
+
+395
+00:18:59,970 --> 00:19:01,440
+And maybe I change my policy.
+
+396
+00:19:01,440 --> 00:19:03,150
+And then I do another
+round of Atari.
+
+397
+00:19:03,150 --> 00:19:08,010
+So I like play Breakout a
+million times, sometimes more
+
+398
+00:19:08,010 --> 00:19:10,300
+than that in some
+of these cases.
+
+399
+00:19:10,300 --> 00:19:10,800
+Yeah.
+
+400
+00:19:10,800 --> 00:19:11,190
+Ana, right?
+
+401
+00:19:11,190 --> 00:19:11,790
+Is it--
+
+402
+00:19:11,790 --> 00:19:14,130
+Yeah.
+
+403
+00:19:14,130 --> 00:19:16,020
+I'm getting confused
+by this last line
+
+404
+00:19:16,020 --> 00:19:17,170
+that you have out there.
+
+405
+00:19:17,170 --> 00:19:23,460
+So, I mean, isn't it implicit
+that you are using the new--
+
+406
+00:19:23,460 --> 00:19:26,610
+you're using a new Q in the--
+
+407
+00:19:26,610 --> 00:19:28,690
+let's say, you're done
+with iteration number k.
+
+408
+00:19:28,690 --> 00:19:31,020
+You moved on to iteration
+number k plus 1.
+
+409
+00:19:31,020 --> 00:19:33,610
+When you're sampling
+the next episode,
+
+410
+00:19:33,610 --> 00:19:37,095
+you're using the
+updated Q, right?
+
+411
+00:19:37,095 --> 00:19:37,720
+Great question.
+
+412
+00:19:37,720 --> 00:19:38,220
+OK.
+
+413
+00:19:38,220 --> 00:19:40,050
+So maybe I should--
+so what this says here
+
+414
+00:19:40,050 --> 00:19:44,190
+is that initially, you
+construct-- so your Q initially
+
+415
+00:19:44,190 --> 00:19:44,943
+is 0 everywhere.
+
+416
+00:19:44,943 --> 00:19:46,360
+You could initialize
+in some ways,
+
+417
+00:19:46,360 --> 00:19:47,220
+but your queue is 0 everywhere.
+
+418
+00:19:47,220 --> 00:19:48,690
+And you're going to
+select something that's
+
+419
+00:19:48,690 --> 00:19:50,170
+e-greedy with respect to that.
+
+420
+00:19:50,170 --> 00:19:52,540
+Now, if your Q value
+is 0 everywhere,
+
+421
+00:19:52,540 --> 00:19:54,340
+it means that all of
+your actions are tied.
+
+422
+00:19:54,340 --> 00:19:55,340
+You have no information.
+
+423
+00:19:55,340 --> 00:19:57,080
+You basically are
+just acting randomly.
+
+424
+00:19:57,080 --> 00:19:59,590
+What this says is
+that the way we act
+
+425
+00:19:59,590 --> 00:20:02,420
+is always with respect
+to our current policy.
+
+426
+00:20:02,420 --> 00:20:05,470
+So the first time-- or you can
+think of as like motor babbling.
+
+427
+00:20:05,470 --> 00:20:07,760
+Like your agent will just
+randomly press buttons.
+
+428
+00:20:07,760 --> 00:20:09,170
+It'll move over the screen.
+
+429
+00:20:09,170 --> 00:20:11,650
+It'll do that till it
+wins or loses the game.
+
+430
+00:20:11,650 --> 00:20:15,300
+And then it will
+update its Q value.
+
+431
+00:20:15,300 --> 00:20:18,270
+And what this is saying is
+that the next time, you're
+
+432
+00:20:18,270 --> 00:20:22,497
+going to change what that policy
+is that you're using to act.
+
+433
+00:20:22,497 --> 00:20:24,330
+So hopefully, it won't
+babble quite as much.
+
+434
+00:20:24,330 --> 00:20:25,730
+It's just like, oh, well,
+sometimes I hit something
+
+435
+00:20:25,730 --> 00:20:27,480
+and then I got an
+increase in the points.
+
+436
+00:20:27,480 --> 00:20:29,380
+So maybe I'll try to
+do that action again.
+
+437
+00:20:31,900 --> 00:20:36,970
+Is the policy guarantee to
+one of the new [INAUDIBLE]?
+
+438
+00:20:36,970 --> 00:20:37,610
+Great question.
+
+439
+00:20:37,610 --> 00:20:38,110
+OK.
+
+440
+00:20:38,110 --> 00:20:39,860
+So I've not said
+anything about that yet.
+
+441
+00:20:39,860 --> 00:20:41,800
+I haven't said anything about
+what the properties are of this.
+
+442
+00:20:41,800 --> 00:20:42,467
+Guy in the back.
+
+443
+00:20:42,467 --> 00:20:44,170
+I can't remember your name.
+
+444
+00:20:44,170 --> 00:20:45,970
+Is it required to
+do this on-policy?
+
+445
+00:20:45,970 --> 00:20:47,470
+Or could you do
+this off-policy that
+
+446
+00:20:47,470 --> 00:20:49,660
+collects a number of
+demonstrations in an update
+
+447
+00:20:49,660 --> 00:20:50,215
+later?
+
+448
+00:20:50,215 --> 00:20:50,840
+Great question.
+
+449
+00:20:50,840 --> 00:20:51,970
+Yes, you can definitely
+do off-policy.
+
+450
+00:20:51,970 --> 00:20:53,678
+And we'll see that in
+a couple of slides.
+
+451
+00:20:53,678 --> 00:20:54,390
+Yeah.
+
+452
+00:20:54,390 --> 00:20:54,890
+OK.
+
+453
+00:20:54,890 --> 00:20:55,600
+Any questions?
+
+454
+00:20:55,600 --> 00:20:56,590
+These are all great.
+
+455
+00:20:56,590 --> 00:21:00,190
+OK, so you should be skeptical
+that this is necessarily going
+
+456
+00:21:00,190 --> 00:21:01,430
+to do anything reasonable.
+
+457
+00:21:01,430 --> 00:21:03,013
+But it's certainly
+something you could
+
+458
+00:21:03,013 --> 00:21:05,560
+run, like something that you
+could write down in a computer.
+
+459
+00:21:05,560 --> 00:21:07,100
+So this is a process.
+
+460
+00:21:07,100 --> 00:21:10,420
+So then, a question would be--
+
+461
+00:21:10,420 --> 00:21:13,045
+and I put some-- this is
+an optional worked example.
+
+462
+00:21:13,045 --> 00:21:14,920
+You can go through it
+just to think about how
+
+463
+00:21:14,920 --> 00:21:17,530
+it would actually update these.
+
+464
+00:21:17,530 --> 00:21:21,140
+So some important properties
+are, how expensive is this?
+
+465
+00:21:21,140 --> 00:21:23,230
+Does it converge to
+the optimal Q star
+
+466
+00:21:23,230 --> 00:21:28,750
+as well as what is its
+empirical performance?
+
+467
+00:21:28,750 --> 00:21:32,320
+Let's think first whether or
+not we think this is a good idea
+
+468
+00:21:32,320 --> 00:21:35,350
+and whether or not we think
+that this procedure here
+
+469
+00:21:35,350 --> 00:21:42,630
+is guaranteed to become a good
+estimate of the optimal Q star.
+
+470
+00:21:42,630 --> 00:21:44,590
+So this is another check
+your understanding.
+
+471
+00:21:44,590 --> 00:21:45,710
+It's on Ed.
+
+472
+00:21:45,710 --> 00:21:49,630
+But what I would like
+you to think about here
+
+473
+00:21:49,630 --> 00:21:52,690
+is that given the process
+I've just shown you here,
+
+474
+00:21:52,690 --> 00:21:55,780
+do you think that the
+Q value we're computing
+
+475
+00:21:55,780 --> 00:21:58,630
+is an estimate of
+the current policy?
+
+476
+00:21:58,630 --> 00:22:03,818
+And do you think it will
+ultimately become Q star?
+
+477
+00:22:03,818 --> 00:22:06,360
+And if you think it might or
+might not under some conditions,
+
+478
+00:22:06,360 --> 00:22:07,027
+that's fine too.
+
+479
+00:22:07,027 --> 00:22:09,080
+You can put that in there.
+
+480
+00:22:09,080 --> 00:22:10,220
+Yeah.
+
+481
+00:22:10,220 --> 00:22:14,360
+k-- like k changes
+with these two points?
+
+482
+00:22:14,360 --> 00:22:14,930
+That's right.
+
+483
+00:22:34,313 --> 00:22:37,040
+I was a bit confused
+about [? innovation. ?]
+
+484
+00:22:37,040 --> 00:22:38,910
+What is Q pi k again?
+
+485
+00:22:38,910 --> 00:22:42,230
+Q pi k is the true
+state action value
+
+486
+00:22:42,230 --> 00:22:46,077
+function for the pi k policy.
+
+487
+00:22:46,077 --> 00:22:48,160
+So what is the expected
+discounted sum of rewards?
+
+488
+00:22:48,160 --> 00:22:52,470
+If you start in state s, take
+action a, and then follow pi k.
+
+489
+00:22:52,470 --> 00:22:54,473
+Yeah, thanks for
+the clarification.
+
+490
+00:23:10,250 --> 00:23:11,430
+Why do you vary the--
+
+491
+00:23:11,430 --> 00:23:14,000
+I don't remember your name.
+
+492
+00:23:14,000 --> 00:23:16,915
+Why do you vary the epsilon?
+
+493
+00:23:16,915 --> 00:23:19,290
+I have not said anything about
+whether I am varying the--
+
+494
+00:23:19,290 --> 00:23:22,140
+[INAUDIBLE]
+
+495
+00:23:22,140 --> 00:23:23,345
+You're setting a different--
+
+496
+00:23:23,345 --> 00:23:23,970
+Oh, yeah, yeah.
+
+497
+00:23:23,970 --> 00:23:24,420
+Here I am.
+
+498
+00:23:24,420 --> 00:23:24,740
+Yes.
+
+499
+00:23:24,740 --> 00:23:25,520
+I know what you're
+talking about.
+
+500
+00:23:25,520 --> 00:23:26,460
+Why are we doing that?
+
+501
+00:23:26,460 --> 00:23:27,377
+We'll talk about that.
+
+502
+00:23:29,840 --> 00:23:31,905
+I forgot that I had
+already put that in there.
+
+503
+00:23:31,905 --> 00:23:33,030
+Yeah, we can talk about it.
+
+504
+00:23:42,320 --> 00:23:42,820
+OK.
+
+505
+00:23:42,820 --> 00:23:44,450
+And one thing just
+to note here--
+
+506
+00:23:44,450 --> 00:23:46,520
+and I think this
+is a question 2.
+
+507
+00:23:46,520 --> 00:23:50,140
+So just to be clear here, as
+you're thinking about this,
+
+508
+00:23:50,140 --> 00:23:53,330
+so this is like an approximation
+of policy iteration.
+
+509
+00:23:53,330 --> 00:23:55,480
+So we're kind of doing
+policy evaluation and then
+
+510
+00:23:55,480 --> 00:23:57,490
+policy improvement.
+
+511
+00:23:57,490 --> 00:24:01,360
+But it's helpful to think about
+kind of how much time we're
+
+512
+00:24:01,360 --> 00:24:03,340
+spending doing policy
+improvement versus policy
+
+513
+00:24:03,340 --> 00:24:04,460
+evaluation.
+
+514
+00:24:04,460 --> 00:24:07,390
+So what this is saying
+here is that, you're
+
+515
+00:24:07,390 --> 00:24:10,480
+going to sample one episode.
+
+516
+00:24:10,480 --> 00:24:13,695
+And then you're going
+to do policy evaluation.
+
+517
+00:24:13,695 --> 00:24:14,195
+OK.
+
+518
+00:24:14,195 --> 00:24:16,820
+This is all just one episode.
+
+519
+00:24:16,820 --> 00:24:18,980
+So it's like I'm
+going to play one--
+
+520
+00:24:18,980 --> 00:24:23,830
+I'm going to play until I
+win or lose at Breakout once
+
+521
+00:24:23,830 --> 00:24:25,960
+under a particular policy.
+
+522
+00:24:25,960 --> 00:24:28,100
+And then I'm going
+to change my policy.
+
+523
+00:24:28,100 --> 00:24:31,540
+And then I'm going to play
+with my new policy once.
+
+524
+00:24:31,540 --> 00:24:35,050
+And then I'm going
+to change my policy.
+
+525
+00:24:35,050 --> 00:24:38,050
+And some of those games might
+be really long, or some of them
+
+526
+00:24:38,050 --> 00:24:39,590
+might be really short.
+
+527
+00:24:39,590 --> 00:24:40,090
+Yeah.
+
+528
+00:24:40,090 --> 00:24:42,800
+So this is-- just
+to clarify, this
+
+529
+00:24:42,800 --> 00:24:44,990
+is like representing
+what you do after playing
+
+530
+00:24:44,990 --> 00:24:46,640
+one game in a breakout?
+
+531
+00:24:46,640 --> 00:24:52,920
+So then I think I might just
+be confused, like, [INAUDIBLE].
+
+532
+00:24:52,920 --> 00:24:55,790
+When they're just like--
+if I'm playing a game,
+
+533
+00:24:55,790 --> 00:24:58,110
+the episodes just follow
+one after the other.
+
+534
+00:24:58,110 --> 00:25:01,520
+So isn't there just--
+there's just one kth episode?
+
+535
+00:25:01,520 --> 00:25:03,120
+There's one kth episode.
+
+536
+00:25:03,120 --> 00:25:06,727
+Yeah so like k is like
+I play-- so if k is 1,
+
+537
+00:25:06,727 --> 00:25:08,060
+I'm going to play my first game.
+
+538
+00:25:08,060 --> 00:25:09,893
+And I'm going to play
+it until I win or lose
+
+539
+00:25:09,893 --> 00:25:10,980
+or until the game ends.
+
+540
+00:25:10,980 --> 00:25:12,170
+So maybe Breakout finishes.
+
+541
+00:25:12,170 --> 00:25:15,650
+Or maybe I'm playing Tetris,
+and like I fail, and I die.
+
+542
+00:25:15,650 --> 00:25:17,180
+And that is one episode.
+
+543
+00:25:17,180 --> 00:25:19,640
+And I'm going to use that to
+then update my Q-function.
+
+544
+00:25:19,640 --> 00:25:21,800
+Then I'm going to change it and
+say, OK, well, my next round,
+
+545
+00:25:21,800 --> 00:25:23,050
+I'm going to play differently.
+
+546
+00:25:23,050 --> 00:25:26,040
+And then I play Tetris
+again until I fail.
+
+547
+00:25:26,040 --> 00:25:28,860
+And then I see what
+the total points are.
+
+548
+00:25:28,860 --> 00:25:31,020
+I update my Q-function,
+and I repeat.
+
+549
+00:25:31,020 --> 00:25:33,062
+And some of those episodes
+might be really short.
+
+550
+00:25:33,062 --> 00:25:34,645
+So maybe the first
+time-- particularly
+
+551
+00:25:34,645 --> 00:25:36,780
+for these agents, the first
+time they play Tetris,
+
+552
+00:25:36,780 --> 00:25:39,890
+maybe they lose in like 10
+steps, might be a really short
+
+553
+00:25:39,890 --> 00:25:41,330
+10 step.
+
+554
+00:25:41,330 --> 00:25:43,030
+Later, maybe they
+play for a long time.
+
+555
+00:25:43,030 --> 00:25:44,780
+But in general, I've
+not told you anything
+
+556
+00:25:44,780 --> 00:25:46,470
+about how long
+these episodes are.
+
+557
+00:25:46,470 --> 00:25:48,137
+They might be really short.
+
+558
+00:25:48,137 --> 00:25:49,345
+Or they might be really long.
+
+559
+00:25:52,620 --> 00:25:54,612
+OK.
+
+560
+00:25:54,612 --> 00:25:56,545
+And I think one
+useful way I find
+
+561
+00:25:56,545 --> 00:25:58,170
+to think about this
+is that think about
+
+562
+00:25:58,170 --> 00:26:00,565
+if they're really short,
+like really, really short.
+
+563
+00:26:00,565 --> 00:26:02,190
+Like I take two steps,
+and I just fail.
+
+564
+00:26:02,190 --> 00:26:03,440
+I did something really dumb.
+
+565
+00:26:03,440 --> 00:26:08,010
+So in that case, think
+about whether your Q would
+
+566
+00:26:08,010 --> 00:26:11,750
+be a good estimate of Q pi k.
+
+567
+00:26:11,750 --> 00:26:14,000
+Like, would it be good if
+you've only seen two states?
+
+568
+00:26:14,000 --> 00:26:15,083
+Or would it be pretty bad?
+
+569
+00:26:20,950 --> 00:26:22,700
+So why don't you turn
+to someone near you?
+
+570
+00:26:22,700 --> 00:26:24,320
+I think most people
+have voted if you have
+
+571
+00:26:24,320 --> 00:26:25,260
+written something you have.
+
+572
+00:26:25,260 --> 00:26:27,218
+But why don't you check
+and see what you think.
+
+573
+00:28:03,672 --> 00:28:06,450
+[INTERPOSING VOICES]
+
+574
+00:30:09,770 --> 00:30:10,270
+OK.
+
+575
+00:30:10,270 --> 00:30:10,640
+Awesome.
+
+576
+00:30:10,640 --> 00:30:12,220
+I'm hearing a lot of
+really good discussion.
+
+577
+00:30:12,220 --> 00:30:14,137
+But I'm going to interrupt
+you, because I want
+
+578
+00:30:14,137 --> 00:30:16,050
+to make sure we get to DQN.
+
+579
+00:30:16,050 --> 00:30:17,580
+So this is where--
+
+580
+00:30:17,580 --> 00:30:20,460
+so one of the reasons that I
+bring up this particular example
+
+581
+00:30:20,460 --> 00:30:22,205
+is that here, it's tabular.
+
+582
+00:30:22,205 --> 00:30:23,830
+I mean, these are a
+little bit smaller,
+
+583
+00:30:23,830 --> 00:30:25,030
+so it's a bit easier to see.
+
+584
+00:30:25,030 --> 00:30:27,363
+But essentially, what I kind
+of want you guys to get out
+
+585
+00:30:27,363 --> 00:30:30,060
+of today is that it
+should be sort of shocking
+
+586
+00:30:30,060 --> 00:30:31,665
+that reinforcement
+learning works.
+
+587
+00:30:31,665 --> 00:30:32,340
+[CHUCKLES]
+
+588
+00:30:32,340 --> 00:30:33,930
+And we're not going
+to have time to go
+
+589
+00:30:33,930 --> 00:30:35,972
+through all the deep
+mathematical reasons for why
+
+590
+00:30:35,972 --> 00:30:37,660
+it does work sometimes
+in this class.
+
+591
+00:30:37,660 --> 00:30:39,360
+But I'm happy to
+give people pointers.
+
+592
+00:30:39,360 --> 00:30:42,010
+But so there's several things
+that are really kind of odd,
+
+593
+00:30:42,010 --> 00:30:44,740
+if you start to think about
+this, when you go through this.
+
+594
+00:30:44,740 --> 00:30:48,100
+So first of all, Q is not
+an estimate of Q pi k.
+
+595
+00:30:48,100 --> 00:30:50,520
+It is not, because
+it is averaging
+
+596
+00:30:50,520 --> 00:30:54,300
+over policies that are
+changing every episode
+
+597
+00:30:54,300 --> 00:30:56,230
+or potentially changing
+every episode, right?
+
+598
+00:30:56,230 --> 00:30:59,430
+Because in fact, in
+general, it will be, right,
+
+599
+00:30:59,430 --> 00:31:01,620
+because we're decaying epsilon.
+
+600
+00:31:01,620 --> 00:31:03,210
+So we're changing
+epsilon each round,
+
+601
+00:31:03,210 --> 00:31:05,710
+which means we're making things
+more and more deterministic.
+
+602
+00:31:05,710 --> 00:31:08,540
+But in addition to that,
+our Q might be changing.
+
+603
+00:31:08,540 --> 00:31:12,400
+So essentially, I'm just
+trying a policy one round.
+
+604
+00:31:12,400 --> 00:31:16,780
+And then I update my Q, and
+then I try something again.
+
+605
+00:31:16,780 --> 00:31:19,205
+And sort of extreme
+example of this
+
+606
+00:31:19,205 --> 00:31:21,580
+would be like flipping a coin
+once and deciding whether--
+
+607
+00:31:21,580 --> 00:31:23,630
+what its bias is or
+something like that.
+
+608
+00:31:23,630 --> 00:31:26,450
+That's just not very much
+data to do this evaluation.
+
+609
+00:31:26,450 --> 00:31:28,360
+And also, you're
+averaging this over
+
+610
+00:31:28,360 --> 00:31:30,580
+many, many different policies.
+
+611
+00:31:30,580 --> 00:31:33,205
+So Q is not an
+estimate of Q pi k.
+
+612
+00:31:33,205 --> 00:31:36,550
+It's this weird weighted average
+of all the previous data and all
+
+613
+00:31:36,550 --> 00:31:39,810
+the policies you've done before.
+
+614
+00:31:39,810 --> 00:31:42,995
+Q should not be an estimate
+of like the [? big ?] changes
+
+615
+00:31:42,995 --> 00:31:45,960
+in the latest k, k minus 1?
+
+616
+00:31:45,960 --> 00:31:47,410
+Well, but not really.
+
+617
+00:31:47,410 --> 00:31:50,070
+Because I mean you've
+averaged in that part.
+
+618
+00:31:50,070 --> 00:31:52,560
+That part's from pi k
+plus 1, but this old thing
+
+619
+00:31:52,560 --> 00:31:54,990
+was over all of your-- is like
+this weird weighted average
+
+620
+00:31:54,990 --> 00:31:57,030
+of all the other
+policies you've tried.
+
+621
+00:31:57,030 --> 00:31:59,850
+So yes, it is that,
+but also like that
+
+622
+00:31:59,850 --> 00:32:01,620
+plus all the other policies.
+
+623
+00:32:01,620 --> 00:32:04,890
+So it's this weird thing, right?
+
+624
+00:32:04,890 --> 00:32:06,750
+The second thing is
+that we're only doing--
+
+625
+00:32:06,750 --> 00:32:08,640
+and I was talking to
+some people about this.
+
+626
+00:32:08,640 --> 00:32:13,013
+We're only doing one rollout
+to try to evaluate a policy.
+
+627
+00:32:13,013 --> 00:32:15,180
+And you might imagine there's
+a lot of stochasticity
+
+628
+00:32:15,180 --> 00:32:17,373
+like even in something
+like some games,
+
+629
+00:32:17,373 --> 00:32:20,040
+there's like random rolls of the
+dice and stuff like that, which
+
+630
+00:32:20,040 --> 00:32:21,520
+means even with
+the same strategy,
+
+631
+00:32:21,520 --> 00:32:23,970
+you might get different
+outcomes each time.
+
+632
+00:32:23,970 --> 00:32:27,090
+So it'd be like if you drove
+to SF, and you did it once.
+
+633
+00:32:27,090 --> 00:32:28,350
+And there was no traffic.
+
+634
+00:32:28,350 --> 00:32:29,850
+And so you're like,
+I can always get
+
+635
+00:32:29,850 --> 00:32:33,160
+to SF in like, I don't know,
+20 minutes on the highway.
+
+636
+00:32:33,160 --> 00:32:34,870
+But for those of you
+that drive to SF,
+
+637
+00:32:34,870 --> 00:32:36,690
+you would know that often,
+there's lots of traffic.
+
+638
+00:32:36,690 --> 00:32:38,310
+And so you would
+need to average over
+
+639
+00:32:38,310 --> 00:32:42,460
+many rounds of doing this to see
+how good a particular route is.
+
+640
+00:32:42,460 --> 00:32:44,950
+So the weird thing
+here is that we're just
+
+641
+00:32:44,950 --> 00:32:47,150
+doing kind of one rollout.
+
+642
+00:32:47,150 --> 00:32:49,793
+We're averaging into this
+weird Q thing, which is now
+
+643
+00:32:49,793 --> 00:32:51,460
+going to be this
+weighted average of all
+
+644
+00:32:51,460 --> 00:32:53,260
+the policies we've done.
+
+645
+00:32:53,260 --> 00:32:56,140
+And we have this
+weird epsilon thing.
+
+646
+00:32:56,140 --> 00:32:59,620
+And it should not be clear
+yet that we will necessarily
+
+647
+00:32:59,620 --> 00:33:01,442
+converge to Q star.
+
+648
+00:33:01,442 --> 00:33:03,400
+Like we are getting more
+and more deterministic
+
+649
+00:33:03,400 --> 00:33:06,370
+over time, because
+we're reducing epsilon.
+
+650
+00:33:06,370 --> 00:33:08,302
+So we're reducing epsilon
+here towards zero.
+
+651
+00:33:08,302 --> 00:33:10,510
+Eventually, we're going to
+converge towards something
+
+652
+00:33:10,510 --> 00:33:12,010
+deterministic.
+
+653
+00:33:12,010 --> 00:33:13,840
+But you may or may
+not be convinced yet
+
+654
+00:33:13,840 --> 00:33:16,545
+that the thing we're going to
+converge to is actually Q star.
+
+655
+00:33:19,630 --> 00:33:23,650
+So fortunately, there are
+some sufficient conditions
+
+656
+00:33:23,650 --> 00:33:26,260
+under which we can guarantee
+that this sort of thing
+
+657
+00:33:26,260 --> 00:33:28,180
+will converge to Q star.
+
+658
+00:33:28,180 --> 00:33:31,340
+And really, it's quite
+beautiful that this works.
+
+659
+00:33:31,340 --> 00:33:34,210
+So one is what's called
+greedy in the limit
+
+660
+00:33:34,210 --> 00:33:37,480
+of infinite exploration or GLIE.
+
+661
+00:33:37,480 --> 00:33:41,200
+So the idea in this case is that
+if you can ensure that all state
+
+662
+00:33:41,200 --> 00:33:44,230
+action pairs are visited an
+infinite number of times,
+
+663
+00:33:44,230 --> 00:33:46,720
+meaning the number
+of counts that you
+
+664
+00:33:46,720 --> 00:33:48,730
+have for a particular
+state and action pair
+
+665
+00:33:48,730 --> 00:33:53,440
+goes to infinity for
+all states and actions--
+
+666
+00:33:53,440 --> 00:33:54,390
+this is for all.
+
+667
+00:33:59,080 --> 00:34:00,980
+And the behavior policy.
+
+668
+00:34:00,980 --> 00:34:02,750
+And what I mean by the
+behavior policy is,
+
+669
+00:34:02,750 --> 00:34:04,417
+this is the policy
+you're actually using
+
+670
+00:34:04,417 --> 00:34:06,550
+to make decisions in the world.
+
+671
+00:34:06,550 --> 00:34:07,780
+And it will be important.
+
+672
+00:34:07,780 --> 00:34:10,113
+There'll be distinctions
+between this and other policies
+
+673
+00:34:10,113 --> 00:34:13,270
+soon, which is why we
+call this behavior policy.
+
+674
+00:34:13,270 --> 00:34:15,760
+If the behavior-- so if
+you sample state action
+
+675
+00:34:15,760 --> 00:34:19,300
+pairs an infinite number of
+times and your behavior policy
+
+676
+00:34:19,300 --> 00:34:23,110
+converges to the greedy policy,
+which means that asymptotically,
+
+677
+00:34:23,110 --> 00:34:25,600
+the action you select
+in a state is exactly
+
+678
+00:34:25,600 --> 00:34:30,159
+equal to the argmax of your
+Q-function with probability 1.
+
+679
+00:34:30,159 --> 00:34:32,320
+So you're just getting more
+and more deterministic.
+
+680
+00:34:32,320 --> 00:34:34,980
+So then you were being
+greedy in the limit
+
+681
+00:34:34,980 --> 00:34:37,260
+of infinite
+exploration that says
+
+682
+00:34:37,260 --> 00:34:41,139
+that you're exploring everything
+an infinite number of times.
+
+683
+00:34:41,139 --> 00:34:44,530
+You're always continuing to
+try all actions in all states.
+
+684
+00:34:44,530 --> 00:34:46,780
+But you're getting more
+and more deterministic.
+
+685
+00:34:46,780 --> 00:34:49,850
+So this is what it
+means to be GLIE.
+
+686
+00:34:49,850 --> 00:34:54,570
+If you have a GLIE algorithm--
+
+687
+00:34:54,570 --> 00:34:56,639
+and I'll just note
+here, like a simple way
+
+688
+00:34:56,639 --> 00:35:01,020
+to do this is to do e-greedy,
+where epsilon is reduced
+
+689
+00:35:01,020 --> 00:35:03,170
+to 0 at the following rate.
+
+690
+00:35:06,760 --> 00:35:08,440
+Yeah, so we'd have this--
+
+691
+00:35:08,440 --> 00:35:10,930
+so that's a simple one.
+
+692
+00:35:10,930 --> 00:35:16,665
+And visit all states.
+
+693
+00:35:21,390 --> 00:35:23,070
+And that should
+hold-- as long as you
+
+694
+00:35:23,070 --> 00:35:24,990
+have an e-greedy
+strategy, then you
+
+695
+00:35:24,990 --> 00:35:27,372
+will be able to visit
+all states and actions.
+
+696
+00:35:27,372 --> 00:35:29,580
+So you're going to be visiting
+all states and actions
+
+697
+00:35:29,580 --> 00:35:32,730
+under this GLIE strategy.
+
+698
+00:35:32,730 --> 00:35:35,100
+Then under that, the
+Monte Carlo algorithm
+
+699
+00:35:35,100 --> 00:35:37,860
+I just showed you for
+tabular representations
+
+700
+00:35:37,860 --> 00:35:42,150
+will converge to Q
+star, which means
+
+701
+00:35:42,150 --> 00:35:44,260
+as long as you decay
+epsilon at this rate,
+
+702
+00:35:44,260 --> 00:35:45,918
+you are actually
+converging to Q star.
+
+703
+00:35:45,918 --> 00:35:47,710
+You're getting more
+and more deterministic.
+
+704
+00:35:47,710 --> 00:35:49,543
+You're still visiting
+all states and actions
+
+705
+00:35:49,543 --> 00:35:50,740
+an infinite number of times.
+
+706
+00:35:50,740 --> 00:35:53,820
+And this procedure is guaranteed
+to asymptotically get you
+
+707
+00:35:53,820 --> 00:35:56,230
+to the optimal Q-function,
+which is pretty cool.
+
+708
+00:35:56,230 --> 00:35:59,950
+And it should be
+somewhat surprising.
+
+709
+00:35:59,950 --> 00:36:00,450
+All right.
+
+710
+00:36:00,450 --> 00:36:02,070
+So that is GLIE.
+
+711
+00:36:02,070 --> 00:36:04,130
+And that is of
+the reasons why we
+
+712
+00:36:04,130 --> 00:36:06,510
+like to think about
+e-greedy algorithms,
+
+713
+00:36:06,510 --> 00:36:08,060
+because they have
+this nice property
+
+714
+00:36:08,060 --> 00:36:10,860
+that we can prove that we are
+going to get an optimal policy,
+
+715
+00:36:10,860 --> 00:36:13,235
+even though all we're doing
+is we're acting in the world.
+
+716
+00:36:13,235 --> 00:36:14,893
+And we're getting this data.
+
+717
+00:36:14,893 --> 00:36:17,060
+Now, what you should be
+thinking about at this point
+
+718
+00:36:17,060 --> 00:36:17,730
+is that, all right.
+
+719
+00:36:17,730 --> 00:36:19,680
+Here's the Monte Carlo
+approach to doing this.
+
+720
+00:36:19,680 --> 00:36:21,763
+There's probably going to
+be a temporal difference
+
+721
+00:36:21,763 --> 00:36:22,950
+approach to doing this.
+
+722
+00:36:22,950 --> 00:36:24,620
+And that's what we're
+going to see now.
+
+723
+00:36:24,620 --> 00:36:26,840
+So now we're going to look
+into temporal difference
+
+724
+00:36:26,840 --> 00:36:30,270
+methods for control.
+
+725
+00:36:30,270 --> 00:36:31,701
+OK.
+
+726
+00:36:31,701 --> 00:36:33,230
+So one of the
+interesting things is
+
+727
+00:36:33,230 --> 00:36:37,460
+that there's going to be two
+different types of algorithms
+
+728
+00:36:37,460 --> 00:36:41,240
+that we're going to focus on for
+temporal difference for control.
+
+729
+00:36:41,240 --> 00:36:43,250
+And the idea in
+these settings is
+
+730
+00:36:43,250 --> 00:36:45,720
+that we're going to
+alternate between two steps,
+
+731
+00:36:45,720 --> 00:36:48,932
+again, this policy evaluation
+versus policy improvement.
+
+732
+00:36:48,932 --> 00:36:51,140
+And one of the key things
+to think about in this case
+
+733
+00:36:51,140 --> 00:36:52,765
+is how much time are
+you spending doing
+
+734
+00:36:52,765 --> 00:36:54,362
+evaluation versus improvement.
+
+735
+00:36:54,362 --> 00:36:55,820
+And what are we
+trying to evaluate,
+
+736
+00:36:55,820 --> 00:36:58,502
+and what are we improving
+with respect to?
+
+737
+00:36:58,502 --> 00:36:59,960
+So the idea now is
+that we're going
+
+738
+00:36:59,960 --> 00:37:03,110
+to compute Q pi using
+temporal difference updating
+
+739
+00:37:03,110 --> 00:37:05,405
+with an e-greedy policy.
+
+740
+00:37:05,405 --> 00:37:07,280
+And then we're going to
+do policy improvement
+
+741
+00:37:07,280 --> 00:37:10,460
+in the same way that we saw
+before for Monte Carlo methods.
+
+742
+00:37:10,460 --> 00:37:12,530
+So we can do this
+e-greedy thing,
+
+743
+00:37:12,530 --> 00:37:16,160
+where we are greedy with
+respect to our current Q value.
+
+744
+00:37:16,160 --> 00:37:19,580
+And the first algorithm we're
+going to see is called SARSA.
+
+745
+00:37:19,580 --> 00:37:22,100
+And the reason it is
+called SARSA is it
+
+746
+00:37:22,100 --> 00:37:31,750
+is state action reward
+next state next action.
+
+747
+00:37:31,750 --> 00:37:34,830
+It is short for that.
+
+748
+00:37:34,830 --> 00:37:37,710
+S-A-R-S-A, SARSA.
+
+749
+00:37:37,710 --> 00:37:40,860
+That's an easy way to think-- to
+remember why this method would
+
+750
+00:37:40,860 --> 00:37:44,790
+be called SARSA, because those
+are the tuples we need in order
+
+751
+00:37:44,790 --> 00:37:45,640
+to do updates.
+
+752
+00:37:45,640 --> 00:37:50,100
+We need s, a, r, s prime,
+a prime to do an update.
+
+753
+00:37:50,100 --> 00:37:52,320
+And this is going to be
+an on-policy algorithm.
+
+754
+00:37:52,320 --> 00:37:55,500
+And this is related to what
+was suggested in the back.
+
+755
+00:37:55,500 --> 00:37:57,920
+Remind me your name.
+
+756
+00:37:57,920 --> 00:37:59,420
+Yeah, exactly what
+[INAUDIBLE] said.
+
+757
+00:37:59,420 --> 00:38:01,960
+So can we also use
+off-policy data?
+
+758
+00:38:01,960 --> 00:38:03,560
+And we'll see that
+really shortly.
+
+759
+00:38:03,560 --> 00:38:06,028
+But SARSA is going
+to be on-policy.
+
+760
+00:38:06,028 --> 00:38:07,570
+And what we mean by
+that is that it's
+
+761
+00:38:07,570 --> 00:38:09,880
+going to be computing
+an estimate of the Q
+
+762
+00:38:09,880 --> 00:38:13,720
+value of the policy we're
+using to act or what policy
+
+763
+00:38:13,720 --> 00:38:16,600
+we're using to make
+decisions in the world.
+
+764
+00:38:16,600 --> 00:38:18,220
+So let's see how it works.
+
+765
+00:38:18,220 --> 00:38:22,720
+So in general, the form
+of SARSA is the following.
+
+766
+00:38:22,720 --> 00:38:25,510
+We are going to
+iterate, our loop
+
+767
+00:38:25,510 --> 00:38:29,120
+is going to be such
+that we start off.
+
+768
+00:38:29,120 --> 00:38:30,340
+So this is the--
+
+769
+00:38:30,340 --> 00:38:31,400
+we start in some state.
+
+770
+00:38:31,400 --> 00:38:32,210
+This is the s.
+
+771
+00:38:32,210 --> 00:38:34,390
+We take an action a.
+
+772
+00:38:34,390 --> 00:38:38,410
+We observe reward in the
+next state, and then we loop.
+
+773
+00:38:38,410 --> 00:38:40,510
+And we take the
+next action still
+
+774
+00:38:40,510 --> 00:38:43,923
+according to the same policy.
+
+775
+00:38:43,923 --> 00:38:45,340
+And then what we're
+going to do is
+
+776
+00:38:45,340 --> 00:38:49,330
+we're going to update our
+Q-function, given this tuple
+
+777
+00:38:49,330 --> 00:38:51,470
+of SARSA, essentially.
+
+778
+00:38:51,470 --> 00:38:53,290
+And what we're going
+to do in this case
+
+779
+00:38:53,290 --> 00:38:56,500
+is going to look similar
+to what we saw before.
+
+780
+00:38:56,500 --> 00:39:00,040
+So we're going to
+have our updated one
+
+781
+00:39:00,040 --> 00:39:06,500
+is our old value plus alpha.
+
+782
+00:39:06,500 --> 00:39:08,723
+So this is like our
+learning rate, our target.
+
+783
+00:39:11,360 --> 00:39:17,450
+s t plus 1, a t plus
+1, minus Q of s t, a t.
+
+784
+00:39:21,060 --> 00:39:23,105
+So this is the target.
+
+785
+00:39:26,960 --> 00:39:30,060
+And it's going to look similar
+to what we saw for TD 0,
+
+786
+00:39:30,060 --> 00:39:33,290
+where we plug-in our immediate
+reward, plus our estimate
+
+787
+00:39:33,290 --> 00:39:35,360
+of the expected
+discounted sum of rewards
+
+788
+00:39:35,360 --> 00:39:37,460
+starting in that next state.
+
+789
+00:39:37,460 --> 00:39:40,160
+And one of the important
+things to notice in this case
+
+790
+00:39:40,160 --> 00:39:43,760
+is we are plugging in
+the actual action we
+
+791
+00:39:43,760 --> 00:39:47,020
+took in the next state.
+
+792
+00:39:47,020 --> 00:39:49,018
+So we're saying what is
+the expected discounted
+
+793
+00:39:49,018 --> 00:39:51,560
+sum of rewards starting in this
+state and taking this action?
+
+794
+00:39:51,560 --> 00:39:55,330
+Well, when-- estimate of
+it is the immediate reward
+
+795
+00:39:55,330 --> 00:39:59,390
+I got plus gamma, times the Q
+value for the state I reached,
+
+796
+00:39:59,390 --> 00:40:02,415
+plus the action I would
+take under this policy next.
+
+797
+00:40:02,415 --> 00:40:03,790
+And that's one of
+the reasons why
+
+798
+00:40:03,790 --> 00:40:06,610
+it's called on policy, because
+it's been specific to the action
+
+799
+00:40:06,610 --> 00:40:11,120
+you would actually
+take under this policy.
+
+800
+00:40:11,120 --> 00:40:11,620
+All right.
+
+801
+00:40:11,620 --> 00:40:13,480
+And then after--
+then the next thing
+
+802
+00:40:13,480 --> 00:40:15,350
+we do is we do
+policy improvement.
+
+803
+00:40:15,350 --> 00:40:18,580
+And what we would do in this
+case is, again, similar to what
+
+804
+00:40:18,580 --> 00:40:20,100
+we saw, [? new one. ?]
+So for all s,
+
+805
+00:40:20,100 --> 00:40:22,120
+this just means for
+all, for anybody
+
+806
+00:40:22,120 --> 00:40:24,880
+who hasn't seen this notation.
+
+807
+00:40:24,880 --> 00:40:30,970
+Pi of s is equal to
+argmax over a, Q of s,
+
+808
+00:40:30,970 --> 00:40:35,385
+a with probability epsilon.
+
+809
+00:40:45,834 --> 00:40:49,210
+And then what we do is
+we update our timestep.
+
+810
+00:40:49,210 --> 00:40:51,720
+We update our epsilon.
+
+811
+00:40:51,720 --> 00:40:54,340
+And then what we're going
+to do is just repeat.
+
+812
+00:40:54,340 --> 00:40:56,520
+So then we're going to go--
+
+813
+00:40:56,520 --> 00:40:58,535
+then we're going
+to go to the next--
+
+814
+00:40:58,535 --> 00:41:00,660
+we're going to take our
+next state, take an action,
+
+815
+00:41:00,660 --> 00:41:03,740
+and repeat this updating.
+
+816
+00:41:03,740 --> 00:41:06,380
+So this is called-- yeah.
+
+817
+00:41:06,380 --> 00:41:07,430
+Quick question.
+
+818
+00:41:07,430 --> 00:41:12,210
+Like do we-- I have a bit
+confused about setting pi of s.
+
+819
+00:41:12,210 --> 00:41:15,560
+Do we say pi is a
+deterministic policy that
+
+820
+00:41:15,560 --> 00:41:17,745
+is one of this with
+this probability
+
+821
+00:41:17,745 --> 00:41:19,620
+and the other one with
+the other probability?
+
+822
+00:41:19,620 --> 00:41:23,150
+Or are we saying it's a
+stochastic policy that can--
+
+823
+00:41:23,150 --> 00:41:24,540
+It's a stochastic policy.
+
+824
+00:41:24,540 --> 00:41:27,590
+Yeah, so it's a
+stochastic policy.
+
+825
+00:41:27,590 --> 00:41:29,397
+At the very beginning,
+it's totally random.
+
+826
+00:41:29,397 --> 00:41:30,980
+You just take any
+action in any state.
+
+827
+00:41:30,980 --> 00:41:33,892
+Later, you're defining it with
+respect to your current Q value.
+
+828
+00:41:33,892 --> 00:41:36,350
+And you're either being greedy
+with respect to that Q value
+
+829
+00:41:36,350 --> 00:41:38,150
+or selecting action at random.
+
+830
+00:41:38,150 --> 00:41:39,050
+Yeah.
+
+831
+00:41:39,050 --> 00:41:41,870
+So one concern that
+I had was that what
+
+832
+00:41:41,870 --> 00:41:45,107
+if we reach a terminal
+state and then just end?
+
+833
+00:41:45,107 --> 00:41:45,690
+Good question.
+
+834
+00:41:45,690 --> 00:41:48,740
+And this actually came up
+in another conversation
+
+835
+00:41:48,740 --> 00:41:49,710
+earlier this morning.
+
+836
+00:41:49,710 --> 00:41:53,490
+Yes, so if you reach a terminal
+state, then you just reset.
+
+837
+00:41:53,490 --> 00:42:09,180
+So if s t plus 2 is terminal,
+reset the episode and sample s.
+
+838
+00:42:09,180 --> 00:42:10,620
+So if you ever
+reach a state where
+
+839
+00:42:10,620 --> 00:42:12,180
+it's terminal, what
+would happen next
+
+840
+00:42:12,180 --> 00:42:14,985
+is then your whole
+episode just resets.
+
+841
+00:42:14,985 --> 00:42:16,860
+You sample this initial
+state from the world,
+
+842
+00:42:16,860 --> 00:42:17,693
+and then you repeat.
+
+843
+00:42:17,693 --> 00:42:20,290
+So just like if I like finished
+my game, I failed at Tesla,
+
+844
+00:42:20,290 --> 00:42:22,073
+it reinitializes the world.
+
+845
+00:42:22,073 --> 00:42:23,490
+So these are still
+sort of assumed
+
+846
+00:42:23,490 --> 00:42:25,060
+to be continuing processes.
+
+847
+00:42:25,060 --> 00:42:27,150
+Yeah?
+
+848
+00:42:27,150 --> 00:42:32,895
+I'm wondering-- what will
+[INAUDIBLE] to athletes?
+
+849
+00:42:32,895 --> 00:42:33,520
+Great question.
+
+850
+00:42:33,520 --> 00:42:35,698
+So what best and what
+we're going to see in just
+
+851
+00:42:35,698 --> 00:42:37,740
+like a slide or two-- and
+you guys are-- probably
+
+852
+00:42:37,740 --> 00:42:39,610
+half of you at least have
+probably seen this before.
+
+853
+00:42:39,610 --> 00:42:41,568
+We're going to see
+Q-learning, and that's where
+
+854
+00:42:41,568 --> 00:42:43,670
+it's going to be off-policy.
+
+855
+00:42:43,670 --> 00:42:44,390
+OK.
+
+856
+00:42:44,390 --> 00:42:45,560
+Really quick question.
+
+857
+00:42:45,560 --> 00:42:50,660
+Like when it says t plus
+2, do we do the step seven?
+
+858
+00:42:50,660 --> 00:42:53,580
+Or do we skip it for one step
+and do it in the next one,
+
+859
+00:42:53,580 --> 00:42:54,080
+because--
+
+860
+00:42:54,080 --> 00:42:55,885
+If it's terminal or in general?
+
+861
+00:42:55,885 --> 00:42:57,450
+Like if it's terminal.
+
+862
+00:42:57,450 --> 00:43:00,470
+If it's terminal,
+you would halt here.
+
+863
+00:43:00,470 --> 00:43:02,267
+And then you would
+reset the whole thing.
+
+864
+00:43:02,267 --> 00:43:04,850
+Then you would need to take an
+action, observe, or next state,
+
+865
+00:43:04,850 --> 00:43:05,900
+and then jump into five.
+
+866
+00:43:05,900 --> 00:43:08,010
+So you have to reset to two.
+
+867
+00:43:08,010 --> 00:43:10,240
+Yeah, great question.
+
+868
+00:43:10,240 --> 00:43:10,740
+All right.
+
+869
+00:43:10,740 --> 00:43:11,630
+So let's see.
+
+870
+00:43:11,630 --> 00:43:13,490
+Well, first, let's
+talk about whether this
+
+871
+00:43:13,490 --> 00:43:15,200
+is guaranteed to do
+anything reasonable,
+
+872
+00:43:15,200 --> 00:43:16,990
+and then we'll get going.
+
+873
+00:43:16,990 --> 00:43:19,920
+So I've written
+this up neatly here.
+
+874
+00:43:19,920 --> 00:43:22,220
+And then there's a worked
+example for the Mars
+
+875
+00:43:22,220 --> 00:43:24,360
+Rover at the end of the slides.
+
+876
+00:43:24,360 --> 00:43:24,860
+OK.
+
+877
+00:43:24,860 --> 00:43:27,320
+So one thing to
+note here, too, is
+
+878
+00:43:27,320 --> 00:43:29,570
+that now we've defined
+a general learning rate,
+
+879
+00:43:29,570 --> 00:43:32,190
+so that we have a general
+learning rate here.
+
+880
+00:43:32,190 --> 00:43:32,690
+OK.
+
+881
+00:43:32,690 --> 00:43:34,033
+And we also have--
+
+882
+00:43:34,033 --> 00:43:35,575
+let me make sure I
+keep this in here.
+
+883
+00:43:38,810 --> 00:43:41,420
+We're going to keep
+updating our epsilon.
+
+884
+00:43:41,420 --> 00:43:45,612
+OK, so is this a good approach?
+
+885
+00:43:45,612 --> 00:43:47,820
+So we can think of a couple
+of different things here.
+
+886
+00:43:47,820 --> 00:43:49,870
+We can think of the
+computational complexity.
+
+887
+00:43:49,870 --> 00:43:54,560
+So here after each tuple,
+we're doing an update.
+
+888
+00:43:54,560 --> 00:43:56,900
+And in fact, we know that
+that's in general only going
+
+889
+00:43:56,900 --> 00:44:00,307
+to change the Q value for
+the states and the actions
+
+890
+00:44:00,307 --> 00:44:01,140
+that we're updating.
+
+891
+00:44:01,140 --> 00:44:05,010
+So we just are doing that
+small update each time.
+
+892
+00:44:05,010 --> 00:44:06,750
+We don't have to sum
+over all the states.
+
+893
+00:44:06,750 --> 00:44:08,833
+So there's nothing that
+depends on the state space
+
+894
+00:44:08,833 --> 00:44:10,620
+size per update.
+
+895
+00:44:10,620 --> 00:44:13,010
+But of course, we're doing
+this many, many, many times.
+
+896
+00:44:13,010 --> 00:44:15,520
+Does this converge to
+the optimal Q-function?
+
+897
+00:44:15,520 --> 00:44:17,390
+So what we have
+here in this case is
+
+898
+00:44:17,390 --> 00:44:19,790
+we have this
+weighted combination
+
+899
+00:44:19,790 --> 00:44:24,380
+between our last Q-function
+and this new target.
+
+900
+00:44:24,380 --> 00:44:27,560
+And again, Q is an
+estimate of the performance
+
+901
+00:44:27,560 --> 00:44:30,780
+of a policy that might be
+changing at each time point.
+
+902
+00:44:30,780 --> 00:44:32,290
+So it's similar to Monte Carlo.
+
+903
+00:44:32,290 --> 00:44:33,900
+Like we're just like
+we're constantly
+
+904
+00:44:33,900 --> 00:44:35,980
+changing the policy
+in this case.
+
+905
+00:44:35,980 --> 00:44:38,550
+And so that should feel
+a little bit concerning.
+
+906
+00:44:38,550 --> 00:44:40,300
+And empirically, it
+often does quite well.
+
+907
+00:44:40,300 --> 00:44:42,700
+But Q-learning is more popular.
+
+908
+00:44:42,700 --> 00:44:45,290
+OK, so what are the
+convergence properties?
+
+909
+00:44:45,290 --> 00:44:46,840
+So it turns out that
+in terms of some
+
+910
+00:44:46,840 --> 00:44:48,290
+of the mathematical
+formulations,
+
+911
+00:44:48,290 --> 00:44:51,640
+this relates really strongly
+to stochastic approximation.
+
+912
+00:44:51,640 --> 00:44:53,980
+And this is a deep
+literature with lots
+
+913
+00:44:53,980 --> 00:44:55,570
+of really amazing results.
+
+914
+00:44:55,570 --> 00:44:59,180
+In the finite state
+and finite action case,
+
+915
+00:44:59,180 --> 00:45:03,130
+it's going to converge to
+the optimal Q star for SARSA,
+
+916
+00:45:03,130 --> 00:45:06,553
+if your policy sequence
+satisfies the condition of GLIE.
+
+917
+00:45:06,553 --> 00:45:08,470
+So we're going to visit
+all states and actions
+
+918
+00:45:08,470 --> 00:45:09,860
+an infinite number of times.
+
+919
+00:45:09,860 --> 00:45:12,640
+And we're getting greedy
+and greedier over time.
+
+920
+00:45:12,640 --> 00:45:15,490
+And we have to put in a
+condition about the learning
+
+921
+00:45:15,490 --> 00:45:17,560
+rates, the step sizes.
+
+922
+00:45:17,560 --> 00:45:19,390
+So in particular,
+they have to satisfy
+
+923
+00:45:19,390 --> 00:45:22,100
+the Robbins-Munro sequence.
+
+924
+00:45:22,100 --> 00:45:24,650
+So they have to satisfy
+these two things, which
+
+925
+00:45:24,650 --> 00:45:26,990
+is their sum goes to
+infinity, and their square
+
+926
+00:45:26,990 --> 00:45:28,250
+is less than infinity.
+
+927
+00:45:28,250 --> 00:45:30,800
+And we've seen this before.
+
+928
+00:45:30,800 --> 00:45:33,950
+And an example of this
+would be a t equals 1 over t
+
+929
+00:45:33,950 --> 00:45:35,640
+satisfies these conditions.
+
+930
+00:45:38,570 --> 00:45:43,060
+So these results
+really sort of rely
+
+931
+00:45:43,060 --> 00:45:45,875
+on these really nice results
+from stochastic approximation,
+
+932
+00:45:45,875 --> 00:45:47,750
+because it should be a
+little bit surprising.
+
+933
+00:45:47,750 --> 00:45:49,417
+You can think of this
+as kind of there's
+
+934
+00:45:49,417 --> 00:45:52,270
+these different-- there's
+these mixing processes that
+
+935
+00:45:52,270 --> 00:45:54,440
+are going on, because
+our policy is changing,
+
+936
+00:45:54,440 --> 00:45:55,733
+our estimates are changing.
+
+937
+00:45:55,733 --> 00:45:57,400
+How can we be sure
+that it's essentially
+
+938
+00:45:57,400 --> 00:45:59,890
+going to be stable enough
+that over time, we're
+
+939
+00:45:59,890 --> 00:46:03,140
+actually going to converge to
+something that's both fixed--
+
+940
+00:46:03,140 --> 00:46:05,140
+like we're not just going
+to oscillate forever--
+
+941
+00:46:05,140 --> 00:46:07,420
+and that it is optimal?
+
+942
+00:46:07,420 --> 00:46:12,340
+So it should not be at all clear
+why this would necessarily work.
+
+943
+00:46:12,340 --> 00:46:17,290
+And this is where we rely on
+those results from stochastic
+
+944
+00:46:17,290 --> 00:46:19,990
+approximation, that also had to
+be extended to think about these
+
+945
+00:46:19,990 --> 00:46:23,110
+particular cases during a number
+of really beautiful papers from
+
+946
+00:46:23,110 --> 00:46:25,300
+the 1990s.
+
+947
+00:46:25,300 --> 00:46:34,690
+So those are the 1992 and
+1994 papers that show this.
+
+948
+00:46:34,690 --> 00:46:36,660
+OK, so there's some
+really cool results
+
+949
+00:46:36,660 --> 00:46:39,240
+that illustrate why
+this is possible.
+
+950
+00:46:39,240 --> 00:46:43,890
+OK, SARSA for tabular settings
+under some mild conditions
+
+951
+00:46:43,890 --> 00:46:46,300
+is guaranteed to
+converge to Q star.
+
+952
+00:46:46,300 --> 00:46:49,410
+So now let's see if we can
+do off-policy learning.
+
+953
+00:46:49,410 --> 00:46:51,073
+So off-policy
+learning is the idea
+
+954
+00:46:51,073 --> 00:46:53,490
+that now we're going to be
+trying to estimate and evaluate
+
+955
+00:46:53,490 --> 00:46:56,010
+a policy using experience
+gathered from following
+
+956
+00:46:56,010 --> 00:46:57,950
+a different policy.
+
+957
+00:46:57,950 --> 00:47:00,800
+So, so far, we've been thinking
+about Monte Carlo methods
+
+958
+00:47:00,800 --> 00:47:02,630
+and SARSA, where
+we're at least sort
+
+959
+00:47:02,630 --> 00:47:05,330
+of trying to always approximate
+the value of the most
+
+960
+00:47:05,330 --> 00:47:08,460
+recent policy or averaged
+over all those policies.
+
+961
+00:47:08,460 --> 00:47:09,980
+But now we're
+going to explicitly
+
+962
+00:47:09,980 --> 00:47:14,390
+be trying to estimate Q
+star at all time points.
+
+963
+00:47:14,390 --> 00:47:15,662
+OK.
+
+964
+00:47:15,662 --> 00:47:20,710
+So in Q-learning, we are going
+to try to directly estimate
+
+965
+00:47:20,710 --> 00:47:22,057
+the value of pi star--
+
+966
+00:47:22,057 --> 00:47:23,890
+which remember, we don't
+know, because if we
+
+967
+00:47:23,890 --> 00:47:25,300
+knew what pi star
+was, then we wouldn't
+
+968
+00:47:25,300 --> 00:47:26,890
+have to do any of
+this learning--
+
+969
+00:47:26,890 --> 00:47:28,670
+with another behavior policy.
+
+970
+00:47:28,670 --> 00:47:29,345
+Pi b.
+
+971
+00:47:29,345 --> 00:47:30,970
+So we're going to be
+acting in one way.
+
+972
+00:47:30,970 --> 00:47:32,428
+And we're going to
+be trying to use
+
+973
+00:47:32,428 --> 00:47:36,010
+that data to estimate the
+value of an alternative policy.
+
+974
+00:47:36,010 --> 00:47:39,540
+And that's what Q-learning does.
+
+975
+00:47:39,540 --> 00:47:42,120
+So in Q-learning,
+the key difference
+
+976
+00:47:42,120 --> 00:47:44,340
+is that instead of trying
+to think about what
+
+977
+00:47:44,340 --> 00:47:47,350
+is the action we actually
+took on the next time step,
+
+978
+00:47:47,350 --> 00:47:50,160
+we're just going to figure out
+what is the best action I could
+
+979
+00:47:50,160 --> 00:47:54,670
+have taken, because we
+know for the Q star value,
+
+980
+00:47:54,670 --> 00:47:58,170
+it is the estimate of the
+optimal expected reward
+
+981
+00:47:58,170 --> 00:48:00,510
+you could get if you
+take the current action
+
+982
+00:48:00,510 --> 00:48:03,380
+and then act
+optimally from now on.
+
+983
+00:48:03,380 --> 00:48:04,880
+So really, you
+would normally like
+
+984
+00:48:04,880 --> 00:48:06,150
+to have something like this.
+
+985
+00:48:06,150 --> 00:48:09,950
+So sum over s prime probability
+of s prime given s, a,
+
+986
+00:48:09,950 --> 00:48:13,340
+times V star of s prime.
+
+987
+00:48:13,340 --> 00:48:15,900
+So you would have in
+the Bellman equation.
+
+988
+00:48:15,900 --> 00:48:18,470
+And what we're going to do
+here, what Q-learning does
+
+989
+00:48:18,470 --> 00:48:24,200
+is it approximates
+that by this max.
+
+990
+00:48:24,200 --> 00:48:26,840
+And that is different
+than what SARSA does,
+
+991
+00:48:26,840 --> 00:48:30,862
+because SARSA used
+the actual action.
+
+992
+00:48:30,862 --> 00:48:32,320
+And Q-learning
+says, I don't really
+
+993
+00:48:32,320 --> 00:48:33,860
+care what actual
+action you took.
+
+994
+00:48:33,860 --> 00:48:35,930
+I care about what is the best
+thing you could have done there,
+
+995
+00:48:35,930 --> 00:48:37,305
+because that's
+giving me a better
+
+996
+00:48:37,305 --> 00:48:39,850
+estimate of the maximum expected
+discounted sum of rewards
+
+997
+00:48:39,850 --> 00:48:44,720
+I'd get from that state
+till the end of time.
+
+998
+00:48:44,720 --> 00:48:46,860
+So that is what
+Q-learning is doing.
+
+999
+00:48:46,860 --> 00:48:49,080
+So it looks really similar
+to the SARSA update.
+
+1000
+00:48:49,080 --> 00:48:51,750
+But our target is going
+to be the reward I got,
+
+1001
+00:48:51,750 --> 00:48:54,335
+plus the best reward that I
+think I could have achieved
+
+1002
+00:48:54,335 --> 00:48:55,210
+from that next state.
+
+1003
+00:48:58,980 --> 00:48:59,480
+All right.
+
+1004
+00:48:59,480 --> 00:49:02,050
+So then we get an algorithm
+that looks extremely
+
+1005
+00:49:02,050 --> 00:49:03,740
+similar to what we saw before.
+
+1006
+00:49:03,740 --> 00:49:07,790
+But we have this max
+over the next action.
+
+1007
+00:49:07,790 --> 00:49:09,040
+And then I'll just make sure--
+
+1008
+00:49:09,040 --> 00:49:10,674
+I think I forgot
+to write down here.
+
+1009
+00:49:14,550 --> 00:49:17,910
+So whether we're doing Monte
+Carlo or SARSA or Q-learning,
+
+1010
+00:49:17,910 --> 00:49:20,790
+in all of these cases, we're
+interleaving gathering some data
+
+1011
+00:49:20,790 --> 00:49:23,070
+under our current
+epsilon greedy policy,
+
+1012
+00:49:23,070 --> 00:49:25,410
+and then using it
+to update a Q value.
+
+1013
+00:49:25,410 --> 00:49:28,660
+And because we don't know
+what the actual Q-function is,
+
+1014
+00:49:28,660 --> 00:49:30,990
+we're sort of doing this
+weighted approximation
+
+1015
+00:49:30,990 --> 00:49:35,580
+between our current estimate of
+the Q-function and the target
+
+1016
+00:49:35,580 --> 00:49:37,350
+that we just put in.
+
+1017
+00:49:37,350 --> 00:49:39,305
+And we do this over and
+over and over again.
+
+1018
+00:49:43,210 --> 00:49:45,460
+So similar to SARSA,
+the conditions
+
+1019
+00:49:45,460 --> 00:49:47,920
+to make sure that Q-learning
+in the tabular case--
+
+1020
+00:49:47,920 --> 00:49:50,140
+so things get a lot
+more complicated
+
+1021
+00:49:50,140 --> 00:49:55,380
+once we go into the
+function approximation case.
+
+1022
+00:49:55,380 --> 00:49:58,310
+But in order for
+tabular Q-learning
+
+1023
+00:49:58,310 --> 00:50:01,153
+with e-greedy exploration to
+converge the optimal Q star,
+
+1024
+00:50:01,153 --> 00:50:03,320
+you again need to visit
+everything infinitely often.
+
+1025
+00:50:03,320 --> 00:50:07,730
+Your step sizes has to satisfy
+the Robbins-Munro sequence.
+
+1026
+00:50:07,730 --> 00:50:11,900
+And one important
+thing to notice here
+
+1027
+00:50:11,900 --> 00:50:20,370
+is that you can estimate Q
+star without being GLIE, which
+
+1028
+00:50:20,370 --> 00:50:26,240
+is different than SARSA, because
+you're always doing this max.
+
+1029
+00:50:26,240 --> 00:50:29,700
+So even if you act
+completely randomly,
+
+1030
+00:50:29,700 --> 00:50:32,610
+so just like infinite
+exploration, not being greedy,
+
+1031
+00:50:32,610 --> 00:50:38,390
+you could learn Q star, because
+in your Q star estimate here,
+
+1032
+00:50:38,390 --> 00:50:41,554
+you're always doing this max a.
+
+1033
+00:50:41,554 --> 00:50:46,320
+So that's an important
+difference compared to SARSA.
+
+1034
+00:50:46,320 --> 00:50:48,320
+But if you actually want
+to use that information
+
+1035
+00:50:48,320 --> 00:50:49,830
+to make good decisions
+in the world,
+
+1036
+00:50:49,830 --> 00:50:51,290
+you need to become
+greedy over time
+
+1037
+00:50:51,290 --> 00:50:54,470
+and be using that information to
+actually select the best action
+
+1038
+00:50:54,470 --> 00:50:57,130
+according to your Q-function.
+
+1039
+00:50:57,130 --> 00:50:59,770
+And for e-greedy
+algorithms with Q-learning,
+
+1040
+00:50:59,770 --> 00:51:01,790
+you normally do k over
+epsilon over time.
+
+1041
+00:51:01,790 --> 00:51:03,790
+So you're getting more
+and more deterministic.
+
+1042
+00:51:03,790 --> 00:51:06,070
+And you're taking your
+estimate of what Q star is
+
+1043
+00:51:06,070 --> 00:51:07,940
+and using it to make decisions.
+
+1044
+00:51:11,667 --> 00:51:14,000
+Yeah, we're now going to go
+into function approximation.
+
+1045
+00:51:14,000 --> 00:51:16,625
+I'm just going to pause there in
+case people had any questions.
+
+1046
+00:51:21,600 --> 00:51:23,650
+Yeah.
+
+1047
+00:51:23,650 --> 00:51:26,830
+So for either using
+SARSA or Q-learning,
+
+1048
+00:51:26,830 --> 00:51:28,740
+will it converge--
+does it converge
+
+1049
+00:51:28,740 --> 00:51:32,720
+to a stochastic policy or
+a deterministic policy?
+
+1050
+00:51:32,720 --> 00:51:34,110
+Great, great question.
+
+1051
+00:51:34,110 --> 00:51:37,410
+So if there are no ties
+in your Q-function,
+
+1052
+00:51:37,410 --> 00:51:40,320
+as in like for any action
+there or any state,
+
+1053
+00:51:40,320 --> 00:51:42,080
+there is a uniquely
+best action, it'll
+
+1054
+00:51:42,080 --> 00:51:45,020
+converge to a
+deterministic policy.
+
+1055
+00:51:45,020 --> 00:51:47,120
+If there are ties,
+it'll generally
+
+1056
+00:51:47,120 --> 00:51:48,600
+pick between those arbitrarily.
+
+1057
+00:51:48,600 --> 00:51:50,683
+There'll be an infinite
+number of optimal policies
+
+1058
+00:51:50,683 --> 00:51:53,175
+if there are ties
+in your Q-function.
+
+1059
+00:51:53,175 --> 00:51:53,800
+Great question.
+
+1060
+00:51:58,310 --> 00:51:58,830
+All right.
+
+1061
+00:51:58,830 --> 00:51:59,750
+So now what we're
+going to do is we're
+
+1062
+00:51:59,750 --> 00:52:01,830
+going to layer on function
+approximation on top.
+
+1063
+00:52:01,830 --> 00:52:03,530
+So this was all
+assuming that we just
+
+1064
+00:52:03,530 --> 00:52:05,480
+had this table where
+you could write down
+
+1065
+00:52:05,480 --> 00:52:08,610
+the value for every state
+and action separately.
+
+1066
+00:52:08,610 --> 00:52:10,770
+And now we want to use
+function approximation.
+
+1067
+00:52:10,770 --> 00:52:14,690
+So we can start to do
+problems like Atari.
+
+1068
+00:52:14,690 --> 00:52:16,835
+So the motivation for
+doing this-- and I
+
+1069
+00:52:16,835 --> 00:52:19,013
+know for those of you who've
+taken machine learning,
+
+1070
+00:52:19,013 --> 00:52:20,930
+this is probably clear,
+but it's nice to think
+
+1071
+00:52:20,930 --> 00:52:23,138
+about what this means in
+the context of reinforcement
+
+1072
+00:52:23,138 --> 00:52:23,730
+learning.
+
+1073
+00:52:23,730 --> 00:52:25,880
+So what are the things
+that we might be storing
+
+1074
+00:52:25,880 --> 00:52:27,410
+or trying to manipulate?
+
+1075
+00:52:27,410 --> 00:52:29,930
+That might be the dynamics
+or reward model, the value
+
+1076
+00:52:29,930 --> 00:52:33,260
+function, the state action
+value function, or the policy.
+
+1077
+00:52:33,260 --> 00:52:35,550
+And if you were thinking
+about pixel space,
+
+1078
+00:52:35,550 --> 00:52:39,530
+you do not want to write that
+down as like one different value
+
+1079
+00:52:39,530 --> 00:52:42,650
+for every-- bless you-- for
+every different possible image
+
+1080
+00:52:42,650 --> 00:52:43,820
+in the world.
+
+1081
+00:52:43,820 --> 00:52:46,220
+So we're going to want compact
+representations like what
+
+1082
+00:52:46,220 --> 00:52:49,580
+we can do with neural networks,
+so that we reduce the memory we
+
+1083
+00:52:49,580 --> 00:52:52,190
+need to write down those
+dynamics models, the value
+
+1084
+00:52:52,190 --> 00:52:54,120
+function, or Q or the policy.
+
+1085
+00:52:54,120 --> 00:52:55,590
+We reduce the computation.
+
+1086
+00:52:55,590 --> 00:52:59,875
+And ideally, we might even be
+able to reduce the experience.
+
+1087
+00:52:59,875 --> 00:53:01,250
+And I think this
+last point maybe
+
+1088
+00:53:01,250 --> 00:53:03,292
+is a particularly interesting
+one to think about.
+
+1089
+00:53:03,292 --> 00:53:05,480
+So you can imagine, if
+your agent is learning
+
+1090
+00:53:05,480 --> 00:53:08,910
+to play an Atari game
+or play Breakout,
+
+1091
+00:53:08,910 --> 00:53:11,830
+it might want to know that,
+oh, well, if these pixels are
+
+1092
+00:53:11,830 --> 00:53:13,580
+slightly different
+here, most of the time,
+
+1093
+00:53:13,580 --> 00:53:15,830
+you might still take
+the same decision.
+
+1094
+00:53:15,830 --> 00:53:18,230
+And so then instead of
+having to learn from scratch
+
+1095
+00:53:18,230 --> 00:53:19,790
+what to do in each
+state, you can get
+
+1096
+00:53:19,790 --> 00:53:21,410
+this sort of generalization.
+
+1097
+00:53:21,410 --> 00:53:23,480
+And that could be really
+important in terms
+
+1098
+00:53:23,480 --> 00:53:24,890
+of reducing the
+amount of data we
+
+1099
+00:53:24,890 --> 00:53:29,120
+need to learn to
+make good decisions.
+
+1100
+00:53:29,120 --> 00:53:29,670
+All right.
+
+1101
+00:53:29,670 --> 00:53:31,707
+So how do we do this?
+
+1102
+00:53:31,707 --> 00:53:33,290
+What we're going to
+try to do is we're
+
+1103
+00:53:33,290 --> 00:53:35,790
+going to essentially do the same
+thing as what we did before.
+
+1104
+00:53:35,790 --> 00:53:38,040
+But we're also going to have
+to incorporate a function
+
+1105
+00:53:38,040 --> 00:53:39,023
+approximation step.
+
+1106
+00:53:39,023 --> 00:53:40,940
+So let's just think about
+how we would do this
+
+1107
+00:53:40,940 --> 00:53:42,190
+if we had an Oracle.
+
+1108
+00:53:42,190 --> 00:53:44,600
+So what I mean by
+this is we're not
+
+1109
+00:53:44,600 --> 00:53:47,020
+thinking yet right now
+about all the learning
+
+1110
+00:53:47,020 --> 00:53:48,020
+and like gathering data.
+
+1111
+00:53:48,020 --> 00:53:50,395
+We're just assuming how do we
+fit a function to represent
+
+1112
+00:53:50,395 --> 00:53:52,220
+our Q-function.
+
+1113
+00:53:52,220 --> 00:53:55,070
+So let's imagine that you had
+an Oracle that for any state
+
+1114
+00:53:55,070 --> 00:53:57,260
+and action, it would
+give you the true value
+
+1115
+00:53:57,260 --> 00:54:00,290
+for a particular policy
+and that state and action.
+
+1116
+00:54:00,290 --> 00:54:03,710
+So it would tell you like
+that's three or that's seven.
+
+1117
+00:54:03,710 --> 00:54:05,570
+So then you could
+say, OK, now I've just
+
+1118
+00:54:05,570 --> 00:54:07,290
+got a supervised
+learning problem,
+
+1119
+00:54:07,290 --> 00:54:09,680
+I've got input tuples
+of states and actions.
+
+1120
+00:54:09,680 --> 00:54:12,800
+And I have output
+values of my Q-function.
+
+1121
+00:54:12,800 --> 00:54:16,160
+And what I want to do now is
+just learn a function to--
+
+1122
+00:54:16,160 --> 00:54:18,690
+a regression function to say,
+given the state and action,
+
+1123
+00:54:18,690 --> 00:54:20,990
+what is the output?
+
+1124
+00:54:20,990 --> 00:54:23,330
+So imagine that
+you're in a case where
+
+1125
+00:54:23,330 --> 00:54:25,490
+we have a continuous
+set of states,
+
+1126
+00:54:25,490 --> 00:54:28,040
+and we only have one action.
+
+1127
+00:54:28,040 --> 00:54:32,660
+Then you might just have
+all these different points.
+
+1128
+00:54:32,660 --> 00:54:35,120
+And maybe you just want to
+learn a function that predicts
+
+1129
+00:54:35,120 --> 00:54:39,580
+the Q for every single state.
+
+1130
+00:54:39,580 --> 00:54:41,690
+And you just learn like
+a parametric function.
+
+1131
+00:54:41,690 --> 00:54:44,020
+Or it could be a
+deep neural network.
+
+1132
+00:54:44,020 --> 00:54:46,100
+And in general, just like
+in supervised learning,
+
+1133
+00:54:46,100 --> 00:54:47,975
+the objective is going
+to be to find the best
+
+1134
+00:54:47,975 --> 00:54:50,980
+approximate representation
+of Q, given some weights
+
+1135
+00:54:50,980 --> 00:54:53,950
+or given some neural
+network architecture.
+
+1136
+00:54:53,950 --> 00:54:56,355
+So we've got some neural net.
+
+1137
+00:54:58,860 --> 00:55:01,310
+And we're just going
+to fit this to try
+
+1138
+00:55:01,310 --> 00:55:04,040
+to-- if we had these points.
+
+1139
+00:55:04,040 --> 00:55:05,910
+But of course, we don't
+have these points.
+
+1140
+00:55:05,910 --> 00:55:07,620
+And we're going to see how
+we're going to handle it.
+
+1141
+00:55:07,620 --> 00:55:08,430
+We don't have these points.
+
+1142
+00:55:08,430 --> 00:55:10,763
+But this is the intuition is
+that if you had these, then
+
+1143
+00:55:10,763 --> 00:55:14,340
+you could do the function
+approximation step by saying,
+
+1144
+00:55:14,340 --> 00:55:15,373
+OK, well, how do I--
+
+1145
+00:55:15,373 --> 00:55:16,790
+I'm going to handle
+generalization
+
+1146
+00:55:16,790 --> 00:55:19,800
+by using a linear function or
+a deep neural network to say,
+
+1147
+00:55:19,800 --> 00:55:22,255
+for each of these states and
+actions, what is the output?
+
+1148
+00:55:25,040 --> 00:55:27,652
+So just to highlight
+here in this class,
+
+1149
+00:55:27,652 --> 00:55:29,360
+generally, we will be
+focusing on methods
+
+1150
+00:55:29,360 --> 00:55:31,280
+that use stochastic
+gradient descent to try
+
+1151
+00:55:31,280 --> 00:55:32,760
+to fit these functions.
+
+1152
+00:55:32,760 --> 00:55:35,147
+And again, I expect most of
+this is familiar for you guys
+
+1153
+00:55:35,147 --> 00:55:36,480
+if you've done machine learning.
+
+1154
+00:55:36,480 --> 00:55:41,390
+If you haven't, you can come
+talk to me or any of the TAs.
+
+1155
+00:55:41,390 --> 00:55:43,670
+Generally, we're going to
+just use mean squared error.
+
+1156
+00:55:43,670 --> 00:55:47,000
+And we're going to try to
+fit a function that minimizes
+
+1157
+00:55:47,000 --> 00:55:48,180
+the mean squared error.
+
+1158
+00:55:48,180 --> 00:55:50,720
+We're going to do gradient
+descent to find a local minimum.
+
+1159
+00:55:50,720 --> 00:55:54,290
+And we're going to do
+stochastic gradient descent just
+
+1160
+00:55:54,290 --> 00:55:58,930
+to compute an
+approximate gradient.
+
+1161
+00:55:58,930 --> 00:56:00,010
+Right.
+
+1162
+00:56:00,010 --> 00:56:04,110
+So in this case--
+
+1163
+00:56:04,110 --> 00:56:07,032
+and I have here is just to
+write that out really quickly.
+
+1164
+00:56:07,032 --> 00:56:08,490
+You would have
+something like this.
+
+1165
+00:56:08,490 --> 00:56:09,810
+You'd have w, J, and--
+
+1166
+00:56:12,960 --> 00:56:14,420
+it's just the
+derivative of this.
+
+1167
+00:56:17,320 --> 00:56:17,900
+I'm sorry.
+
+1168
+00:56:17,900 --> 00:56:18,500
+Like that.
+
+1169
+00:56:21,460 --> 00:56:23,440
+So I'm going to take
+this equation star.
+
+1170
+00:56:23,440 --> 00:56:25,720
+And I'm just going to take
+the derivative of it, which
+
+1171
+00:56:25,720 --> 00:56:29,100
+is going to be two.
+
+1172
+00:56:48,125 --> 00:56:50,250
+So we're just going to take
+the derivative of this.
+
+1173
+00:56:50,250 --> 00:56:51,320
+And essentially,
+that just means we're
+
+1174
+00:56:51,320 --> 00:56:52,820
+going to have to
+take the derivative
+
+1175
+00:56:52,820 --> 00:56:54,930
+through our Q-function
+representation,
+
+1176
+00:56:54,930 --> 00:56:58,130
+like using autodiff for
+deep neural networks.
+
+1177
+00:56:58,130 --> 00:57:02,367
+And then we can use this
+to update our weights.
+
+1178
+00:57:02,367 --> 00:57:04,450
+All right, so we'll do
+stochastic gradient descent
+
+1179
+00:57:04,450 --> 00:57:06,040
+to do this.
+
+1180
+00:57:06,040 --> 00:57:09,350
+And the main thing
+is that that's
+
+1181
+00:57:09,350 --> 00:57:12,590
+what we're going to be doing to
+plug-in in order to do policy
+
+1182
+00:57:12,590 --> 00:57:16,020
+evaluation or to do control.
+
+1183
+00:57:16,020 --> 00:57:17,980
+So of course, in general,
+we don't have those.
+
+1184
+00:57:17,980 --> 00:57:21,190
+We don't have for each state and
+action, what the Q value was.
+
+1185
+00:57:21,190 --> 00:57:23,470
+If it was, we wouldn't
+need to do any learning.
+
+1186
+00:57:23,470 --> 00:57:25,360
+We need to learn that from data.
+
+1187
+00:57:25,360 --> 00:57:27,810
+And so the idea is
+that we're going
+
+1188
+00:57:27,810 --> 00:57:31,380
+to do model-free state action,
+value function approximation.
+
+1189
+00:57:31,380 --> 00:57:33,580
+So just like what we've
+been seeing before,
+
+1190
+00:57:33,580 --> 00:57:37,365
+we're doing model-free
+state action value function.
+
+1191
+00:57:37,365 --> 00:57:39,240
+Now we're going to
+actually do that, but just
+
+1192
+00:57:39,240 --> 00:57:41,400
+do an approximation, where
+instead of writing it down
+
+1193
+00:57:41,400 --> 00:57:43,983
+as a table, we're going to write
+it down with these parameters
+
+1194
+00:57:43,983 --> 00:57:46,770
+function--
+parametrized functions.
+
+1195
+00:57:46,770 --> 00:57:52,158
+OK, so the idea now
+is like similarly,
+
+1196
+00:57:52,158 --> 00:57:53,700
+we just saw before
+all these methods,
+
+1197
+00:57:53,700 --> 00:57:56,490
+either where we use Monte Carlo
+methods or temporal difference
+
+1198
+00:57:56,490 --> 00:57:59,700
+methods to try to do
+these approximations.
+
+1199
+00:57:59,700 --> 00:58:02,280
+Now what we're going to do is
+that when we do the estimate
+
+1200
+00:58:02,280 --> 00:58:06,790
+update step, we're also going to
+fit the function approximator.
+
+1201
+00:58:06,790 --> 00:58:08,170
+So just like in
+the algorithms we
+
+1202
+00:58:08,170 --> 00:58:10,690
+saw before where we do like
+policy evaluation and policy
+
+1203
+00:58:10,690 --> 00:58:13,250
+improvement, now when we
+do the policy evaluation,
+
+1204
+00:58:13,250 --> 00:58:16,130
+we're also going to just refit
+like our whole Q-function,
+
+1205
+00:58:16,130 --> 00:58:18,890
+for example.
+
+1206
+00:58:18,890 --> 00:58:21,000
+OK, so let's see
+how that could work.
+
+1207
+00:58:21,000 --> 00:58:24,450
+So for Monte Carlo value
+function approximation,
+
+1208
+00:58:24,450 --> 00:58:26,150
+we're going to remember
+that our return
+
+1209
+00:58:26,150 --> 00:58:30,260
+G is an unbiased but noisy
+sample of the expected return.
+
+1210
+00:58:30,260 --> 00:58:34,350
+So we can think of us having
+this state, action return,
+
+1211
+00:58:34,350 --> 00:58:36,590
+state, action,
+return, et cetera.
+
+1212
+00:58:36,590 --> 00:58:41,570
+And so you can substitute in
+those Gs for the true Q pi
+
+1213
+00:58:41,570 --> 00:58:44,450
+when you're doing your fitting.
+
+1214
+00:58:44,450 --> 00:58:47,450
+So let's see what
+that would look like.
+
+1215
+00:58:47,450 --> 00:58:51,540
+So in this case, remember
+what you would like here
+
+1216
+00:58:51,540 --> 00:58:53,400
+when we're doing our
+function approximation
+
+1217
+00:58:53,400 --> 00:58:57,370
+is that this is the
+real Q of the policy,
+
+1218
+00:58:57,370 --> 00:58:59,950
+but we don't know what the
+real policy, real Q value is.
+
+1219
+00:58:59,950 --> 00:59:04,270
+So we're going to plug-in
+r, observed return.
+
+1220
+00:59:04,270 --> 00:59:14,290
+So, we want-- would
+like Q of s, a.
+
+1221
+00:59:14,290 --> 00:59:15,500
+But we don't have that.
+
+1222
+00:59:15,500 --> 00:59:18,730
+So we're going to plug-in the
+return that we just observed.
+
+1223
+00:59:18,730 --> 00:59:20,540
+And then we'll just
+do the derivative--
+
+1224
+00:59:20,540 --> 00:59:22,415
+we'll be plugging that
+in for our derivative.
+
+1225
+00:59:22,415 --> 00:59:24,070
+And then update
+our weights using
+
+1226
+00:59:24,070 --> 00:59:26,530
+that derivative with
+respect to minimizing
+
+1227
+00:59:26,530 --> 00:59:29,100
+the mean squared error.
+
+1228
+00:59:29,100 --> 00:59:32,020
+OK, so this would just
+be for policy evaluation.
+
+1229
+00:59:32,020 --> 00:59:34,320
+If you have a fixed
+policy, you would just
+
+1230
+00:59:34,320 --> 00:59:35,710
+do this at each time point.
+
+1231
+00:59:35,710 --> 00:59:37,500
+So after you see--
+
+1232
+00:59:37,500 --> 00:59:40,670
+after you get a return, then you
+would update your Q-function.
+
+1233
+00:59:40,670 --> 00:59:43,147
+And you would do this
+many, many times.
+
+1234
+00:59:43,147 --> 00:59:45,480
+And for some of you, this
+might start to look redundant.
+
+1235
+00:59:45,480 --> 00:59:46,580
+But I think it's
+just useful to see
+
+1236
+00:59:46,580 --> 00:59:48,997
+that essentially the structure
+of all of these algorithms,
+
+1237
+00:59:48,997 --> 00:59:52,460
+whether it is policy evaluation
+or tabular or function
+
+1238
+00:59:52,460 --> 00:59:54,900
+approximation, is
+extremely similar.
+
+1239
+00:59:54,900 --> 00:59:58,820
+We are just either sampling an
+episode or sampling a tuple.
+
+1240
+00:59:58,820 --> 01:00:00,440
+We are going to
+do one step, which
+
+1241
+01:00:00,440 --> 01:00:02,360
+is like policy evaluation,
+where we update
+
+1242
+01:00:02,360 --> 01:00:05,150
+our estimate of the
+Q-function, maybe optionally do
+
+1243
+01:00:05,150 --> 01:00:07,080
+function approximation fitting.
+
+1244
+01:00:07,080 --> 01:00:10,730
+And then we're going to use that
+to figure out how to act next
+
+1245
+01:00:10,730 --> 01:00:12,580
+if we are doing control.
+
+1246
+01:00:12,580 --> 01:00:15,110
+We'll see an example
+of that shortly.
+
+1247
+01:00:15,110 --> 01:00:18,490
+OK, so that is Monte Carlo.
+
+1248
+01:00:18,490 --> 01:00:18,990
+OK.
+
+1249
+01:00:18,990 --> 01:00:19,490
+Oops.
+
+1250
+01:00:24,080 --> 01:00:24,880
+OK.
+
+1251
+01:00:24,880 --> 01:00:25,380
+All right.
+
+1252
+01:00:25,380 --> 01:00:27,630
+For temporal difference
+learning, it's very similar.
+
+1253
+01:00:27,630 --> 01:00:31,370
+But now we are going to have
+this weighted sum where we
+
+1254
+01:00:31,370 --> 01:00:33,050
+plug-in--
+
+1255
+01:00:33,050 --> 01:00:34,140
+we bootstrap.
+
+1256
+01:00:34,140 --> 01:00:36,500
+So we plug-in our current
+estimate of the value of s
+
+1257
+01:00:36,500 --> 01:00:37,550
+prime.
+
+1258
+01:00:37,550 --> 01:00:39,840
+So this is the same
+update we saw before.
+
+1259
+01:00:39,840 --> 01:00:42,410
+This was for tabular
+cases and now we're
+
+1260
+01:00:42,410 --> 01:00:45,920
+going to do it for
+function approximation.
+
+1261
+01:00:45,920 --> 01:00:47,291
+OK.
+
+1262
+01:00:47,291 --> 01:00:48,875
+So let's first just
+see how we do it
+
+1263
+01:00:48,875 --> 01:00:50,000
+for function approximation.
+
+1264
+01:00:50,000 --> 01:00:52,000
+It's just useful, I think,
+when we look at this,
+
+1265
+01:00:52,000 --> 01:00:54,740
+to think about all the different
+ways we're doing approximations.
+
+1266
+01:00:54,740 --> 01:00:57,470
+We are sampling to
+approximate the expected
+
+1267
+01:00:57,470 --> 01:00:58,830
+value over the next state.
+
+1268
+01:00:58,830 --> 01:01:01,940
+We are bootstrapping to plug-in
+what the value of those states
+
+1269
+01:01:01,940 --> 01:01:02,510
+are.
+
+1270
+01:01:02,510 --> 01:01:04,760
+And now we're also going to
+do function approximation,
+
+1271
+01:01:04,760 --> 01:01:07,100
+because we're going to represent
+the value of a function
+
+1272
+01:01:07,100 --> 01:01:08,340
+with some weights.
+
+1273
+01:01:08,340 --> 01:01:08,840
+OK.
+
+1274
+01:01:08,840 --> 01:01:11,620
+So we're going to
+have these weights.
+
+1275
+01:01:11,620 --> 01:01:13,920
+All right.
+
+1276
+01:01:13,920 --> 01:01:17,040
+And again, we can just do
+stochastic gradient descent
+
+1277
+01:01:17,040 --> 01:01:19,865
+to fit our weight function to
+represent that value function.
+
+1278
+01:01:22,568 --> 01:01:23,068
+OK.
+
+1279
+01:01:27,303 --> 01:01:28,720
+So you'll get
+something like this,
+
+1280
+01:01:28,720 --> 01:01:31,490
+where as long as if you're
+in a terminal state,
+
+1281
+01:01:31,490 --> 01:01:32,950
+you'll restart the episode.
+
+1282
+01:01:32,950 --> 01:01:35,890
+Otherwise, you'll just be doing
+these computing the gradient
+
+1283
+01:01:35,890 --> 01:01:38,682
+with respect to your minimizing
+your mean squared error
+
+1284
+01:01:38,682 --> 01:01:39,765
+and updating your weights.
+
+1285
+01:01:44,660 --> 01:01:49,840
+And then we'll see how
+we do this for control.
+
+1286
+01:01:49,840 --> 01:01:53,850
+So for control, it's
+going to be very similar.
+
+1287
+01:01:53,850 --> 01:01:55,380
+Now, what we'll
+make sure to do is
+
+1288
+01:01:55,380 --> 01:01:57,660
+we're always going to be
+using the Q-function instead
+
+1289
+01:01:57,660 --> 01:01:59,280
+of the value function.
+
+1290
+01:01:59,280 --> 01:02:03,190
+And we're now often going to be
+doing off-policy learning again,
+
+1291
+01:02:03,190 --> 01:02:05,320
+like Q-learning.
+
+1292
+01:02:05,320 --> 01:02:08,128
+So we'll again do
+stochastic gradient descent.
+
+1293
+01:02:08,128 --> 01:02:09,670
+With respect to our
+Q-function, we're
+
+1294
+01:02:09,670 --> 01:02:11,240
+going to sample the gradient.
+
+1295
+01:02:11,240 --> 01:02:12,430
+And we'll have very--
+
+1296
+01:02:12,430 --> 01:02:16,030
+an algorithm that's very similar
+to the one we've seen before.
+
+1297
+01:02:16,030 --> 01:02:22,240
+So we can either use SARSA where
+we have our Q-function, where
+
+1298
+01:02:22,240 --> 01:02:25,250
+we always plug-in what is the
+actual action we took next.
+
+1299
+01:02:25,250 --> 01:02:28,780
+Or we can have Q-learning
+where we plug-in
+
+1300
+01:02:28,780 --> 01:02:33,440
+a max over the next Q-function.
+
+1301
+01:02:33,440 --> 01:02:35,960
+And raise your hand if you've
+implemented deep Q-learning
+
+1302
+01:02:35,960 --> 01:02:37,480
+before.
+
+1303
+01:02:37,480 --> 01:02:38,240
+OK.
+
+1304
+01:02:38,240 --> 01:02:39,950
+So one person, but
+most people not.
+
+1305
+01:02:39,950 --> 01:02:40,470
+Yeah.
+
+1306
+01:02:40,470 --> 01:02:40,970
+OK.
+
+1307
+01:02:40,970 --> 01:02:43,387
+So you can imagine in general
+this is any form of function
+
+1308
+01:02:43,387 --> 01:02:44,010
+approximator.
+
+1309
+01:02:44,010 --> 01:02:48,670
+But often this is going to be
+like a deep neural network.
+
+1310
+01:02:48,670 --> 01:02:50,140
+OK.
+
+1311
+01:02:50,140 --> 01:02:53,630
+Now, one thing I just want to
+highlight here is that, again,
+
+1312
+01:02:53,630 --> 01:02:56,110
+just being in terms of being
+concerned whether all of this
+
+1313
+01:02:56,110 --> 01:02:58,960
+is going to work, there's
+a lot of approximations
+
+1314
+01:02:58,960 --> 01:03:01,600
+that are happening here, so
+particularly for Q-learning.
+
+1315
+01:03:01,600 --> 01:03:05,290
+And it's led to what Sutton
+and Barto, the authors
+
+1316
+01:03:05,290 --> 01:03:07,690
+of the book that is the
+optional textbook for the class
+
+1317
+01:03:07,690 --> 01:03:10,120
+called The Deadly Triad.
+
+1318
+01:03:10,120 --> 01:03:13,150
+And what they say is that if you
+are doing bootstrapping, meaning
+
+1319
+01:03:13,150 --> 01:03:15,130
+that you're plugging
+in an estimate of what
+
+1320
+01:03:15,130 --> 01:03:18,130
+is the value of the next state
+and you're doing function
+
+1321
+01:03:18,130 --> 01:03:20,530
+approximation, like you're
+using a deep neural network
+
+1322
+01:03:20,530 --> 01:03:24,062
+or a linear function, and you're
+doing off-policy learning where
+
+1323
+01:03:24,062 --> 01:03:26,020
+you are acting in a
+different way than the data
+
+1324
+01:03:26,020 --> 01:03:28,340
+you're getting,
+under those cases,
+
+1325
+01:03:28,340 --> 01:03:31,320
+you may not converge at all.
+
+1326
+01:03:31,320 --> 01:03:33,790
+Like just your
+Q-function may oscillate.
+
+1327
+01:03:33,790 --> 01:03:36,330
+You may not converge
+to anything.
+
+1328
+01:03:36,330 --> 01:03:38,430
+And you are certainly
+not guaranteed
+
+1329
+01:03:38,430 --> 01:03:41,590
+to converge to Q star.
+
+1330
+01:03:41,590 --> 01:03:46,510
+So it's just good to keep in
+mind that that could occur.
+
+1331
+01:03:46,510 --> 01:03:49,220
+I think for some intuition
+for why this can occur--
+
+1332
+01:03:49,220 --> 01:03:50,950
+the Bellman operator,
+if you think back
+
+1333
+01:03:50,950 --> 01:03:53,780
+a couple of lectures ago,
+we proved as a contraction,
+
+1334
+01:03:53,780 --> 01:03:55,550
+meaning that as we
+apply it repeatedly,
+
+1335
+01:03:55,550 --> 01:03:59,020
+we went to this fixed point
+in the tabular setting.
+
+1336
+01:03:59,020 --> 01:04:01,760
+But the problem is that when
+you do a Bellman backup,
+
+1337
+01:04:01,760 --> 01:04:03,472
+that operator is a
+contraction, meaning
+
+1338
+01:04:03,472 --> 01:04:05,930
+that if you apply the Bellman
+operator to different things,
+
+1339
+01:04:05,930 --> 01:04:08,290
+their distance gets
+smaller afterwards.
+
+1340
+01:04:08,290 --> 01:04:10,420
+Value function
+approximation fitting
+
+1341
+01:04:10,420 --> 01:04:13,180
+can be an expansion, which
+means if you take two things
+
+1342
+01:04:13,180 --> 01:04:16,040
+and then you try to do value
+function approximation,
+
+1343
+01:04:16,040 --> 01:04:18,560
+like you align to this
+one and align to this one,
+
+1344
+01:04:18,560 --> 01:04:20,470
+the distance between
+two points afterwards
+
+1345
+01:04:20,470 --> 01:04:22,810
+can actually get bigger than
+before you did the value
+
+1346
+01:04:22,810 --> 01:04:24,448
+function approximation.
+
+1347
+01:04:24,448 --> 01:04:25,990
+So there's a really
+beautiful example
+
+1348
+01:04:25,990 --> 01:04:29,620
+of this in a paper by
+Jeff Gordon from 1995.
+
+1349
+01:04:29,620 --> 01:04:36,110
+I will just-- Jeff Gordon
+1995 has a really nice example
+
+1350
+01:04:36,110 --> 01:04:38,110
+of this where you just
+can kind of visually see,
+
+1351
+01:04:38,110 --> 01:04:40,610
+when you have these two
+functions and these points,
+
+1352
+01:04:40,610 --> 01:04:42,990
+that after you do this value
+function approximation,
+
+1353
+01:04:42,990 --> 01:04:46,227
+you've actually made the
+distance between them bigger.
+
+1354
+01:04:46,227 --> 01:04:48,560
+And so that means that you
+have this thing, where you're
+
+1355
+01:04:48,560 --> 01:04:50,727
+kind of alternating between
+something which you know
+
+1356
+01:04:50,727 --> 01:04:54,500
+is a contraction and driving
+you towards a fixed point,
+
+1357
+01:04:54,500 --> 01:04:57,740
+and something which might
+actually amplify differences.
+
+1358
+01:04:57,740 --> 01:04:59,840
+And so because of that,
+it's not always the case
+
+1359
+01:04:59,840 --> 01:05:02,720
+that you're guaranteed to
+converge to a fixed point.
+
+1360
+01:05:02,720 --> 01:05:04,540
+So this is something
+important to know.
+
+1361
+01:05:04,540 --> 01:05:07,700
+However, I think
+it's also kind of a--
+
+1362
+01:05:07,700 --> 01:05:10,535
+it's an important part of the
+history of the field in that,
+
+1363
+01:05:10,535 --> 01:05:13,850
+in the 1990s, there was a bunch
+of work showing that this could
+
+1364
+01:05:13,850 --> 01:05:17,030
+occur that even with some really
+simple settings like linear
+
+1365
+01:05:17,030 --> 01:05:19,880
+value function approximators,
+we just approximate things with
+
+1366
+01:05:19,880 --> 01:05:22,100
+a line, and that sometimes
+you could get these kind
+
+1367
+01:05:22,100 --> 01:05:24,270
+of oscillations or
+lack of convergence.
+
+1368
+01:05:24,270 --> 01:05:26,450
+And so people were really
+concerned about using
+
+1369
+01:05:26,450 --> 01:05:29,600
+function approximators with
+reinforcement learning.
+
+1370
+01:05:29,600 --> 01:05:33,170
+But then what happened is that
+DeepMind showed well, actually
+
+1371
+01:05:33,170 --> 01:05:34,880
+there are some ways
+to tackle this.
+
+1372
+01:05:34,880 --> 01:05:37,120
+And we can do really
+amazing things with it.
+
+1373
+01:05:37,120 --> 01:05:38,370
+And so I think it's a useful--
+
+1374
+01:05:38,370 --> 01:05:40,250
+like a useful
+lesson from history
+
+1375
+01:05:40,250 --> 01:05:43,280
+over the difference between,
+well, what can occur
+
+1376
+01:05:43,280 --> 01:05:47,330
+and maybe some sort of not
+ideal cases versus what actually
+
+1377
+01:05:47,330 --> 01:05:48,600
+occurs in practice.
+
+1378
+01:05:48,600 --> 01:05:52,220
+And so we shouldn't let some
+of the negative examples
+
+1379
+01:05:52,220 --> 01:05:54,110
+limit us from
+considering what might
+
+1380
+01:05:54,110 --> 01:05:56,270
+work in some other scenarios.
+
+1381
+01:05:56,270 --> 01:05:57,360
+So let's see that now.
+
+1382
+01:05:57,360 --> 01:06:00,170
+Let's see DQN.
+
+1383
+01:06:00,170 --> 01:06:00,670
+OK.
+
+1384
+01:06:00,670 --> 01:06:04,000
+So the idea with
+DQN is we're going
+
+1385
+01:06:04,000 --> 01:06:05,930
+to use these ideas to
+actually play Atari.
+
+1386
+01:06:05,930 --> 01:06:08,048
+So we're going to take
+in images of the game.
+
+1387
+01:06:08,048 --> 01:06:10,090
+We're going to use
+convolutional neural networks.
+
+1388
+01:06:10,090 --> 01:06:13,180
+And we're going to have a
+really big, deep neural network
+
+1389
+01:06:13,180 --> 01:06:17,200
+to represent the Q-function
+and do Q-learning with it.
+
+1390
+01:06:17,200 --> 01:06:21,700
+So the idea was, well,
+we knew that sometimes,
+
+1391
+01:06:21,700 --> 01:06:23,820
+like Q-learning with value
+function approximation
+
+1392
+01:06:23,820 --> 01:06:25,020
+can diverge.
+
+1393
+01:06:25,020 --> 01:06:27,550
+And there's a number
+of different issues,
+
+1394
+01:06:27,550 --> 01:06:29,920
+but one of them is kind
+of this stability thing.
+
+1395
+01:06:29,920 --> 01:06:32,290
+So we know that there's
+correlations between samples.
+
+1396
+01:06:32,290 --> 01:06:34,740
+Your data is not IID, which
+is what you would normally
+
+1397
+01:06:34,740 --> 01:06:37,200
+want for when you're doing
+function approximation.
+
+1398
+01:06:37,200 --> 01:06:39,660
+And the other is that you have
+this kind of nonstationary
+
+1399
+01:06:39,660 --> 01:06:43,810
+target thing, which is like when
+you plug-in, say with learning,
+
+1400
+01:06:43,810 --> 01:06:45,600
+you're plugging in gamma plus--
+
+1401
+01:06:45,600 --> 01:06:49,053
+sorry, r plus gamma times
+the value of your next state.
+
+1402
+01:06:49,053 --> 01:06:50,970
+And that value of the
+next state is constantly
+
+1403
+01:06:50,970 --> 01:06:53,640
+changing as you get more data.
+
+1404
+01:06:53,640 --> 01:06:55,518
+So what DQN did is
+they said, well,
+
+1405
+01:06:55,518 --> 01:06:57,060
+look, what we're
+going to do is we're
+
+1406
+01:06:57,060 --> 01:06:58,920
+going to use experience replay.
+
+1407
+01:06:58,920 --> 01:07:02,070
+In particular, we're going
+to reuse tuples over time.
+
+1408
+01:07:02,070 --> 01:07:04,415
+And we're also going
+to get fixed Q-targets.
+
+1409
+01:07:04,415 --> 01:07:05,790
+And both of those
+things ended up
+
+1410
+01:07:05,790 --> 01:07:09,323
+making a really big difference,
+particularly one of them.
+
+1411
+01:07:09,323 --> 01:07:10,240
+We'll see in a second.
+
+1412
+01:07:10,240 --> 01:07:12,240
+So the idea of
+experience replay is
+
+1413
+01:07:12,240 --> 01:07:17,340
+to say in general, if I think
+about states that are nearby,
+
+1414
+01:07:17,340 --> 01:07:20,090
+their Q-function might
+be pretty similar.
+
+1415
+01:07:20,090 --> 01:07:21,650
+And if I'm doing
+lots of updates,
+
+1416
+01:07:21,650 --> 01:07:24,490
+that's breaking my IID stuff
+that I want for my function
+
+1417
+01:07:24,490 --> 01:07:25,798
+approximation.
+
+1418
+01:07:25,798 --> 01:07:27,340
+So another thing
+you could do is just
+
+1419
+01:07:27,340 --> 01:07:30,490
+have a replay buffer of lots of
+all the different tuples you've
+
+1420
+01:07:30,490 --> 01:07:31,510
+seen in the past.
+
+1421
+01:07:31,510 --> 01:07:33,940
+And you could just
+sample from one of those
+
+1422
+01:07:33,940 --> 01:07:36,610
+and then compute a
+target value and then
+
+1423
+01:07:36,610 --> 01:07:39,697
+do stochastic gradient descent.
+
+1424
+01:07:39,697 --> 01:07:41,530
+And this might be really
+helpful anyway just
+
+1425
+01:07:41,530 --> 01:07:43,240
+in terms of data
+efficiency, because it
+
+1426
+01:07:43,240 --> 01:07:46,090
+means that instead of taking
+your data and using it once
+
+1427
+01:07:46,090 --> 01:07:48,220
+and then throwing
+it away, you keep it
+
+1428
+01:07:48,220 --> 01:07:49,940
+and then you can replay it.
+
+1429
+01:07:49,940 --> 01:07:53,500
+Just like how we talked about
+batch learning last time.
+
+1430
+01:07:53,500 --> 01:07:55,390
+So an experience
+replay can be useful,
+
+1431
+01:07:55,390 --> 01:07:57,170
+because we're both
+replaying our data.
+
+1432
+01:07:57,170 --> 01:07:59,570
+So we can squeeze more
+information out of it.
+
+1433
+01:07:59,570 --> 01:08:01,750
+And also we can select
+from very different parts
+
+1434
+01:08:01,750 --> 01:08:05,870
+of the past history, which makes
+those updates more independent.
+
+1435
+01:08:05,870 --> 01:08:06,370
+OK.
+
+1436
+01:08:06,370 --> 01:08:08,530
+So this is-- and
+in general, we're
+
+1437
+01:08:08,530 --> 01:08:10,910
+not going to keep the
+buffer for all time.
+
+1438
+01:08:10,910 --> 01:08:14,470
+We might keep the last million
+episodes or things like that.
+
+1439
+01:08:14,470 --> 01:08:18,140
+OK, So that's one
+thing we could do.
+
+1440
+01:08:18,140 --> 01:08:21,050
+Now, the other
+thing is that if we
+
+1441
+01:08:21,050 --> 01:08:23,899
+think about what's happening
+in this case, the way
+
+1442
+01:08:23,899 --> 01:08:28,279
+we change the weights
+is going to be--
+
+1443
+01:08:28,279 --> 01:08:32,939
+in general, the weights
+appear here and here and here.
+
+1444
+01:08:32,939 --> 01:08:36,705
+So this target value is a
+function of the weights itself,
+
+1445
+01:08:36,705 --> 01:08:38,330
+because you're using
+the value function
+
+1446
+01:08:38,330 --> 01:08:41,450
+approximation to represent
+the value of your next state.
+
+1447
+01:08:41,450 --> 01:08:43,410
+And so the problem
+is that in general,
+
+1448
+01:08:43,410 --> 01:08:45,439
+this is going to change
+on your next update,
+
+1449
+01:08:45,439 --> 01:08:48,950
+because you've just
+changed your weights.
+
+1450
+01:08:48,950 --> 01:08:51,020
+And this can also
+lead to instabilities,
+
+1451
+01:08:51,020 --> 01:08:54,649
+because if you think of
+supervised learning, your x, y
+
+1452
+01:08:54,649 --> 01:08:58,100
+pairs, your y is changing
+even for the same x over time,
+
+1453
+01:08:58,100 --> 01:09:01,370
+because you're changing
+your Q-function.
+
+1454
+01:09:01,370 --> 01:09:03,510
+OK, because this is a
+function of the weights.
+
+1455
+01:09:03,510 --> 01:09:06,229
+And so as the weights
+change, this target value
+
+1456
+01:09:06,229 --> 01:09:09,140
+is going to change even
+for the same input.
+
+1457
+01:09:09,140 --> 01:09:13,069
+So the second idea is
+to have fixed Q-updates.
+
+1458
+01:09:13,069 --> 01:09:15,210
+And what the idea here
+is-- and so remember,
+
+1459
+01:09:15,210 --> 01:09:17,279
+this is like when we
+say the target weights--
+
+1460
+01:09:17,279 --> 01:09:21,260
+this is going to be what we're
+using for the target weights--
+
+1461
+01:09:21,260 --> 01:09:22,810
+is that the weight--
+
+1462
+01:09:22,810 --> 01:09:24,590
+the weights or the
+parameters we're
+
+1463
+01:09:24,590 --> 01:09:28,170
+using to estimate the value
+of the next state we reach,
+
+1464
+01:09:28,170 --> 01:09:31,520
+we are going to not
+update those as much.
+
+1465
+01:09:31,520 --> 01:09:33,228
+So we're going to have
+our target network
+
+1466
+01:09:33,228 --> 01:09:35,228
+using a different set of
+weights and the weights
+
+1467
+01:09:35,228 --> 01:09:36,540
+that are being updated.
+
+1468
+01:09:36,540 --> 01:09:39,300
+So you can see here
+that we have a w minus,
+
+1469
+01:09:39,300 --> 01:09:41,401
+meaning that we're
+trying to make this more
+
+1470
+01:09:41,401 --> 01:09:43,609
+like supervised learning
+where we have a fixed output
+
+1471
+01:09:43,609 --> 01:09:48,740
+y that is not changing, while
+we're trying to update our w.
+
+1472
+01:09:48,740 --> 01:09:51,120
+And so if you think
+about the example,
+
+1473
+01:09:51,120 --> 01:09:53,100
+we want to just
+draw it like this.
+
+1474
+01:09:53,100 --> 01:09:56,540
+Here's our states,
+here's our Q-function.
+
+1475
+01:09:56,540 --> 01:09:58,580
+Right now, we'd
+like to make sure
+
+1476
+01:09:58,580 --> 01:10:00,290
+that these points,
+when we're trying
+
+1477
+01:10:00,290 --> 01:10:03,240
+to fit a line that those y's
+are not changing a lot where
+
+1478
+01:10:03,240 --> 01:10:04,740
+we're trying to fit the line.
+
+1479
+01:10:04,740 --> 01:10:06,570
+And in general, because
+they're a function
+
+1480
+01:10:06,570 --> 01:10:09,730
+of the weights themselves, they
+might be moving and perturbing.
+
+1481
+01:10:09,730 --> 01:10:12,580
+And so what we're saying is,
+no, we're going to fix these.
+
+1482
+01:10:12,580 --> 01:10:15,600
+So you can think of this as just
+being a fixed number for a while
+
+1483
+01:10:15,600 --> 01:10:18,203
+and then do multiple
+updates on this w
+
+1484
+01:10:18,203 --> 01:10:19,370
+to try to fit that function.
+
+1485
+01:10:22,450 --> 01:10:26,530
+And so what that means is we
+just have to we keep around
+
+1486
+01:10:26,530 --> 01:10:31,150
+these target weights, and we
+keep around the other weights.
+
+1487
+01:10:31,150 --> 01:10:33,100
+And this allows us
+to do-- this is what
+
+1488
+01:10:33,100 --> 01:10:35,620
+is called the fixed Q-updating.
+
+1489
+01:10:35,620 --> 01:10:37,840
+So if you think about
+what this pseudocode would
+
+1490
+01:10:37,840 --> 01:10:41,540
+look like in this case--
+
+1491
+01:10:41,540 --> 01:10:48,583
+let's see-- is
+it's going to look
+
+1492
+01:10:48,583 --> 01:10:50,250
+pretty similar to the
+things we've seen.
+
+1493
+01:10:50,250 --> 01:10:51,540
+You're going to
+sample an action.
+
+1494
+01:10:51,540 --> 01:10:52,860
+You're going to observe
+a word in the next state.
+
+1495
+01:10:52,860 --> 01:10:55,350
+You're going to store the
+transition in a replay buffer.
+
+1496
+01:10:55,350 --> 01:10:56,850
+So you're going to
+keep track of it.
+
+1497
+01:10:56,850 --> 01:10:59,225
+Then you're going to sample
+a random mini batch of tuples
+
+1498
+01:10:59,225 --> 01:11:00,783
+from the past.
+
+1499
+01:11:00,783 --> 01:11:02,450
+You're going to do
+something, keep track
+
+1500
+01:11:02,450 --> 01:11:03,900
+of the episodes terminated.
+
+1501
+01:11:03,900 --> 01:11:05,970
+Otherwise, you're
+going to say my target
+
+1502
+01:11:05,970 --> 01:11:08,720
+y that I'm going to try to fit
+in my function approximator
+
+1503
+01:11:08,720 --> 01:11:11,120
+is my immediate reward,
+plus the maximum
+
+1504
+01:11:11,120 --> 01:11:15,313
+of my actions of my Q-function
+with my target weights.
+
+1505
+01:11:15,313 --> 01:11:17,480
+So I use my deep neural
+network to predict the value
+
+1506
+01:11:17,480 --> 01:11:19,100
+of that state action pair.
+
+1507
+01:11:19,100 --> 01:11:20,930
+And then I'm going to
+do gradient descent
+
+1508
+01:11:20,930 --> 01:11:23,780
+on the difference between
+these predicted y's
+
+1509
+01:11:23,780 --> 01:11:26,600
+and my current estimate
+with my current weights.
+
+1510
+01:11:26,600 --> 01:11:29,270
+So this is just the
+function fitting part.
+
+1511
+01:11:29,270 --> 01:11:30,950
+And then you repeat this.
+
+1512
+01:11:30,950 --> 01:11:34,950
+And then periodically, you
+update your target weights.
+
+1513
+01:11:34,950 --> 01:11:35,770
+OK?
+
+1514
+01:11:35,770 --> 01:11:37,310
+And I just want
+to highlight here,
+
+1515
+01:11:37,310 --> 01:11:39,370
+there's a bunch of different
+choices to be made.
+
+1516
+01:11:39,370 --> 01:11:41,620
+You have to decide, what
+function approximator are you
+
+1517
+01:11:41,620 --> 01:11:42,120
+using?
+
+1518
+01:11:42,120 --> 01:11:44,020
+Are you using a
+deep neural network?
+
+1519
+01:11:44,020 --> 01:11:45,320
+What's your learning rate?
+
+1520
+01:11:45,320 --> 01:11:47,620
+How often to update
+the target weight?
+
+1521
+01:11:47,620 --> 01:11:49,430
+How big should your
+replay buffer be?
+
+1522
+01:11:49,430 --> 01:11:51,805
+There's a lot of different
+choices that you have to make.
+
+1523
+01:11:55,070 --> 01:11:55,570
+All right.
+
+1524
+01:11:55,570 --> 01:11:59,290
+Let's just take a quick second
+here to see if this part's--
+
+1525
+01:11:59,290 --> 01:12:02,730
+like a chance to
+think about this part.
+
+1526
+01:12:02,730 --> 01:12:04,950
+You may have just seen
+the answer, but that's OK.
+
+1527
+01:12:04,950 --> 01:12:07,057
+Which is-- OK, in
+DQN, we're going
+
+1528
+01:12:07,057 --> 01:12:09,390
+to compute the target value
+for the sampled state action
+
+1529
+01:12:09,390 --> 01:12:12,870
+reward next states using a
+separate set of target weights.
+
+1530
+01:12:12,870 --> 01:12:15,580
+So does that change
+the computation time?
+
+1531
+01:12:15,580 --> 01:12:18,380
+Does it change the
+memory requirements?
+
+1532
+01:12:18,380 --> 01:12:21,400
+Are you not sure?
+
+1533
+01:12:21,400 --> 01:12:22,370
+Put that in here.
+
+1534
+01:12:26,800 --> 01:12:29,380
+We're now going to maintain
+two different sets of weights
+
+1535
+01:12:29,380 --> 01:12:31,160
+to do our function
+approximation.
+
+1536
+01:13:30,100 --> 01:13:31,840
+All right.
+
+1537
+01:13:31,840 --> 01:13:32,350
+Yep.
+
+1538
+01:13:32,350 --> 01:13:35,210
+I see almost everyone
+converged to the right answer
+
+1539
+01:13:35,210 --> 01:13:35,810
+very quickly.
+
+1540
+01:13:35,810 --> 01:13:37,550
+It is doubling the
+memory requirements.
+
+1541
+01:13:37,550 --> 01:13:41,860
+So you have to keep track of
+a second set of parameters.
+
+1542
+01:13:41,860 --> 01:13:43,940
+It does not change
+the computation time.
+
+1543
+01:13:43,940 --> 01:13:46,450
+It just changes the
+memory requirements.
+
+1544
+01:13:46,450 --> 01:13:47,825
+So we just keep
+around two copies
+
+1545
+01:13:47,825 --> 01:13:50,075
+of your deep neural network,
+one with the old weights,
+
+1546
+01:13:50,075 --> 01:13:51,110
+one with the new ones.
+
+1547
+01:13:51,110 --> 01:13:55,130
+And then the Q-updating with
+respect to that is the same.
+
+1548
+01:13:55,130 --> 01:13:57,270
+All right, let's see
+what that actually does.
+
+1549
+01:13:57,270 --> 01:13:59,690
+So the kind of the key
+innovations for DQN
+
+1550
+01:13:59,690 --> 01:14:02,270
+where we are going to use deep
+neural networks that had been
+
+1551
+01:14:02,270 --> 01:14:03,917
+done before, but not with--
+
+1552
+01:14:03,917 --> 01:14:05,750
+I think this is the
+first really big example
+
+1553
+01:14:05,750 --> 01:14:08,750
+with convolutional
+neural networks.
+
+1554
+01:14:08,750 --> 01:14:12,620
+It's going to maintain these
+really large episodic replays.
+
+1555
+01:14:12,620 --> 01:14:16,890
+And then it is also going
+to have these fixed targets.
+
+1556
+01:14:16,890 --> 01:14:17,410
+All right.
+
+1557
+01:14:17,410 --> 01:14:19,920
+So what they have
+here is they're
+
+1558
+01:14:19,920 --> 01:14:22,170
+going to do these series
+of convolutions, output.
+
+1559
+01:14:22,170 --> 01:14:24,760
+And they're going to output
+a Q value for each action.
+
+1560
+01:14:24,760 --> 01:14:27,510
+And they're going to use
+that to make decisions.
+
+1561
+01:14:27,510 --> 01:14:29,222
+And I think one of
+the things-- well,
+
+1562
+01:14:29,222 --> 01:14:30,930
+there's multiple really
+remarkable things
+
+1563
+01:14:30,930 --> 01:14:32,010
+about this paper.
+
+1564
+01:14:32,010 --> 01:14:34,290
+One is that they got
+extremely good performance
+
+1565
+01:14:34,290 --> 01:14:36,320
+across a really
+wide set of games.
+
+1566
+01:14:36,320 --> 01:14:38,320
+So instead of only having
+a few benchmark tasks,
+
+1567
+01:14:38,320 --> 01:14:40,320
+they looked at the whole
+suite of performance.
+
+1568
+01:14:40,320 --> 01:14:43,690
+They are learning a different
+policy per video game,
+
+1569
+01:14:43,690 --> 01:14:45,750
+but it is the same neural
+network architecture,
+
+1570
+01:14:45,750 --> 01:14:48,150
+and I believe, all the
+same hyperparameters too.
+
+1571
+01:14:48,150 --> 01:14:49,990
+So the idea with
+that is to say like,
+
+1572
+01:14:49,990 --> 01:14:51,570
+could we actually
+have the same type
+
+1573
+01:14:51,570 --> 01:14:54,000
+of architecture in the same
+way that we don't swap brains
+
+1574
+01:14:54,000 --> 01:14:57,900
+when we do different tasks,
+but have the same learning
+
+1575
+01:14:57,900 --> 01:14:59,640
+algorithm, learn
+to be able to do
+
+1576
+01:14:59,640 --> 01:15:01,055
+many different types of tasks?
+
+1577
+01:15:01,055 --> 01:15:03,180
+And so I think that was
+pretty impressive that they
+
+1578
+01:15:03,180 --> 01:15:04,430
+showed that that was possible.
+
+1579
+01:15:04,430 --> 01:15:06,790
+So you have the same algorithm,
+same hyperparameters,
+
+1580
+01:15:06,790 --> 01:15:10,812
+but it could learn to do
+well in many different tasks.
+
+1581
+01:15:10,812 --> 01:15:13,020
+I think one of the interesting
+things about the paper
+
+1582
+01:15:13,020 --> 01:15:15,240
+is to consider what
+were the aspects that
+
+1583
+01:15:15,240 --> 01:15:16,990
+were important for success.
+
+1584
+01:15:16,990 --> 01:15:19,980
+So here's just a
+subset of algorithms--
+
+1585
+01:15:19,980 --> 01:15:21,400
+or sorry, a subset
+of the domains.
+
+1586
+01:15:21,400 --> 01:15:23,500
+This is a few of the games.
+
+1587
+01:15:23,500 --> 01:15:26,980
+And they also compared to using
+a much more simple function
+
+1588
+01:15:26,980 --> 01:15:28,050
+approximator.
+
+1589
+01:15:28,050 --> 01:15:31,780
+And what you can see here is
+that the deep neural network
+
+1590
+01:15:31,780 --> 01:15:33,030
+is not actually better, right?
+
+1591
+01:15:33,030 --> 01:15:35,550
+Like the deep neural
+network does not look better
+
+1592
+01:15:35,550 --> 01:15:38,980
+than the linear case.
+
+1593
+01:15:38,980 --> 01:15:40,620
+So it's not clear
+that just using
+
+1594
+01:15:40,620 --> 01:15:43,350
+a more function approximate--
+like it wasn't just
+
+1595
+01:15:43,350 --> 01:15:48,520
+that they used a much more
+careful function approximator.
+
+1596
+01:15:48,520 --> 01:15:51,920
+And the second thing was
+whether they use this fixed Q,
+
+1597
+01:15:51,920 --> 01:15:53,740
+and that helped.
+
+1598
+01:15:53,740 --> 01:15:55,960
+So you can see now
+that they are exceeding
+
+1599
+01:15:55,960 --> 01:15:59,060
+the performance of using a more
+simple function approximator.
+
+1600
+01:15:59,060 --> 01:16:01,600
+So this idea of
+keeping things stable
+
+1601
+01:16:01,600 --> 01:16:05,020
+is helpful in terms
+of oscillations.
+
+1602
+01:16:05,020 --> 01:16:09,530
+But using the replay
+was incredibly helpful.
+
+1603
+01:16:09,530 --> 01:16:15,700
+So they went from 3 or 10
+up to 241, or in some--
+
+1604
+01:16:15,700 --> 01:16:17,620
+something from either
+roughly three times
+
+1605
+01:16:17,620 --> 01:16:20,110
+as good and sometimes even
+more like a couple orders
+
+1606
+01:16:20,110 --> 01:16:21,520
+of magnitude.
+
+1607
+01:16:21,520 --> 01:16:25,880
+So it was incredibly helpful to
+use an experience replay buffer.
+
+1608
+01:16:25,880 --> 01:16:27,760
+And maybe this
+isn't so surprising,
+
+1609
+01:16:27,760 --> 01:16:31,870
+because it means that they are
+just reusing their data lot.
+
+1610
+01:16:31,870 --> 01:16:34,395
+But it was really,
+incredibly important.
+
+1611
+01:16:34,395 --> 01:16:35,770
+And I think that's
+really helpful
+
+1612
+01:16:35,770 --> 01:16:37,870
+to motivate why thinking
+about sample efficiency
+
+1613
+01:16:37,870 --> 01:16:41,030
+and reusing your
+data is helpful.
+
+1614
+01:16:41,030 --> 01:16:43,760
+And then combining these ideas
+led to even bigger benefits.
+
+1615
+01:16:43,760 --> 01:16:47,200
+So it was helpful to have both
+the fixed targets and the replay
+
+1616
+01:16:47,200 --> 01:16:47,720
+buffer.
+
+1617
+01:16:47,720 --> 01:16:49,762
+But if you could only pick
+one, the replay buffer
+
+1618
+01:16:49,762 --> 01:16:53,310
+was just enormously helpful.
+
+1619
+01:16:53,310 --> 01:16:54,040
+All right.
+
+1620
+01:16:54,040 --> 01:16:57,168
+So as you guys know, there's
+been an enormous amount
+
+1621
+01:16:57,168 --> 01:16:58,710
+of interest in
+reinforcement learning
+
+1622
+01:16:58,710 --> 01:17:00,660
+and deep reinforcement
+learning since.
+
+1623
+01:17:00,660 --> 01:17:02,580
+There was some immediate
+improvements kind
+
+1624
+01:17:02,580 --> 01:17:04,470
+of within the next year or two.
+
+1625
+01:17:04,470 --> 01:17:08,610
+One is called Double DQN.
+
+1626
+01:17:08,610 --> 01:17:10,750
+And that also is a
+very simple change.
+
+1627
+01:17:10,750 --> 01:17:12,210
+It's maybe one or two lines.
+
+1628
+01:17:12,210 --> 01:17:15,160
+And it does increase
+some of the requirements.
+
+1629
+01:17:15,160 --> 01:17:21,100
+But for memory, but it is
+a really helpful approach.
+
+1630
+01:17:21,100 --> 01:17:22,620
+So it tries to
+deal with the fact
+
+1631
+01:17:22,620 --> 01:17:24,930
+that you can get some
+interesting maximization bias
+
+1632
+01:17:24,930 --> 01:17:25,470
+issues.
+
+1633
+01:17:25,470 --> 01:17:27,630
+And happy to talk
+about that offline.
+
+1634
+01:17:27,630 --> 01:17:29,928
+So there is a few different
+immediate next algorithms.
+
+1635
+01:17:29,928 --> 01:17:32,220
+But then there's been an
+enormous amount of work since.
+
+1636
+01:17:32,220 --> 01:17:34,200
+And I think it really
+led to a huge excitement
+
+1637
+01:17:34,200 --> 01:17:37,380
+in how we could couple these
+with really impressive function
+
+1638
+01:17:37,380 --> 01:17:39,720
+approximators.
+
+1639
+01:17:39,720 --> 01:17:42,450
+So just to summarize, the things
+that you should understand
+
+1640
+01:17:42,450 --> 01:17:44,970
+is to be able to implement
+TD 0 of Monte Carlo
+
+1641
+01:17:44,970 --> 01:17:48,205
+on-policy evaluation, so things
+like we talked about last time.
+
+1642
+01:17:48,205 --> 01:17:50,580
+You should be able to implement
+Q-learning, SARSA, and MC
+
+1643
+01:17:50,580 --> 01:17:53,700
+control algorithms, again
+in tabular settings.
+
+1644
+01:17:53,700 --> 01:17:56,040
+You should understand,
+what are the issues that
+
+1645
+01:17:56,040 --> 01:17:57,990
+can cause instability--
+
+1646
+01:17:57,990 --> 01:18:00,990
+so things like function
+approximation, bootstrapping
+
+1647
+01:18:00,990 --> 01:18:04,050
+and off-policy learning, and
+have an intuitive sense for why
+
+1648
+01:18:04,050 --> 01:18:05,440
+that might be concerning.
+
+1649
+01:18:05,440 --> 01:18:08,730
+And then also you should know
+some of the key features in DQN
+
+1650
+01:18:08,730 --> 01:18:09,865
+that were critical.
+
+1651
+01:18:09,865 --> 01:18:11,490
+And then next week
+we're going to start
+
+1652
+01:18:11,490 --> 01:18:12,907
+to talk about a
+very different way
+
+1653
+01:18:12,907 --> 01:18:15,520
+to do things, which is just
+policy gradient methods.
+
+1654
+01:18:15,520 --> 01:18:17,340
+It is similar again to this.
+
+1655
+01:18:17,340 --> 01:18:19,540
+You can see how important
+policy iteration is.
+
+1656
+01:18:19,540 --> 01:18:21,900
+It's going to be similar
+to policy iteration
+
+1657
+01:18:21,900 --> 01:18:24,330
+and kind of similar to
+policy iteration of Monte
+
+1658
+01:18:24,330 --> 01:18:25,860
+Carlo in certain
+ways and directly
+
+1659
+01:18:25,860 --> 01:18:27,840
+trying to work with the policy.
+
+1660
+01:18:27,840 --> 01:18:29,690
+I'll see you then.
+

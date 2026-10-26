@@ -1,0 +1,7003 @@
+1
+00:00:05,475 --> 00:00:06,100
+Hey, everybody.
+
+2
+00:00:06,100 --> 00:00:06,640
+Welcome back.
+
+3
+00:00:06,640 --> 00:00:08,435
+We're going to go ahead and
+get started with our refresh
+
+4
+00:00:08,435 --> 00:00:09,580
+your understanding.
+
+5
+00:00:15,069 --> 00:00:17,680
+[SIDE CONVERSATIONS]
+
+6
+00:00:29,650 --> 00:00:30,150
+OK.
+
+7
+00:00:30,150 --> 00:00:32,159
+Hopefully, everyone had a chance
+to think about this a little bit
+
+8
+00:00:32,159 --> 00:00:33,120
+more.
+
+9
+00:00:33,120 --> 00:00:34,600
+So let's go through the answers.
+
+10
+00:00:34,600 --> 00:00:35,660
+The first one is true.
+
+11
+00:00:38,490 --> 00:00:42,150
+So if you are trying to
+evaluate the value of-- this
+
+12
+00:00:42,150 --> 00:00:43,518
+is in the tabular case.
+
+13
+00:00:43,518 --> 00:00:45,060
+So this is where
+we're assuming we're
+
+14
+00:00:45,060 --> 00:00:47,742
+going to sample each
+tuple at random,
+
+15
+00:00:47,742 --> 00:00:49,200
+and then we do a
+Q-learning update.
+
+16
+00:00:49,200 --> 00:00:52,140
+And we do this an
+infinite amount of times.
+
+17
+00:00:52,140 --> 00:00:54,810
+We know for a standard
+tabular learning,
+
+18
+00:00:54,810 --> 00:00:59,970
+we can converge to the
+true value of a policy
+
+19
+00:00:59,970 --> 00:01:02,590
+under-- as long as our
+learning rate schedule is such.
+
+20
+00:01:02,590 --> 00:01:05,489
+So if there's an existing
+learning rate schedule under--
+
+21
+00:01:05,489 --> 00:01:08,680
+if you're decaying your learning
+rate at the right level,
+
+22
+00:01:08,680 --> 00:01:12,120
+then you will converge to the
+true Q value in the tabular
+
+23
+00:01:12,120 --> 00:01:14,370
+case, because there's no
+function approximation that's
+
+24
+00:01:14,370 --> 00:01:16,020
+happening there.
+
+25
+00:01:16,020 --> 00:01:19,010
+In the second case,
+this is also true.
+
+26
+00:01:19,010 --> 00:01:21,998
+So we talked a bit
+about how we could
+
+27
+00:01:21,998 --> 00:01:24,540
+think about doing these things
+in a batch way, where we do it
+
+28
+00:01:24,540 --> 00:01:25,832
+over, and over, and over again.
+
+29
+00:01:25,832 --> 00:01:27,720
+We take our existing
+data, and we run it
+
+30
+00:01:27,720 --> 00:01:31,320
+through our either TD-learning
+update, or our [INAUDIBLE]
+
+31
+00:01:31,320 --> 00:01:33,450
+update, or other things.
+
+32
+00:01:33,450 --> 00:01:36,760
+And we said that the
+TD-learning updates,
+
+33
+00:01:36,760 --> 00:01:40,780
+if you do it in a batch way,
+are equivalent to just taking
+
+34
+00:01:40,780 --> 00:01:43,690
+a certainty equivalent model,
+which means you estimate
+
+35
+00:01:43,690 --> 00:01:46,600
+the dynamics model and you
+estimate the reward model--
+
+36
+00:01:46,600 --> 00:01:48,800
+excuse me-- from
+your existing data,
+
+37
+00:01:48,800 --> 00:01:51,042
+and then you do
+dynamic programming.
+
+38
+00:01:51,042 --> 00:01:52,000
+So that's what we saw--
+
+39
+00:01:52,000 --> 00:01:54,430
+I think we saw
+that in Lecture 3.
+
+40
+00:01:54,430 --> 00:01:56,660
+This one is false.
+
+41
+00:01:56,660 --> 00:01:58,930
+Does somebody want to
+say why it's false?
+
+42
+00:01:58,930 --> 00:02:00,090
+This one is not true.
+
+43
+00:02:03,377 --> 00:02:05,460
+There's a number of reasons
+why it could be false.
+
+44
+00:02:05,460 --> 00:02:07,320
+Anybody want to share why?
+
+45
+00:02:07,320 --> 00:02:10,080
+Why is DQN not guaranteed
+to necessarily converge
+
+46
+00:02:10,080 --> 00:02:11,905
+to the optimal Q function?
+
+47
+00:02:17,680 --> 00:02:18,640
+Yeah.
+
+48
+00:02:18,640 --> 00:02:20,030
+Remind me your name.
+
+49
+00:02:20,030 --> 00:02:23,900
+[MUTED] would you need to
+enforce a certain number
+
+50
+00:02:23,900 --> 00:02:28,020
+of iterations for it to have
+any chance of converging at all?
+
+51
+00:02:28,020 --> 00:02:29,520
+So good point
+[? related to that. ?]
+
+52
+00:02:29,520 --> 00:02:32,078
+So certainly, if you don't do
+enough iterations, but even
+
+53
+00:02:32,078 --> 00:02:33,870
+if you do an infinite
+number of iterations,
+
+54
+00:02:33,870 --> 00:02:35,854
+it also might not be
+guaranteed to converge.
+
+55
+00:02:35,854 --> 00:02:38,490
+Can anybody tell me why
+even with [? infinite-- ?]
+
+56
+00:02:38,490 --> 00:02:40,680
+[INAUDIBLE] you certainly
+need a lot of iterations.
+
+57
+00:02:40,680 --> 00:02:42,420
+But even if you had
+a lot of iterations,
+
+58
+00:02:42,420 --> 00:02:45,637
+you still might not be
+guaranteed to converge.
+
+59
+00:02:45,637 --> 00:02:47,720
+I think here it helps to
+think about what we often
+
+60
+00:02:47,720 --> 00:02:50,090
+call realizability, which
+is we don't know what
+
+61
+00:02:50,090 --> 00:02:52,610
+the functional form
+is of Q. And so you
+
+62
+00:02:52,610 --> 00:02:54,350
+could think of the fact that--
+
+63
+00:02:54,350 --> 00:02:56,630
+I'm going to draw it
+in-- as if the state
+
+64
+00:02:56,630 --> 00:02:58,590
+space was one dimensional.
+
+65
+00:02:58,590 --> 00:03:00,650
+But in general, of
+course, the state space
+
+66
+00:03:00,650 --> 00:03:03,720
+is like this vector
+or it's images,
+
+67
+00:03:03,720 --> 00:03:05,570
+and so it's really
+high dimensional.
+
+68
+00:03:05,570 --> 00:03:07,800
+But imagine that it
+was one dimensional.
+
+69
+00:03:07,800 --> 00:03:10,820
+Even here, you don't know
+what your V function or your Q
+
+70
+00:03:10,820 --> 00:03:12,650
+function might look like.
+
+71
+00:03:12,650 --> 00:03:15,450
+And so if you are using
+the wrong approximator,
+
+72
+00:03:15,450 --> 00:03:19,220
+if you are using,
+say, a line instead
+
+73
+00:03:19,220 --> 00:03:23,058
+of a multi-degree polynomial,
+then no matter how much data
+
+74
+00:03:23,058 --> 00:03:25,350
+you have, you're not going
+to converge to the optimal Q
+
+75
+00:03:25,350 --> 00:03:26,370
+function.
+
+76
+00:03:26,370 --> 00:03:32,450
+[INAUDIBLE] Because you
+just can't even realize it.
+
+77
+00:03:32,450 --> 00:03:36,675
+So in general-- and there's all
+sorts of additional instability
+
+78
+00:03:36,675 --> 00:03:38,300
+things that mean we
+can't be guaranteed
+
+79
+00:03:38,300 --> 00:03:39,510
+it's going to converge.
+
+80
+00:03:39,510 --> 00:03:41,460
+So we're not guaranteed
+it'll converge.
+
+81
+00:03:41,460 --> 00:03:43,730
+But empirically, it
+often does pretty well.
+
+82
+00:03:43,730 --> 00:03:46,400
+So we'll see--
+[INAUDIBLE] If you
+
+83
+00:03:46,400 --> 00:03:50,600
+look at the empirical results,
+it often does really quite well.
+
+84
+00:03:50,600 --> 00:03:52,560
+Great.
+
+85
+00:03:52,560 --> 00:03:55,203
+So far in the class, we've
+talked a lot about these value
+
+86
+00:03:55,203 --> 00:03:56,870
+function based methods,
+where we thought
+
+87
+00:03:56,870 --> 00:03:59,270
+about having an
+explicit representation
+
+88
+00:03:59,270 --> 00:04:02,030
+of the expected sum
+of discounted rewards
+
+89
+00:04:02,030 --> 00:04:04,340
+starting in a state or
+starting in a particular state
+
+90
+00:04:04,340 --> 00:04:05,520
+and action.
+
+91
+00:04:05,520 --> 00:04:09,350
+And so we talked a lot about
+value functions and Q functions.
+
+92
+00:04:09,350 --> 00:04:13,250
+And now, we're going to talk
+a lot about policy search.
+
+93
+00:04:13,250 --> 00:04:15,110
+And so we're going
+to still think
+
+94
+00:04:15,110 --> 00:04:17,690
+about there being
+this policy, which
+
+95
+00:04:17,690 --> 00:04:19,790
+is a mapping of
+states to actions
+
+96
+00:04:19,790 --> 00:04:22,580
+or a mapping from
+states and actions
+
+97
+00:04:22,580 --> 00:04:27,830
+to a number between 0 and
+1, such that it sums to 1,
+
+98
+00:04:27,830 --> 00:04:30,560
+because we always have to do at
+least one action in every state.
+
+99
+00:04:30,560 --> 00:04:34,040
+But we don't necessarily have to
+have an explicit representation
+
+100
+00:04:34,040 --> 00:04:36,470
+of the value function anymore.
+
+101
+00:04:36,470 --> 00:04:41,700
+So these have been very
+popular and important.
+
+102
+00:04:41,700 --> 00:04:45,210
+And if we think back to what
+our RL algorithms involve,
+
+103
+00:04:45,210 --> 00:04:48,150
+they involve optimization,
+delayed consequences,
+
+104
+00:04:48,150 --> 00:04:50,270
+exploration, and generalization.
+
+105
+00:04:50,270 --> 00:04:53,452
+And we've seen examples of
+all of these ideas so far.
+
+106
+00:04:53,452 --> 00:04:55,160
+And we'll go a lot
+more into some of them
+
+107
+00:04:55,160 --> 00:04:56,780
+as we go through the course.
+
+108
+00:04:56,780 --> 00:04:58,790
+But one thing you might
+be wondering about
+
+109
+00:04:58,790 --> 00:05:01,610
+is, could we play
+the trick that's
+
+110
+00:05:01,610 --> 00:05:04,910
+often done in computer science
+and try to reduce reinforcement
+
+111
+00:05:04,910 --> 00:05:06,480
+learning to another problem?
+
+112
+00:05:06,480 --> 00:05:09,770
+So could we do something like
+just like online optimization?
+
+113
+00:05:09,770 --> 00:05:13,130
+So we know that we don't
+know how the world works.
+
+114
+00:05:13,130 --> 00:05:15,480
+And we're trying to find
+a good control policy.
+
+115
+00:05:15,480 --> 00:05:19,130
+But could we do something
+sort of online optimization
+
+116
+00:05:19,130 --> 00:05:22,160
+where we're trying to
+search for a good policy?
+
+117
+00:05:22,160 --> 00:05:24,680
+And in this way, you can
+think of policy gradient
+
+118
+00:05:24,680 --> 00:05:27,400
+being related at a high
+level to this type of idea.
+
+119
+00:05:27,400 --> 00:05:29,070
+It's not a
+reduction-based approach,
+
+120
+00:05:29,070 --> 00:05:32,330
+but it's thinking about, well,
+can we just directly search
+
+121
+00:05:32,330 --> 00:05:33,950
+to find a good policy.
+
+122
+00:05:33,950 --> 00:05:37,150
+And policy gradient methods
+have been extremely influential,
+
+123
+00:05:37,150 --> 00:05:39,220
+particularly over the
+last 5 to 10 years.
+
+124
+00:05:39,220 --> 00:05:40,750
+So they're used
+for lots of areas.
+
+125
+00:05:40,750 --> 00:05:42,960
+They're used for things
+like sequence level training
+
+126
+00:05:42,960 --> 00:05:44,310
+with recurrent neural networks.
+
+127
+00:05:44,310 --> 00:05:46,020
+That was based on
+REINFORCE, which
+
+128
+00:05:46,020 --> 00:05:49,890
+is an algorithm we're going to
+go through today, that has been
+
+129
+00:05:49,890 --> 00:05:52,590
+used for things of end to end
+training of deep visuomotor
+
+130
+00:05:52,590 --> 00:05:53,870
+policies.
+
+131
+00:05:53,870 --> 00:05:57,480
+So this was really influential
+work in the robotics community
+
+132
+00:05:57,480 --> 00:05:58,790
+about a decade ago.
+
+133
+00:05:58,790 --> 00:06:01,620
+And I'm just going to show
+you a quick video of it.
+
+134
+00:06:01,620 --> 00:06:04,380
+So this is work that was
+done by Professor Chelsea
+
+135
+00:06:04,380 --> 00:06:07,110
+Finn as part of her PhD
+thesis, along with Sergey
+
+136
+00:06:07,110 --> 00:06:10,110
+Levine and others at Berkeley.
+
+137
+00:06:10,110 --> 00:06:13,460
+And let's see if this
+will work with audio.
+
+138
+00:06:13,460 --> 00:06:14,277
+[VIDEO PLAYBACK]
+
+139
+00:06:14,277 --> 00:06:17,756
+- [INAUDIBLE]
+
+140
+00:06:27,199 --> 00:06:28,710
+[END PLAYBACK]
+
+141
+00:06:28,710 --> 00:06:33,432
+So what you can see there
+that what they're doing is--
+
+142
+00:06:33,432 --> 00:06:35,640
+what they're going to be
+trying to do is learn from--
+
+143
+00:06:35,640 --> 00:06:37,200
+so they showed you a really--
+
+144
+00:06:37,200 --> 00:06:38,740
+they showed a big network.
+
+145
+00:06:38,740 --> 00:06:41,820
+And what they're trying to
+do is go directly from pixels
+
+146
+00:06:41,820 --> 00:06:44,220
+to learn what the
+robot should do.
+
+147
+00:06:44,220 --> 00:06:45,870
+And this is one of
+the first examples
+
+148
+00:06:45,870 --> 00:06:48,772
+of people trying to do
+this directly from images.
+
+149
+00:06:48,772 --> 00:06:51,230
+Let's just go back to some of
+the tasks that they're using.
+
+150
+00:07:18,800 --> 00:07:20,510
+And so that was part
+of the motivation,
+
+151
+00:07:20,510 --> 00:07:22,760
+too, is that they want to
+be able to learn these tasks
+
+152
+00:07:22,760 --> 00:07:24,010
+in a way that will generalize.
+
+153
+00:07:24,010 --> 00:07:27,276
+[INAUDIBLE]
+
+154
+00:07:38,700 --> 00:07:42,120
+So this is another
+example of trying
+
+155
+00:07:42,120 --> 00:07:46,260
+to do direct policy
+gradient methods in order
+
+156
+00:07:46,260 --> 00:07:50,250
+to go from really large
+complex state spaces
+
+157
+00:07:50,250 --> 00:07:52,680
+into direct decisions.
+
+158
+00:07:52,680 --> 00:07:56,165
+Now, in Homework 2, and we
+haven't covered PPO yet,
+
+159
+00:07:56,165 --> 00:07:58,290
+but you're going to be
+implementing Proximal Policy
+
+160
+00:07:58,290 --> 00:08:00,570
+Optimization, which is
+one of the methods that
+
+161
+00:08:00,570 --> 00:08:03,600
+build on the methods that we're
+going to talk about today.
+
+162
+00:08:03,600 --> 00:08:04,500
+And that was used--
+
+163
+00:08:04,500 --> 00:08:07,190
+PPO was used as part
+of training ChatGPT.
+
+164
+00:08:07,190 --> 00:08:08,940
+So as you can see, all
+of these algorithms
+
+165
+00:08:08,940 --> 00:08:10,750
+have become incredibly
+influential,
+
+166
+00:08:10,750 --> 00:08:12,510
+in part, because
+they can scale really
+
+167
+00:08:12,510 --> 00:08:14,500
+well to extremely
+complex inputs,
+
+168
+00:08:14,500 --> 00:08:17,190
+whether it be images, or
+high-dimensional robotic tasks,
+
+169
+00:08:17,190 --> 00:08:19,460
+or even things like
+natural language.
+
+170
+00:08:19,460 --> 00:08:21,670
+And so they're very powerful.
+
+171
+00:08:21,670 --> 00:08:23,370
+They're often used
+in conjunction
+
+172
+00:08:23,370 --> 00:08:25,750
+with things like
+state action values,
+
+173
+00:08:25,750 --> 00:08:27,190
+as we'll talk about later.
+
+174
+00:08:27,190 --> 00:08:28,960
+But you don't have to
+use them with them.
+
+175
+00:08:28,960 --> 00:08:33,640
+So they're really useful sort of
+class of things to know about.
+
+176
+00:08:33,640 --> 00:08:36,340
+So in particular, just
+like how last time we
+
+177
+00:08:36,340 --> 00:08:40,750
+saw that you could approximate
+a state action value or a value
+
+178
+00:08:40,750 --> 00:08:42,620
+function with a
+set of parameters--
+
+179
+00:08:42,620 --> 00:08:45,310
+so we can do function
+approximation.
+
+180
+00:08:45,310 --> 00:08:49,060
+In those cases, we thought
+of directly learning a value
+
+181
+00:08:49,060 --> 00:08:51,050
+function or a state
+action value function,
+
+182
+00:08:51,050 --> 00:08:54,620
+and then it generate a policy
+from the state action value.
+
+183
+00:08:54,620 --> 00:08:56,650
+So something like
+e-greedy, where we either
+
+184
+00:08:56,650 --> 00:08:59,860
+take what the Q-value suggests
+is the best action or we act
+
+185
+00:08:59,860 --> 00:09:01,090
+randomly.
+
+186
+00:09:01,090 --> 00:09:03,250
+And what we're going
+to do today instead--
+
+187
+00:09:03,250 --> 00:09:06,130
+and I'll try to be careful
+about not using the same--
+
+188
+00:09:06,130 --> 00:09:08,953
+we used w before to parameterize
+our state action values.
+
+189
+00:09:08,953 --> 00:09:10,870
+And I'm going to try to
+be careful about using
+
+190
+00:09:10,870 --> 00:09:13,000
+theta just to make it clear.
+
+191
+00:09:13,000 --> 00:09:15,580
+We're going to directly
+parameterize the policy.
+
+192
+00:09:15,580 --> 00:09:17,950
+And we're going to try to
+learn parameterized policies.
+
+193
+00:09:17,950 --> 00:09:20,500
+So we can think of these as
+like deep convolutional neural
+
+194
+00:09:20,500 --> 00:09:24,700
+networks, which at the end
+will output either an action
+
+195
+00:09:24,700 --> 00:09:26,290
+or, if we have an
+action as input,
+
+196
+00:09:26,290 --> 00:09:28,600
+will output a probability.
+
+197
+00:09:28,600 --> 00:09:30,880
+And the goal in this
+case, as is normal,
+
+198
+00:09:30,880 --> 00:09:33,130
+is that we want to find a
+way to act in the world that
+
+199
+00:09:33,130 --> 00:09:34,530
+will give us high reward.
+
+200
+00:09:34,530 --> 00:09:36,680
+So we want to find a policy
+with the highest value
+
+201
+00:09:36,680 --> 00:09:38,510
+function of V pi.
+
+202
+00:09:38,510 --> 00:09:40,370
+And we're, again, not
+going to be focusing
+
+203
+00:09:40,370 --> 00:09:42,367
+on model-based learning.
+
+204
+00:09:42,367 --> 00:09:44,950
+So we're still going to try to
+directly learn from experience.
+
+205
+00:09:44,950 --> 00:09:46,400
+And we're not going to
+assume we have access
+
+206
+00:09:46,400 --> 00:09:48,150
+or that we're explicitly
+building a model.
+
+207
+00:09:51,310 --> 00:09:53,847
+And I think one of the things
+that's helpful to think about
+
+208
+00:09:53,847 --> 00:09:55,930
+is there's these sort of
+different views or lenses
+
+209
+00:09:55,930 --> 00:09:57,287
+into reinforcement learning.
+
+210
+00:09:57,287 --> 00:09:59,120
+So this is a nice picture
+from David Silver,
+
+211
+00:09:59,120 --> 00:10:01,700
+who's an amazing person
+in reinforcement learning.
+
+212
+00:10:01,700 --> 00:10:04,030
+He was one of the
+main leads on AlphaGo
+
+213
+00:10:04,030 --> 00:10:06,250
+and a number of other
+incredible papers.
+
+214
+00:10:06,250 --> 00:10:09,010
+So you can think of it as
+you have some methods, which
+
+215
+00:10:09,010 --> 00:10:09,860
+are value-based.
+
+216
+00:10:09,860 --> 00:10:11,840
+We're explicitly building
+a value function.
+
+217
+00:10:11,840 --> 00:10:13,752
+We have other ones
+that are policy-based.
+
+218
+00:10:13,752 --> 00:10:15,460
+And the ones that are
+in the intersection
+
+219
+00:10:15,460 --> 00:10:17,860
+are often known as
+actor-critic methods.
+
+220
+00:10:17,860 --> 00:10:21,070
+Who here has either implemented
+or heard of actor-critic methods
+
+221
+00:10:21,070 --> 00:10:22,478
+before?
+
+222
+00:10:22,478 --> 00:10:24,020
+OK, so some people,
+but not everyone.
+
+223
+00:10:24,020 --> 00:10:25,150
+They're extremely popular.
+
+224
+00:10:25,150 --> 00:10:27,940
+And in actor-critic
+methods, you will often
+
+225
+00:10:27,940 --> 00:10:31,550
+combine between the benefits
+of value-based and policy.
+
+226
+00:10:31,550 --> 00:10:35,110
+And so, for example, AlphaGo
+is an actor-critic method
+
+227
+00:10:35,110 --> 00:10:36,940
+in the sense that
+it is often having
+
+228
+00:10:36,940 --> 00:10:38,770
+an explicit representation
+of the policy
+
+229
+00:10:38,770 --> 00:10:42,520
+and of a value function.
+
+230
+00:10:42,520 --> 00:10:44,898
+So we'll get to actor-critic
+methods later today.
+
+231
+00:10:44,898 --> 00:10:46,440
+We're going to focus
+on policy-based.
+
+232
+00:10:49,420 --> 00:10:51,820
+So now that we're going
+to-- most of the time,
+
+233
+00:10:51,820 --> 00:10:53,600
+we've thought about
+policy so far,
+
+234
+00:10:53,600 --> 00:10:56,288
+we thought about deterministic
+policies or e-greedy policies.
+
+235
+00:10:56,288 --> 00:10:58,330
+And now, we're going to
+think much more generally
+
+236
+00:10:58,330 --> 00:11:01,060
+about stochastic policies.
+
+237
+00:11:01,060 --> 00:11:02,650
+And that's going
+to be important,
+
+238
+00:11:02,650 --> 00:11:05,140
+because as we saw
+last time, if you only
+
+239
+00:11:05,140 --> 00:11:07,480
+have a deterministic policy,
+it's much harder to learn
+
+240
+00:11:07,480 --> 00:11:09,170
+about actions you don't try.
+
+241
+00:11:09,170 --> 00:11:10,840
+Whereas, now we're
+going to think
+
+242
+00:11:10,840 --> 00:11:12,310
+about having
+stochastic policies,
+
+243
+00:11:12,310 --> 00:11:14,602
+where you're going to be
+getting information about lots
+
+244
+00:11:14,602 --> 00:11:16,780
+of different actions.
+
+245
+00:11:16,780 --> 00:11:18,790
+So let's think about
+a particular example,
+
+246
+00:11:18,790 --> 00:11:20,920
+also to illustrate
+some of the things
+
+247
+00:11:20,920 --> 00:11:24,040
+that policy gradient methods
+are going to help us handle.
+
+248
+00:11:24,040 --> 00:11:28,110
+So who here has played
+rock, paper, scissors?
+
+249
+00:11:28,110 --> 00:11:29,280
+Most people, I think.
+
+250
+00:11:29,280 --> 00:11:31,780
+It's called
+"roshambo" in Chinese.
+
+251
+00:11:31,780 --> 00:11:33,810
+It's a very popular game
+throughout the world.
+
+252
+00:11:33,810 --> 00:11:38,790
+It's a stochastic game
+where each side can
+
+253
+00:11:38,790 --> 00:11:43,288
+pick a particular
+strategy and the state--
+
+254
+00:11:43,288 --> 00:11:44,830
+you can think of
+there being a state,
+
+255
+00:11:44,830 --> 00:11:46,140
+you could keep track of
+what your opponent has
+
+256
+00:11:46,140 --> 00:11:47,350
+done over time.
+
+257
+00:11:47,350 --> 00:11:51,900
+So think for a second about
+whether a deterministic policy
+
+258
+00:11:51,900 --> 00:11:56,950
+can be optimal if you're
+playing this game repeatedly.
+
+259
+00:11:56,950 --> 00:11:59,320
+So raise your hand if
+a deterministic policy
+
+260
+00:11:59,320 --> 00:12:00,120
+can be optimal.
+
+261
+00:12:02,820 --> 00:12:06,820
+Raise your hand if you think a
+stochastic policy is optimal.
+
+262
+00:12:06,820 --> 00:12:09,030
+OK, someone who said
+stochastic explain why.
+
+263
+00:12:12,210 --> 00:12:13,176
+Yes.
+
+264
+00:12:13,176 --> 00:12:16,530
+[INAUDIBLE] is like circular.
+
+265
+00:12:16,530 --> 00:12:20,348
+There's no [? 1 ?] [? plus ?]
+[? 1 ?] [INAUDIBLE]
+
+266
+00:12:20,348 --> 00:12:20,890
+That's right.
+
+267
+00:12:20,890 --> 00:12:22,420
+Yeah, so there's no best--
+
+268
+00:12:22,420 --> 00:12:24,060
+there's nothing that
+strictly dominates
+
+269
+00:12:24,060 --> 00:12:25,102
+all the other strategies.
+
+270
+00:12:25,102 --> 00:12:27,180
+And also, if you're
+deterministic, what can
+
+271
+00:12:27,180 --> 00:12:29,400
+your opponent do?
+
+272
+00:12:29,400 --> 00:12:32,560
+Like, if I say I'm always
+going to pick paper,
+
+273
+00:12:32,560 --> 00:12:35,390
+what does my opponent do?
+
+274
+00:12:35,390 --> 00:12:38,790
+Yeah, they're always going
+to pick the other one,
+
+275
+00:12:38,790 --> 00:12:40,040
+like rock [? to ?] [? beat. ?]
+
+276
+00:12:40,040 --> 00:12:42,170
+So anything you do
+that's deterministic
+
+277
+00:12:42,170 --> 00:12:43,750
+can be exploited
+by your opponent
+
+278
+00:12:43,750 --> 00:12:46,050
+if you are playing repeatedly.
+
+279
+00:12:46,050 --> 00:12:49,400
+And so the optimal thing to
+do here is to be stochastic.
+
+280
+00:12:49,400 --> 00:12:51,810
+So the optimal policy has
+to be stochastic here.
+
+281
+00:12:51,810 --> 00:12:54,200
+Otherwise, all
+deterministic policies
+
+282
+00:12:54,200 --> 00:12:58,590
+are strictly dominated by
+good stochastic policy.
+
+283
+00:12:58,590 --> 00:13:00,440
+And now, you might
+think, all right, well,
+
+284
+00:13:00,440 --> 00:13:03,130
+that sounds different than
+what we've seen so far.
+
+285
+00:13:03,130 --> 00:13:06,820
+But one of the challenges here
+is the system is not Markov.
+
+286
+00:13:06,820 --> 00:13:10,513
+So it's not stochastic what
+your adversary will play next.
+
+287
+00:13:10,513 --> 00:13:12,430
+They're not random-- or
+it might be if they're
+
+288
+00:13:12,430 --> 00:13:13,510
+playing a stochastic policy.
+
+289
+00:13:13,510 --> 00:13:14,593
+[CLEARS THROAT] Excuse me.
+
+290
+00:13:14,593 --> 00:13:16,120
+But in general,
+[? they ?] can react
+
+291
+00:13:16,120 --> 00:13:17,530
+to what you've seen so far.
+
+292
+00:13:17,530 --> 00:13:21,220
+And it's not just like a random
+environment, like a coin flip
+
+293
+00:13:21,220 --> 00:13:22,740
+on the next time.
+
+294
+00:13:22,740 --> 00:13:24,960
+And in this case, actually,
+a uniform random policy
+
+295
+00:13:24,960 --> 00:13:25,960
+is optimal.
+
+296
+00:13:25,960 --> 00:13:27,310
+It's a Nash equilibrium.
+
+297
+00:13:30,050 --> 00:13:33,370
+So that's one case where
+having a stochastic policy
+
+298
+00:13:33,370 --> 00:13:34,400
+would be really helpful.
+
+299
+00:13:34,400 --> 00:13:36,442
+So you could just have a
+fixed stochastic policy,
+
+300
+00:13:36,442 --> 00:13:39,370
+and it would be optimal,
+but you couldn't necessarily
+
+301
+00:13:39,370 --> 00:13:41,140
+write this down
+easily as a Q-function
+
+302
+00:13:41,140 --> 00:13:42,310
+and just take the argmax.
+
+303
+00:13:42,310 --> 00:13:45,160
+There is not a deterministic
+policy for this environment
+
+304
+00:13:45,160 --> 00:13:46,660
+that is optimal.
+
+305
+00:13:46,660 --> 00:13:49,960
+And so it's less clear how you
+would write that down directly
+
+306
+00:13:49,960 --> 00:13:52,660
+in terms of a Q-function, in
+part, because the system is not
+
+307
+00:13:52,660 --> 00:13:54,590
+Markov.
+
+308
+00:13:54,590 --> 00:13:56,480
+So here's another example
+where we might want
+
+309
+00:13:56,480 --> 00:13:57,710
+to have stochastic policies.
+
+310
+00:13:57,710 --> 00:14:00,950
+And it's where we have aliasing
+or partial observability.
+
+311
+00:14:00,950 --> 00:14:02,870
+So imagine this
+case where you have
+
+312
+00:14:02,870 --> 00:14:04,370
+a robot that's walking along.
+
+313
+00:14:04,370 --> 00:14:07,040
+And maybe they have sensors
+so they can tell how far they
+
+314
+00:14:07,040 --> 00:14:08,130
+are from the walls.
+
+315
+00:14:08,130 --> 00:14:13,740
+But under those sensors, these
+two gray boxes look identical.
+
+316
+00:14:13,740 --> 00:14:16,360
+Because like from the
+agent's point of view,
+
+317
+00:14:16,360 --> 00:14:18,750
+if they have only immediate
+sensors, both of those places
+
+318
+00:14:18,750 --> 00:14:20,280
+will look identical.
+
+319
+00:14:20,280 --> 00:14:23,010
+And so they can't distinguish
+those gray states.
+
+320
+00:14:23,010 --> 00:14:26,370
+And imagine that you just--
+because you have a feature
+
+321
+00:14:26,370 --> 00:14:29,077
+representation that just tells
+you about what you're-- whether
+
+322
+00:14:29,077 --> 00:14:31,410
+you have a wall to the north,
+to the east, to the south,
+
+323
+00:14:31,410 --> 00:14:34,110
+or to the west, so those two
+gray states would look identical
+
+324
+00:14:34,110 --> 00:14:36,510
+if that was your
+feature representation.
+
+325
+00:14:36,510 --> 00:14:39,540
+So you could have a value-based
+reinforcement learning
+
+326
+00:14:39,540 --> 00:14:42,850
+representation where you use
+an approximate value function,
+
+327
+00:14:42,850 --> 00:14:45,870
+where you take in this as
+the state representation,
+
+328
+00:14:45,870 --> 00:14:51,080
+or you could have a policy-based
+one that takes in those.
+
+329
+00:14:51,080 --> 00:14:54,600
+So the challenge here is
+that if you're value-based,
+
+330
+00:14:54,600 --> 00:14:58,460
+you have to do the same thing
+in those two gray states,
+
+331
+00:14:58,460 --> 00:15:00,210
+because you can't
+distinguish them.
+
+332
+00:15:00,210 --> 00:15:03,200
+So from your perspective, it's
+like you're in the same place
+
+333
+00:15:03,200 --> 00:15:05,390
+no matter which of those
+two places you're in.
+
+334
+00:15:05,390 --> 00:15:07,460
+So if you're going to do
+a value function based,
+
+335
+00:15:07,460 --> 00:15:09,840
+and then extract a
+deterministic policy,
+
+336
+00:15:09,840 --> 00:15:12,680
+you would either
+always have to go
+
+337
+00:15:12,680 --> 00:15:15,205
+say to the left in those cases
+or always go to the right.
+
+338
+00:15:17,750 --> 00:15:21,205
+And neither of those
+would always be good.
+
+339
+00:15:24,770 --> 00:15:27,620
+So under aliasing,
+meaning that we don't know
+
+340
+00:15:27,620 --> 00:15:29,150
+whether which of
+the two gray states
+
+341
+00:15:29,150 --> 00:15:30,710
+we're in when we're
+in one of them,
+
+342
+00:15:30,710 --> 00:15:32,600
+an optimal deterministic
+policy will always
+
+343
+00:15:32,600 --> 00:15:35,160
+move west in both states
+or east in both states.
+
+344
+00:15:35,160 --> 00:15:37,160
+And either way, it might
+get stuck and never
+
+345
+00:15:37,160 --> 00:15:40,015
+be able to reach the money.
+
+346
+00:15:40,015 --> 00:15:41,390
+And that's what's
+going to happen
+
+347
+00:15:41,390 --> 00:15:44,650
+if we do a value-based
+reinforcement learning approach.
+
+348
+00:15:44,650 --> 00:15:45,530
+So that's not great.
+
+349
+00:15:45,530 --> 00:15:47,447
+You're going to traverse
+this for a long time.
+
+350
+00:15:47,447 --> 00:15:49,450
+You're not going to be
+getting high reward.
+
+351
+00:15:49,450 --> 00:15:52,905
+What could you do if you wanted
+to have a stochastic policy?
+
+352
+00:15:57,270 --> 00:16:01,410
+So that allows you to act
+randomly or stochastically
+
+353
+00:16:01,410 --> 00:16:02,170
+in any state.
+
+354
+00:16:02,170 --> 00:16:03,510
+What do you think would
+be the right thing
+
+355
+00:16:03,510 --> 00:16:06,270
+to do in the gray states if you
+could have a stochastic policy?
+
+356
+00:16:09,240 --> 00:16:13,420
+With just some probability,
+you go either east or west.
+
+357
+00:16:13,420 --> 00:16:15,630
+Yeah, exactly.
+
+358
+00:16:15,630 --> 00:16:17,110
+So you could just randomize it.
+
+359
+00:16:17,110 --> 00:16:21,038
+So an optimal stochastic policy
+will randomly move east or west
+
+360
+00:16:21,038 --> 00:16:23,580
+in the gray state, because it
+doesn't know which one it's in.
+
+361
+00:16:23,580 --> 00:16:27,040
+And half the time, that'll
+be the right thing to do.
+
+362
+00:16:27,040 --> 00:16:30,750
+So now that means much more of
+the time, it'll go into here.
+
+363
+00:16:30,750 --> 00:16:34,860
+And it generally will reach
+the goal state pretty quickly.
+
+364
+00:16:34,860 --> 00:16:38,010
+So this is another case where
+the system is not Markov.
+
+365
+00:16:38,010 --> 00:16:45,640
+This is not [INAUDIBLE]
+the state features.
+
+366
+00:16:45,640 --> 00:16:47,440
+So because we have
+aliasing, meaning
+
+367
+00:16:47,440 --> 00:16:49,250
+the system is
+partially observable,
+
+368
+00:16:49,250 --> 00:16:50,930
+it is not a Markov system.
+
+369
+00:16:50,930 --> 00:16:52,780
+One way to handle
+that is to treat it
+
+370
+00:16:52,780 --> 00:16:55,090
+as a partially observable
+Markov decision process.
+
+371
+00:16:55,090 --> 00:16:58,690
+[INAUDIBLE] talks a lot
+about those in his classes.
+
+372
+00:16:58,690 --> 00:17:02,740
+But an alternative is to
+use a stochastic policy.
+
+373
+00:17:02,740 --> 00:17:05,550
+And you can also
+[? act ?] very well here.
+
+374
+00:17:05,550 --> 00:17:08,700
+So those are two examples
+of the type of thing that
+
+375
+00:17:08,700 --> 00:17:12,210
+might be able to be easy to
+handle with policy gradient
+
+376
+00:17:12,210 --> 00:17:14,010
+methods or stochastic
+policies that
+
+377
+00:17:14,010 --> 00:17:16,650
+might be hard to tackle
+with the type of methods
+
+378
+00:17:16,650 --> 00:17:18,180
+we've seen so far.
+
+379
+00:17:18,180 --> 00:17:20,631
+So now, we have to think
+about if we have policies,
+
+380
+00:17:20,631 --> 00:17:23,089
+and, in general, we're going
+to want them to be stochastic,
+
+381
+00:17:23,089 --> 00:17:25,500
+how are we going to learn
+what are good policies?
+
+382
+00:17:25,500 --> 00:17:27,990
+Like, we have this-- now,
+we have a function space
+
+383
+00:17:27,990 --> 00:17:28,950
+over policies.
+
+384
+00:17:28,950 --> 00:17:32,640
+And we want to learn which
+of them have good values.
+
+385
+00:17:32,640 --> 00:17:35,830
+So if we're in an
+episodic environment,
+
+386
+00:17:35,830 --> 00:17:38,470
+we can use the policy
+value at the start state.
+
+387
+00:17:38,470 --> 00:17:40,950
+So we can just say I'm going
+to similar to the Monte Carlo
+
+388
+00:17:40,950 --> 00:17:42,460
+methods, if I start
+in this state,
+
+389
+00:17:42,460 --> 00:17:45,360
+I run this policy, what
+would be my expected reward
+
+390
+00:17:45,360 --> 00:17:47,430
+be until the end of the episode?
+
+391
+00:17:47,430 --> 00:17:50,520
+We're going to mostly focus
+on the episodic case today,
+
+392
+00:17:50,520 --> 00:17:55,920
+but you can extend these to more
+of an infinite horizon case.
+
+393
+00:17:55,920 --> 00:17:58,225
+All right, so once we
+think of it in this way,
+
+394
+00:17:58,225 --> 00:18:00,600
+we can really think, OK, this
+sounds like an optimization
+
+395
+00:18:00,600 --> 00:18:01,380
+problem.
+
+396
+00:18:01,380 --> 00:18:05,670
+So we really just want to
+find the parameters that
+
+397
+00:18:05,670 --> 00:18:07,000
+maximize the value.
+
+398
+00:18:07,000 --> 00:18:09,070
+So you could say--
+
+399
+00:18:09,070 --> 00:18:11,450
+here, you can think of
+this as being your thetas.
+
+400
+00:18:11,450 --> 00:18:13,220
+So I'm just drawing
+it in one dimensional.
+
+401
+00:18:13,220 --> 00:18:15,310
+But in general, this could
+be all the parameters
+
+402
+00:18:15,310 --> 00:18:16,960
+in a deep neural network.
+
+403
+00:18:16,960 --> 00:18:22,330
+And then, this is V of theta
+of a particular starting state.
+
+404
+00:18:22,330 --> 00:18:25,560
+It might look like this.
+
+405
+00:18:25,560 --> 00:18:28,660
+And what your goal
+would be is to find
+
+406
+00:18:28,660 --> 00:18:31,330
+the parameters of
+your policy that
+
+407
+00:18:31,330 --> 00:18:34,200
+maximize the value function.
+
+408
+00:18:34,200 --> 00:18:36,820
+And so this is an
+optimization problem,
+
+409
+00:18:36,820 --> 00:18:38,430
+but it's a hard
+optimization problem,
+
+410
+00:18:38,430 --> 00:18:40,270
+because we don't
+have that function.
+
+411
+00:18:40,270 --> 00:18:42,978
+You can only estimate
+it through data.
+
+412
+00:18:42,978 --> 00:18:44,770
+And so you can imagine,
+like you start off,
+
+413
+00:18:44,770 --> 00:18:47,650
+you have no idea
+how theta maps to V.
+
+414
+00:18:47,650 --> 00:18:49,400
+And then you have to
+learn that over time.
+
+415
+00:18:54,060 --> 00:18:56,822
+So once we think of it as
+an optimization problem,
+
+416
+00:18:56,822 --> 00:18:58,530
+where we don't know
+what the function is,
+
+417
+00:18:58,530 --> 00:19:00,030
+there are a lot of
+different methods
+
+418
+00:19:00,030 --> 00:19:02,120
+we could think about to
+try to solve this problem.
+
+419
+00:19:02,120 --> 00:19:03,840
+And what we're going
+to focus on today,
+
+420
+00:19:03,840 --> 00:19:06,540
+mostly, is ones that are
+going to exploit something
+
+421
+00:19:06,540 --> 00:19:10,080
+about the structure of
+sequential decision processes.
+
+422
+00:19:10,080 --> 00:19:14,970
+But there are methods that
+completely ignore all of this.
+
+423
+00:19:14,970 --> 00:19:17,520
+And in particular, you
+can even use things that
+
+424
+00:19:17,520 --> 00:19:18,825
+completely ignore gradients.
+
+425
+00:19:18,825 --> 00:19:21,450
+So you can do things like hill
+climbing, or genetic algorithms,
+
+426
+00:19:21,450 --> 00:19:24,690
+or cross entropy methods,
+where you may not
+
+427
+00:19:24,690 --> 00:19:27,390
+think of any of the type of
+structure of the parameter
+
+428
+00:19:27,390 --> 00:19:28,740
+space.
+
+429
+00:19:28,740 --> 00:19:32,710
+And in some cases, that
+can work really well.
+
+430
+00:19:32,710 --> 00:19:37,010
+So there's a really nice example
+by my colleague, Steven Collins,
+
+431
+00:19:37,010 --> 00:19:39,370
+who's over in the mechanical
+engineering department.
+
+432
+00:19:39,370 --> 00:19:42,220
+He does some really
+interesting work on-- oh, yeah.
+
+433
+00:19:42,220 --> 00:19:44,320
+[INAUDIBLE]
+
+434
+00:19:51,470 --> 00:19:55,260
+Yes, but you can make it a
+distribution over actions.
+
+435
+00:19:55,260 --> 00:19:58,010
+So you can output
+something between 0 and 1.
+
+436
+00:19:58,010 --> 00:19:59,652
+And you can have
+an input action.
+
+437
+00:19:59,652 --> 00:20:01,735
+And so [INAUDIBLE] [? have ?]
+a stochastic policy.
+
+438
+00:20:01,735 --> 00:20:03,500
+[INAUDIBLE]
+
+439
+00:20:04,468 --> 00:20:06,510
+You would then compute it
+for all of the actions,
+
+440
+00:20:06,510 --> 00:20:07,410
+then you would have
+to have some-- yeah,
+
+441
+00:20:07,410 --> 00:20:08,868
+you'd have to pick
+a random number,
+
+442
+00:20:08,868 --> 00:20:10,110
+and then use that to select.
+
+443
+00:20:10,110 --> 00:20:10,610
+Yeah.
+
+444
+00:20:10,610 --> 00:20:11,695
+Yeah, good question.
+
+445
+00:20:15,240 --> 00:20:18,310
+So my colleague Steven Collins
+over at mechanical engineering
+
+446
+00:20:18,310 --> 00:20:20,000
+does a lot of work
+on exoskeletons.
+
+447
+00:20:20,000 --> 00:20:21,750
+And there are lots of
+reasons exoskeletons
+
+448
+00:20:21,750 --> 00:20:23,750
+could be really helpful,
+particularly for people
+
+449
+00:20:23,750 --> 00:20:24,930
+that have motor impairments.
+
+450
+00:20:24,930 --> 00:20:26,430
+But one of the
+challenges of them
+
+451
+00:20:26,430 --> 00:20:30,310
+is that you have to have them
+actually help people walk.
+
+452
+00:20:30,310 --> 00:20:33,670
+So if you clamp something
+on to, say, your leg,
+
+453
+00:20:33,670 --> 00:20:36,405
+then the way my physical
+configuration is
+
+454
+00:20:36,405 --> 00:20:38,530
+may not be the same as your
+physical configuration.
+
+455
+00:20:38,530 --> 00:20:39,450
+I'm pretty tall.
+
+456
+00:20:39,450 --> 00:20:40,992
+And so you'd really
+like to make sure
+
+457
+00:20:40,992 --> 00:20:43,840
+that this helps each individual
+in the best way possible.
+
+458
+00:20:43,840 --> 00:20:47,580
+But you don't want it to have
+to learn over the course of two
+
+459
+00:20:47,580 --> 00:20:49,710
+years how to best
+optimize to someone,
+
+460
+00:20:49,710 --> 00:20:52,240
+because they're not going
+to wait that long to use it.
+
+461
+00:20:52,240 --> 00:20:54,940
+So what they did is
+they use policy methods,
+
+462
+00:20:54,940 --> 00:20:58,380
+policy search methods to quickly
+personalize the parameters
+
+463
+00:20:58,380 --> 00:21:00,120
+of an exoskeleton.
+
+464
+00:21:00,120 --> 00:21:02,310
+And they called this
+human-in-the-loop exoskeleton
+
+465
+00:21:02,310 --> 00:21:03,430
+optimization.
+
+466
+00:21:03,430 --> 00:21:06,360
+So the idea in this case is what
+they're trying to figure out
+
+467
+00:21:06,360 --> 00:21:09,280
+is what is the parameters
+of their exoskeleton.
+
+468
+00:21:09,280 --> 00:21:11,190
+And what they're looking
+at is, essentially,
+
+469
+00:21:11,190 --> 00:21:12,550
+how much it helps you walk.
+
+470
+00:21:12,550 --> 00:21:15,280
+So how much it reduces
+the effort needed to walk.
+
+471
+00:21:15,280 --> 00:21:17,200
+And so what they
+could do in this case,
+
+472
+00:21:17,200 --> 00:21:19,740
+they're not using a
+gradient-based method.
+
+473
+00:21:19,740 --> 00:21:22,980
+They're using just CMA-ES, which
+is-- [? so the treatment is ?]
+
+474
+00:21:22,980 --> 00:21:24,780
+continuous
+optimization, is they'd
+
+475
+00:21:24,780 --> 00:21:28,930
+have people walk under a few
+different control parameters.
+
+476
+00:21:28,930 --> 00:21:31,690
+They would see which of those
+seem to be most effective,
+
+477
+00:21:31,690 --> 00:21:33,520
+and then they would
+move the policies
+
+478
+00:21:33,520 --> 00:21:36,780
+they try in that direction
+with some stochasticity.
+
+479
+00:21:36,780 --> 00:21:40,270
+And I think it was within maybe
+two or three hours using this,
+
+480
+00:21:40,270 --> 00:21:42,760
+they could find substantially
+better policies.
+
+481
+00:21:42,760 --> 00:21:44,940
+I think it increased metabolic
+efficiency like maybe
+
+482
+00:21:44,940 --> 00:21:47,170
+by 20% or 30%.
+
+483
+00:21:47,170 --> 00:21:48,390
+It was pretty remarkable.
+
+484
+00:21:48,390 --> 00:21:49,890
+And so this was
+published in Science
+
+485
+00:21:49,890 --> 00:21:51,788
+about seven or eight years ago.
+
+486
+00:21:51,788 --> 00:21:53,580
+But that's another
+example of a place where
+
+487
+00:21:53,580 --> 00:21:55,975
+you can do this sort
+of online optimization,
+
+488
+00:21:55,975 --> 00:21:57,600
+but you don't
+necessarily have to think
+
+489
+00:21:57,600 --> 00:22:00,438
+about the temporal
+structure of the policy.
+
+490
+00:22:00,438 --> 00:22:01,800
+Can I ask a question?
+
+491
+00:22:01,800 --> 00:22:02,340
+Yeah.
+
+492
+00:22:02,340 --> 00:22:06,810
+[INAUDIBLE] [? --with ?]
+a default policy,
+
+493
+00:22:06,810 --> 00:22:09,100
+and then try to improve
+that default policies?
+
+494
+00:22:09,100 --> 00:22:09,768
+Great question.
+
+495
+00:22:09,768 --> 00:22:11,310
+Yeah, so in all of
+these cases, we're
+
+496
+00:22:11,310 --> 00:22:13,518
+going to have to assume that
+we initialize our policy
+
+497
+00:22:13,518 --> 00:22:15,510
+parameterization in some way.
+
+498
+00:22:15,510 --> 00:22:18,060
+Just like how we initialized
+our value function to 0
+
+499
+00:22:18,060 --> 00:22:20,283
+to start, now we're going
+to-- or if you had it
+
+500
+00:22:20,283 --> 00:22:22,950
+for the deep Q-network, it would
+be whatever your neural network
+
+501
+00:22:22,950 --> 00:22:24,630
+parameters were.
+
+502
+00:22:24,630 --> 00:22:25,505
+Yeah, great question.
+
+503
+00:22:29,370 --> 00:22:31,530
+Now, it's just useful
+to know about these,
+
+504
+00:22:31,530 --> 00:22:34,410
+because they often
+work pretty well.
+
+505
+00:22:34,410 --> 00:22:37,290
+So I think sometimes
+we like to leverage
+
+506
+00:22:37,290 --> 00:22:40,180
+the structure specific to, say,
+our Markov decision process.
+
+507
+00:22:40,180 --> 00:22:42,330
+But in some cases, just
+leveraging these ones,
+
+508
+00:22:42,330 --> 00:22:44,350
+which may not use very
+much structure at all,
+
+509
+00:22:44,350 --> 00:22:46,710
+can actually do really well.
+
+510
+00:22:46,710 --> 00:22:48,240
+So it's just good
+to keep in mind
+
+511
+00:22:48,240 --> 00:22:52,310
+that there are a lot of ways
+to do online optimization.
+
+512
+00:22:52,310 --> 00:22:54,600
+All right, so this is often
+a great baseline to try.
+
+513
+00:22:54,600 --> 00:22:57,140
+The great thing about this is
+it can work with any policy
+
+514
+00:22:57,140 --> 00:23:00,590
+parameterizations, even if it's
+not differentiable, because it's
+
+515
+00:23:00,590 --> 00:23:01,710
+not using gradients.
+
+516
+00:23:01,710 --> 00:23:03,480
+So it doesn't need
+to be differentiable.
+
+517
+00:23:03,480 --> 00:23:06,510
+And it's also often very
+easy to parallelize.
+
+518
+00:23:06,510 --> 00:23:10,790
+So CMA-ES, for those of you
+who haven't seen it before,
+
+519
+00:23:10,790 --> 00:23:12,917
+you'll have a number
+of different policies
+
+520
+00:23:12,917 --> 00:23:14,750
+you kind of try in
+parallel, and then you'll
+
+521
+00:23:14,750 --> 00:23:18,480
+use that to update and shift
+to another set of policies.
+
+522
+00:23:18,480 --> 00:23:21,320
+And that's what they did,
+Professor Collins did.
+
+523
+00:23:21,320 --> 00:23:23,900
+And in a lot of cases, the
+problems that we think about
+
+524
+00:23:23,900 --> 00:23:26,370
+are places where you'll
+have many customers.
+
+525
+00:23:26,370 --> 00:23:29,720
+You'll have many robot arms, and
+so you can parallelize things.
+
+526
+00:23:29,720 --> 00:23:32,360
+One of the limitations is that
+it's often less data efficient,
+
+527
+00:23:32,360 --> 00:23:34,610
+because it's ignoring
+the temporal structure.
+
+528
+00:23:34,610 --> 00:23:36,890
+So if you have temporal
+structure or if you have
+
+529
+00:23:36,890 --> 00:23:39,470
+a [? gradient ?] information,
+it may be more effective to use
+
+530
+00:23:39,470 --> 00:23:43,060
+[? that. ?]
+
+531
+00:23:43,060 --> 00:23:45,670
+So what we're going to
+focus on in this class
+
+532
+00:23:45,670 --> 00:23:48,170
+is differentiable methods.
+
+533
+00:23:48,170 --> 00:23:49,810
+So we're going to
+focus on places where
+
+534
+00:23:49,810 --> 00:23:52,780
+we can do stochastic
+gradient descent,
+
+535
+00:23:52,780 --> 00:23:55,330
+including on the
+policy parametrization.
+
+536
+00:23:55,330 --> 00:23:57,490
+So if we have our
+policy parameterized
+
+537
+00:23:57,490 --> 00:24:00,580
+by a deep neural network, we
+can propagate through that
+
+538
+00:24:00,580 --> 00:24:03,670
+and update those parameters.
+
+539
+00:24:03,670 --> 00:24:08,530
+So we're going to focus
+here mostly on methods
+
+540
+00:24:08,530 --> 00:24:11,740
+that do use gradient descent
+and that often leverage
+
+541
+00:24:11,740 --> 00:24:13,330
+the sequential
+structure that we're
+
+542
+00:24:13,330 --> 00:24:16,120
+making a sequence of decisions
+and we want to optimize to make
+
+543
+00:24:16,120 --> 00:24:19,700
+those sequence of decisions.
+
+544
+00:24:19,700 --> 00:24:23,150
+So to do that, we're going to
+explicitly define the gradient.
+
+545
+00:24:23,150 --> 00:24:25,820
+And we're going to write down
+the value function in terms--
+
+546
+00:24:25,820 --> 00:24:28,160
+as a function of the
+policy parameters,
+
+547
+00:24:28,160 --> 00:24:34,090
+so that we can be clear that
+this value function relies
+
+548
+00:24:34,090 --> 00:24:35,770
+on those policies.
+
+549
+00:24:35,770 --> 00:24:38,890
+And we're going to focus today
+on episodic Markov decision
+
+550
+00:24:38,890 --> 00:24:41,210
+processes, where we go
+for a single episode,
+
+551
+00:24:41,210 --> 00:24:42,630
+stop, reset, and keep going.
+
+552
+00:24:46,450 --> 00:24:48,058
+So now, what we're
+going to do is
+
+553
+00:24:48,058 --> 00:24:49,600
+we're only going to
+be trying to get,
+
+554
+00:24:49,600 --> 00:24:52,660
+in general, to a local maximum.
+
+555
+00:24:52,660 --> 00:24:56,250
+Now, it's possible you're
+lucky and you're sort of convex
+
+556
+00:24:56,250 --> 00:24:59,080
+in the space of the value--
+
+557
+00:24:59,080 --> 00:25:00,740
+in space of the
+policy parameters.
+
+558
+00:25:00,740 --> 00:25:03,210
+But in general, we're not
+going to assume convexity.
+
+559
+00:25:03,210 --> 00:25:05,260
+So at best, we're going
+to hope to just get
+
+560
+00:25:05,260 --> 00:25:08,720
+to some sort of local
+maxima in our space.
+
+561
+00:25:08,720 --> 00:25:10,080
+So if we have--
+
+562
+00:25:10,080 --> 00:25:12,440
+again, if we only
+had one parameter,
+
+563
+00:25:12,440 --> 00:25:17,065
+and we have something like
+this, we might get to here.
+
+564
+00:25:17,065 --> 00:25:17,940
+We might get to here.
+
+565
+00:25:17,940 --> 00:25:20,148
+In general, we're not going
+to make global optimality
+
+566
+00:25:20,148 --> 00:25:21,470
+guarantees.
+
+567
+00:25:21,470 --> 00:25:25,620
+This is in big contrast to the
+tabular cases we saw before.
+
+568
+00:25:25,620 --> 00:25:28,910
+We were guaranteed to get to
+the optimal Q-function, optimal
+
+569
+00:25:28,910 --> 00:25:29,920
+value function.
+
+570
+00:25:29,920 --> 00:25:31,760
+Now, we're just
+going to hope to--
+
+571
+00:25:31,760 --> 00:25:34,400
+given our policy
+parameterization,
+
+572
+00:25:34,400 --> 00:25:38,870
+let's try to get to what's a
+local optima in that policy
+
+573
+00:25:38,870 --> 00:25:40,960
+parameterization.
+
+574
+00:25:40,960 --> 00:25:43,330
+So it's sort of a policy
+specific-- policy class
+
+575
+00:25:43,330 --> 00:25:45,020
+specific guarantee.
+
+576
+00:25:45,020 --> 00:25:46,858
+And it's only a local optima.
+
+577
+00:25:46,858 --> 00:25:48,400
+And what we'll be
+doing is we're just
+
+578
+00:25:48,400 --> 00:25:50,740
+going to be trying to take
+the gradient of the policy
+
+579
+00:25:50,740 --> 00:25:53,310
+with respect to the parameters.
+
+580
+00:25:53,310 --> 00:25:55,960
+And as usual, we're going to
+have a step size parameter.
+
+581
+00:25:55,960 --> 00:25:58,350
+So we're going to take the
+gradient of the value function
+
+582
+00:25:58,350 --> 00:26:01,050
+with respect to the parameters
+and take a small step.
+
+583
+00:26:01,050 --> 00:26:02,880
+And the key thing is
+going to be thinking
+
+584
+00:26:02,880 --> 00:26:06,630
+about places where we can
+do this all directly using
+
+585
+00:26:06,630 --> 00:26:08,500
+smooth functions.
+
+586
+00:26:12,256 --> 00:26:14,250
+Now, one way you could
+do this-- of course,
+
+587
+00:26:14,250 --> 00:26:15,710
+when you see this
+now, you probably
+
+588
+00:26:15,710 --> 00:26:17,252
+immediately think
+of autodiff methods
+
+589
+00:26:17,252 --> 00:26:19,590
+and think about we can just
+back propagate, et cetera.
+
+590
+00:26:19,590 --> 00:26:22,400
+But it's worth noting that
+when these methods began
+
+591
+00:26:22,400 --> 00:26:25,280
+to start to get popular,
+they didn't necessarily
+
+592
+00:26:25,280 --> 00:26:27,410
+have autodiff yet.
+
+593
+00:26:27,410 --> 00:26:27,980
+I know.
+
+594
+00:26:27,980 --> 00:26:30,350
+There was research then still.
+
+595
+00:26:30,350 --> 00:26:31,850
+And one of the
+things people started
+
+596
+00:26:31,850 --> 00:26:35,100
+thinking about for this is how
+you could use this for robotics.
+
+597
+00:26:35,100 --> 00:26:38,420
+So this is a nice paper
+from 2004, so 20 years ago,
+
+598
+00:26:38,420 --> 00:26:40,047
+by Peter Stone's group.
+
+599
+00:26:40,047 --> 00:26:41,130
+It was right around then--
+
+600
+00:26:41,130 --> 00:26:44,720
+I think maybe RoboCop was maybe
+60 years old then or something.
+
+601
+00:26:44,720 --> 00:26:47,248
+I think they started
+it back in 1998 or so.
+
+602
+00:26:47,248 --> 00:26:49,040
+So there are these
+little quadruped robots.
+
+603
+00:26:49,040 --> 00:26:51,680
+And the goal was to think
+about getting robotics
+
+604
+00:26:51,680 --> 00:26:55,740
+to the stage where you could
+have robots play human players.
+
+605
+00:26:55,740 --> 00:26:58,470
+I think that was the goal
+by either 2030 or 2050.
+
+606
+00:26:58,470 --> 00:26:58,970
+I forget.
+
+607
+00:26:58,970 --> 00:27:01,637
+But what they were just going to
+start with-- it was quadrupeds.
+
+608
+00:27:01,637 --> 00:27:03,620
+So one of the big
+challenges at the beginning,
+
+609
+00:27:03,620 --> 00:27:05,840
+because everywhere, you start
+with the beginning challenges,
+
+610
+00:27:05,840 --> 00:27:07,370
+and you go from
+there, it was just
+
+611
+00:27:07,370 --> 00:27:09,210
+getting them to
+walk fast enough.
+
+612
+00:27:09,210 --> 00:27:10,860
+So if they're going
+to score goals,
+
+613
+00:27:10,860 --> 00:27:13,450
+and they're going to compete,
+you need them to walk quickly.
+
+614
+00:27:13,450 --> 00:27:15,360
+And so there's this
+question of just how
+
+615
+00:27:15,360 --> 00:27:19,110
+do you learn fast walks, so
+that they can-- sort of trying
+
+616
+00:27:19,110 --> 00:27:21,030
+to teach robots to run.
+
+617
+00:27:21,030 --> 00:27:24,720
+And what they found here is that
+they could use policy methods
+
+618
+00:27:24,720 --> 00:27:27,480
+and policy search methods just
+to learn a faster way for it
+
+619
+00:27:27,480 --> 00:27:28,300
+to walk.
+
+620
+00:27:28,300 --> 00:27:31,410
+And so they
+parameterize the curve
+
+621
+00:27:31,410 --> 00:27:34,050
+of how the foot moves
+as a set of parameters.
+
+622
+00:27:34,050 --> 00:27:37,140
+And that defined the policy
+for moving those joints.
+
+623
+00:27:37,140 --> 00:27:38,640
+And then, what they
+did is they just
+
+624
+00:27:38,640 --> 00:27:41,238
+had these walk back and
+forth many, many times.
+
+625
+00:27:41,238 --> 00:27:42,780
+And what they would
+do is they'd have
+
+626
+00:27:42,780 --> 00:27:47,250
+them walk with some
+particular policy parameters.
+
+627
+00:27:47,250 --> 00:27:48,880
+They would see how
+fast they walked.
+
+628
+00:27:48,880 --> 00:27:50,935
+They would do finite
+different methods.
+
+629
+00:27:50,935 --> 00:27:52,560
+So they weren't trying
+to explicitly do
+
+630
+00:27:52,560 --> 00:27:54,720
+autodiff or anything
+there, and then they
+
+631
+00:27:54,720 --> 00:27:59,180
+would slightly change the
+policy parameters and repeat.
+
+632
+00:27:59,180 --> 00:28:02,420
+And they learned to
+substantially faster walk
+
+633
+00:28:02,420 --> 00:28:03,320
+during that time.
+
+634
+00:28:03,320 --> 00:28:06,750
+And I think it took maybe
+around four hours or so,
+
+635
+00:28:06,750 --> 00:28:10,360
+but they just had to replace
+the batteries a couple of times.
+
+636
+00:28:10,360 --> 00:28:13,010
+So just an example to say like,
+it's lovely to have autodiff.
+
+637
+00:28:13,010 --> 00:28:14,720
+You can do really
+complicated things now.
+
+638
+00:28:14,720 --> 00:28:17,420
+But these methods can work
+even in really basic settings,
+
+639
+00:28:17,420 --> 00:28:20,680
+particularly where you think you
+have pretty bad models of how
+
+640
+00:28:20,680 --> 00:28:21,650
+the world works.
+
+641
+00:28:21,650 --> 00:28:24,050
+And so now, you can just
+be directly data driven.
+
+642
+00:28:24,050 --> 00:28:26,180
+And why is this hard
+problem, for those of you
+
+643
+00:28:26,180 --> 00:28:28,040
+who haven't done robotics?
+
+644
+00:28:28,040 --> 00:28:31,510
+It involves a whole
+bunch of contact forces.
+
+645
+00:28:31,510 --> 00:28:33,400
+The ground may be--
+
+646
+00:28:33,400 --> 00:28:36,030
+well, they have to learn
+on this particular ground.
+
+647
+00:28:36,030 --> 00:28:38,570
+You may not know, because
+it's commercial hardware.
+
+648
+00:28:38,570 --> 00:28:40,540
+You may not know exactly
+all the parameters
+
+649
+00:28:40,540 --> 00:28:42,130
+that the designers put in.
+
+650
+00:28:42,130 --> 00:28:44,270
+So you can just be data driven.
+
+651
+00:28:44,270 --> 00:28:49,040
+OK, as opposed to maybe
+having a physics simulator.
+
+652
+00:28:49,040 --> 00:28:50,820
+All right, so just
+to summarize so far,
+
+653
+00:28:50,820 --> 00:28:52,610
+the benefits of
+policy-based RL is
+
+654
+00:28:52,610 --> 00:28:56,548
+that we're going to have
+often better convergence
+
+655
+00:28:56,548 --> 00:28:59,090
+properties, because we're often
+going to be able to guarantee
+
+656
+00:28:59,090 --> 00:29:00,570
+that we get to a local optima.
+
+657
+00:29:00,570 --> 00:29:03,242
+Whereas, we didn't have
+that for deep Q-learning.
+
+658
+00:29:03,242 --> 00:29:05,450
+They're often really effective
+in high dimensional or
+
+659
+00:29:05,450 --> 00:29:07,350
+continuous action spaces.
+
+660
+00:29:07,350 --> 00:29:10,070
+And you can learn
+stochastic policies.
+
+661
+00:29:10,070 --> 00:29:11,750
+But the methods
+we've seen so far
+
+662
+00:29:11,750 --> 00:29:14,730
+might be more inefficient
+and higher variance.
+
+663
+00:29:14,730 --> 00:29:18,470
+And we often only get to
+something in the local optima.
+
+664
+00:29:18,470 --> 00:29:21,560
+And we'll see some things to
+help with of the inefficiency
+
+665
+00:29:21,560 --> 00:29:22,090
+in a second.
+
+666
+00:29:24,270 --> 00:29:26,270
+All right, so now, what
+we're going to dive into
+
+667
+00:29:26,270 --> 00:29:28,280
+is how do we do this when
+we are willing to have
+
+668
+00:29:28,280 --> 00:29:29,350
+differentiable policies.
+
+669
+00:29:34,400 --> 00:29:37,760
+So the hope is that we can
+actually compute the policy
+
+670
+00:29:37,760 --> 00:29:40,820
+gradient analytically,
+so we don't have to do it
+
+671
+00:29:40,820 --> 00:29:42,500
+with finite differences.
+
+672
+00:29:42,500 --> 00:29:45,320
+And we're going to
+focus on policies
+
+673
+00:29:45,320 --> 00:29:48,178
+where it's differentiable
+as long as it's non-0.
+
+674
+00:29:48,178 --> 00:29:49,970
+So we're going to assume
+that we can always
+
+675
+00:29:49,970 --> 00:29:53,518
+compute the gradient of the
+policy parameters themselves.
+
+676
+00:29:53,518 --> 00:29:55,310
+And there are a number
+of different classes
+
+677
+00:29:55,310 --> 00:29:56,580
+we can do this for.
+
+678
+00:29:56,580 --> 00:29:59,760
+And there are many popular
+classes, including, of course,
+
+679
+00:29:59,760 --> 00:30:02,510
+deep neural networks.
+
+680
+00:30:02,510 --> 00:30:06,600
+So popular ones
+are often softmax.
+
+681
+00:30:06,600 --> 00:30:07,860
+Softmax is used all the time.
+
+682
+00:30:07,860 --> 00:30:09,235
+I'll explain what
+is in a second.
+
+683
+00:30:09,235 --> 00:30:11,855
+Gaussian and neural networks.
+
+684
+00:30:11,855 --> 00:30:13,230
+And again, just
+to be clear here,
+
+685
+00:30:13,230 --> 00:30:15,680
+what I mean by a
+policy class is what
+
+686
+00:30:15,680 --> 00:30:17,570
+is the functional
+form we are using
+
+687
+00:30:17,570 --> 00:30:25,050
+to give us a probability
+of an action given a state.
+
+688
+00:30:25,050 --> 00:30:27,110
+So are we having
+something like-- well, I
+
+689
+00:30:27,110 --> 00:30:28,735
+guess we can just
+see on the next slide
+
+690
+00:30:28,735 --> 00:30:30,070
+what this will look like.
+
+691
+00:30:32,733 --> 00:30:34,650
+So we're going to assume
+I'm going to give you
+
+692
+00:30:34,650 --> 00:30:38,535
+some examples of those of
+what softmax, and Gaussian,
+
+693
+00:30:38,535 --> 00:30:40,740
+and neural networks look
+like in a second in terms
+
+694
+00:30:40,740 --> 00:30:42,720
+of how we differentiate them.
+
+695
+00:30:42,720 --> 00:30:44,503
+But these are just
+different ways for us
+
+696
+00:30:44,503 --> 00:30:46,920
+to parameterize what is the
+probability of an action given
+
+697
+00:30:46,920 --> 00:30:48,827
+a state.
+
+698
+00:30:48,827 --> 00:30:51,160
+Actually, I guess I'll give
+a quick example of Gaussian.
+
+699
+00:30:51,160 --> 00:30:52,730
+For a Gaussian,
+you could imagine--
+
+700
+00:30:52,730 --> 00:30:54,190
+let's imagine I have a robot.
+
+701
+00:30:54,190 --> 00:30:59,020
+And I'm trying to figure out,
+say, how much speed to apply.
+
+702
+00:30:59,020 --> 00:31:00,880
+Then, you might
+have a policy class
+
+703
+00:31:00,880 --> 00:31:06,430
+that says the action I take is
+equal to a Gaussian centered
+
+704
+00:31:06,430 --> 00:31:11,680
+around 0.5 with some
+standard deviation.
+
+705
+00:31:11,680 --> 00:31:14,500
+So it would be a
+stochastic policy.
+
+706
+00:31:14,500 --> 00:31:17,183
+And it would say the
+average amount of speed
+
+707
+00:31:17,183 --> 00:31:18,850
+you're going to apply
+is 0.5, but you're
+
+708
+00:31:18,850 --> 00:31:21,440
+going to have some
+variability around that.
+
+709
+00:31:21,440 --> 00:31:24,490
+That would give you some
+stochastic behavior.
+
+710
+00:31:24,490 --> 00:31:26,490
+So sometimes, your robot
+would go really slowly.
+
+711
+00:31:26,490 --> 00:31:27,657
+Sometimes, it would go fast.
+
+712
+00:31:27,657 --> 00:31:31,070
+Sometimes, it would go
+in a negative direction.
+
+713
+00:31:31,070 --> 00:31:34,310
+OK, so let's keep assuming that
+the policy is differentiable.
+
+714
+00:31:34,310 --> 00:31:36,390
+Whenever it's non-0,
+we know the gradient.
+
+715
+00:31:36,390 --> 00:31:40,220
+That still doesn't tell us how
+to solve policy gradient methods
+
+716
+00:31:40,220 --> 00:31:43,100
+yet, because what we want to do
+is take derivatives of the value
+
+717
+00:31:43,100 --> 00:31:43,970
+function.
+
+718
+00:31:43,970 --> 00:31:47,720
+So we want to say I want to find
+the maximum, the policy that
+
+719
+00:31:47,720 --> 00:31:49,160
+has the best value
+function, which
+
+720
+00:31:49,160 --> 00:31:51,618
+means I'm going to need to take
+the derivative of the value
+
+721
+00:31:51,618 --> 00:31:55,322
+function with respect to
+the policy parameters.
+
+722
+00:31:55,322 --> 00:31:57,750
+So remember that
+the policy value,
+
+723
+00:31:57,750 --> 00:32:00,260
+the value of the initial
+starting state under a policy,
+
+724
+00:32:00,260 --> 00:32:04,410
+is going to be the
+expected sum of rewards.
+
+725
+00:32:04,410 --> 00:32:06,948
+We don't have to use
+discounting for most of today
+
+726
+00:32:06,948 --> 00:32:07,990
+if we assume it's finite.
+
+727
+00:32:07,990 --> 00:32:11,020
+So I'll just say
+we're going to assume
+
+728
+00:32:11,020 --> 00:32:14,340
+we're in the episodic case.
+
+729
+00:32:14,340 --> 00:32:15,490
+So this is finite.
+
+730
+00:32:15,490 --> 00:32:18,670
+So no discount
+[? counting ?] for now.
+
+731
+00:32:21,988 --> 00:32:23,530
+So we don't need
+discounting for now,
+
+732
+00:32:23,530 --> 00:32:25,240
+because it's always a finite
+length, so we're never
+
+733
+00:32:25,240 --> 00:32:26,860
+going to have infinite reward.
+
+734
+00:32:26,860 --> 00:32:29,560
+So the policy value is
+just the expected sum
+
+735
+00:32:29,560 --> 00:32:31,060
+of discounted rewards
+when we follow
+
+736
+00:32:31,060 --> 00:32:33,280
+the policy
+parameterized by theta
+
+737
+00:32:33,280 --> 00:32:35,830
+till the end of the
+episode, starting
+
+738
+00:32:35,830 --> 00:32:40,620
+from the state [? s0. ?] And
+there are lots of different ways
+
+739
+00:32:40,620 --> 00:32:43,150
+for us to write this down.
+
+740
+00:32:43,150 --> 00:32:47,350
+So one way is for us to write
+down [INAUDIBLE] r is equal to--
+
+741
+00:32:47,350 --> 00:32:51,310
+well, it's equal to the
+state action value averaged
+
+742
+00:32:51,310 --> 00:32:53,800
+over the probability of us
+taking each of those actions
+
+743
+00:32:53,800 --> 00:32:55,900
+under our policy.
+
+744
+00:32:55,900 --> 00:32:59,290
+So this here just says, what
+is the probability of me
+
+745
+00:32:59,290 --> 00:33:00,290
+taking this action?
+
+746
+00:33:00,290 --> 00:33:01,390
+Starting state s0.
+
+747
+00:33:01,390 --> 00:33:05,000
+If I have policy
+parameterized by theta times
+
+748
+00:33:05,000 --> 00:33:06,830
+what is my Q value.
+
+749
+00:33:06,830 --> 00:33:09,080
+Starting in that state,
+taking that particular action,
+
+750
+00:33:09,080 --> 00:33:13,410
+and then following that
+policy for the rest of it.
+
+751
+00:33:13,410 --> 00:33:15,640
+So this is one way to
+write it, but we can also
+
+752
+00:33:15,640 --> 00:33:17,440
+think of a quite
+different way, which is
+
+753
+00:33:17,440 --> 00:33:20,800
+let's think about trajectories.
+
+754
+00:33:20,800 --> 00:33:21,300
+All right.
+
+755
+00:33:21,300 --> 00:33:24,380
+Don't want these
+[INAUDIBLE] in a second.
+
+756
+00:33:24,380 --> 00:33:27,070
+So this is a trajectory.
+
+757
+00:33:27,070 --> 00:33:28,060
+What's a trajectory?
+
+758
+00:33:28,060 --> 00:33:31,510
+That's going to be s0, and then
+it's going to be an action,
+
+759
+00:33:31,510 --> 00:33:33,275
+and then s1, dot, dot, dot--
+
+760
+00:33:36,070 --> 00:33:43,201
+sampled from pi theta.
+
+761
+00:33:43,201 --> 00:33:45,400
+So another way we can
+think of the value--
+
+762
+00:33:45,400 --> 00:33:51,570
+and then, this is going to be
+the reward for that trajectory,
+
+763
+00:33:51,570 --> 00:33:53,920
+that whole trajectory.
+
+764
+00:33:56,690 --> 00:33:58,600
+And we've called
+[? R G ?] before.
+
+765
+00:33:58,600 --> 00:34:03,450
+So sometimes-- I'll just
+write down that in case.
+
+766
+00:34:03,450 --> 00:34:11,739
+[? Sometimes-- ?] [INAUDIBLE]
+
+767
+00:34:11,739 --> 00:34:13,659
+So another way we can
+think of the value
+
+768
+00:34:13,659 --> 00:34:15,340
+is we say, well,
+let's just sum over
+
+769
+00:34:15,340 --> 00:34:18,610
+all possible trajectories we
+could reach under this policy.
+
+770
+00:34:18,610 --> 00:34:21,590
+And what would be the reward
+for each of those trajectories?
+
+771
+00:34:21,590 --> 00:34:23,398
+And I'm just going to
+take a weighted sum.
+
+772
+00:34:23,398 --> 00:34:24,940
+Now, of course, you
+might be thinking
+
+773
+00:34:24,940 --> 00:34:26,120
+that's totally intractable.
+
+774
+00:34:26,120 --> 00:34:30,679
+And yes, in general, if you
+have a really long trajectory,
+
+775
+00:34:30,679 --> 00:34:32,139
+then it's going
+to be [INAUDIBLE].
+
+776
+00:34:32,139 --> 00:34:33,460
+And you have a really
+large state space.
+
+777
+00:34:33,460 --> 00:34:34,480
+And you could reach many states.
+
+778
+00:34:34,480 --> 00:34:37,105
+In general, it's not going to be
+possible to actually enumerate
+
+779
+00:34:37,105 --> 00:34:37,870
+this.
+
+780
+00:34:37,870 --> 00:34:40,250
+But this is mathematically
+well defined.
+
+781
+00:34:40,250 --> 00:34:44,090
+This is just an expectation
+over the reward of trajectories.
+
+782
+00:34:44,090 --> 00:34:46,270
+And we know whenever
+we see expectations
+
+783
+00:34:46,270 --> 00:34:48,730
+that we can approximate
+those with finite samples.
+
+784
+00:34:48,730 --> 00:34:50,949
+You can think of just
+taking n samples, just
+
+785
+00:34:50,949 --> 00:34:52,900
+like what we saw with
+Monte Carlo methods,
+
+786
+00:34:52,900 --> 00:34:56,199
+and using that to
+approximate a trajectory.
+
+787
+00:34:56,199 --> 00:34:59,252
+So in general, this
+is intractable.
+
+788
+00:34:59,252 --> 00:35:09,855
+In general, intractable, but
+we can approximate by sampling.
+
+789
+00:35:15,810 --> 00:35:17,890
+So this is one way
+we could write down.
+
+790
+00:35:17,890 --> 00:35:20,160
+So this is another
+also a valid way
+
+791
+00:35:20,160 --> 00:35:22,470
+to write down what is the
+value of starting this state
+
+792
+00:35:22,470 --> 00:35:23,512
+and following the policy.
+
+793
+00:35:26,390 --> 00:35:29,735
+So I've written that down more
+neatly here p of [? tau ?] theta
+
+794
+00:35:29,735 --> 00:35:31,360
+is the probability
+of our trajectories.
+
+795
+00:35:31,360 --> 00:35:33,820
+[INAUDIBLE] [? when ?] you
+execute that policy starting
+
+796
+00:35:33,820 --> 00:35:37,330
+state s0, and that is the sum
+of the rewards for trajectory.
+
+797
+00:35:37,330 --> 00:35:41,087
+In this class, we're going to
+focus on this latter definition.
+
+798
+00:35:41,087 --> 00:35:42,670
+But instead of setting
+[? bar, ?] they
+
+799
+00:35:42,670 --> 00:35:45,280
+have a nice way to think about
+policy gradient methods that
+
+800
+00:35:45,280 --> 00:35:46,870
+starts from the
+other definition.
+
+801
+00:35:46,870 --> 00:35:48,550
+So you can always look at that.
+
+802
+00:35:48,550 --> 00:35:51,110
+But both are totally
+valid definitions.
+
+803
+00:35:54,670 --> 00:35:58,290
+So now, we're going to focus on
+thinking about likelihood ratio
+
+804
+00:35:58,290 --> 00:35:58,875
+policies.
+
+805
+00:35:58,875 --> 00:36:00,750
+So we're going to be
+thinking about this case
+
+806
+00:36:00,750 --> 00:36:03,450
+where we have a distribution
+over trajectories,
+
+807
+00:36:03,450 --> 00:36:05,280
+and then what is
+the sum of rewards
+
+808
+00:36:05,280 --> 00:36:07,290
+for each of those trajectories.
+
+809
+00:36:07,290 --> 00:36:09,700
+So we have our value function.
+
+810
+00:36:09,700 --> 00:36:12,720
+And now, what we want to
+do is find the argmax,
+
+811
+00:36:12,720 --> 00:36:17,390
+so that we maximize [INAUDIBLE]
+having probability of getting
+
+812
+00:36:17,390 --> 00:36:20,635
+trajectories with high reward.
+
+813
+00:36:20,635 --> 00:36:21,260
+So that's nice.
+
+814
+00:36:21,260 --> 00:36:22,910
+So instead of just thinking
+about the value function,
+
+815
+00:36:22,910 --> 00:36:24,700
+we now can think of
+it as, OK, I want
+
+816
+00:36:24,700 --> 00:36:27,310
+to have policies that induce
+trajectories through the state
+
+817
+00:36:27,310 --> 00:36:28,570
+space, through the
+state and action
+
+818
+00:36:28,570 --> 00:36:30,060
+space that give me high reward.
+
+819
+00:36:32,497 --> 00:36:34,330
+So what we're going to
+need to be able to do
+
+820
+00:36:34,330 --> 00:36:40,540
+is to take a gradient
+through the right hand side.
+
+821
+00:36:40,540 --> 00:36:42,135
+So that's what we're
+going to do now.
+
+822
+00:36:45,870 --> 00:36:46,960
+[INAUDIBLE]
+
+823
+00:36:46,960 --> 00:36:49,258
+OK, so we're going to
+take the gradient of this.
+
+824
+00:36:49,258 --> 00:36:51,550
+Because once we have the
+gradient of the value function
+
+825
+00:36:51,550 --> 00:36:53,180
+with respect to the
+policy parameters,
+
+826
+00:36:53,180 --> 00:36:54,790
+we can update our
+policy parameters
+
+827
+00:36:54,790 --> 00:36:58,090
+to increase, hopefully,
+the value of the policy
+
+828
+00:36:58,090 --> 00:36:59,020
+that we're at.
+
+829
+00:36:59,020 --> 00:37:00,437
+So what we're going
+to do is we're
+
+830
+00:37:00,437 --> 00:37:02,853
+going to say we're going to
+take the gradient with respect
+
+831
+00:37:02,853 --> 00:37:04,190
+to the right hand side.
+
+832
+00:37:04,190 --> 00:37:08,470
+We can rewrite this by
+pushing in the gradient.
+
+833
+00:37:15,115 --> 00:37:18,120
+Now, R of tau doesn't depend
+on the policy parameters.
+
+834
+00:37:18,120 --> 00:37:19,870
+That's just what is
+the reward once you've
+
+835
+00:37:19,870 --> 00:37:21,490
+told me what a trajectory is.
+
+836
+00:37:21,490 --> 00:37:23,250
+So we can put that
+on the other side.
+
+837
+00:37:27,920 --> 00:37:31,490
+So the only part that depends
+on the policy parameters.
+
+838
+00:37:31,490 --> 00:37:35,060
+And now, I'm going
+to play a trick.
+
+839
+00:37:35,060 --> 00:37:43,337
+I'm going to note that this
+is going to be equal to--
+
+840
+00:37:43,337 --> 00:37:44,920
+well, I'm going to
+do something that's
+
+841
+00:37:44,920 --> 00:37:46,930
+going to seem not very
+helpful for a second,
+
+842
+00:37:46,930 --> 00:37:48,797
+and then we'll see
+why it's helpful.
+
+843
+00:37:48,797 --> 00:37:51,130
+I'm just going to multiply
+and divide by the probability
+
+844
+00:37:51,130 --> 00:37:52,250
+of a trajectory.
+
+845
+00:37:55,890 --> 00:37:56,890
+I haven't done anything.
+
+846
+00:37:56,890 --> 00:37:59,160
+I've just multiplied
+by 1, and I've
+
+847
+00:37:59,160 --> 00:38:01,440
+happened to multiply
+by the top and bottom
+
+848
+00:38:01,440 --> 00:38:04,080
+by the probability
+of that trajectory.
+
+849
+00:38:04,080 --> 00:38:09,660
+But then, I'm going to note
+that the derivative with respect
+
+850
+00:38:09,660 --> 00:38:13,140
+to log of the
+trajectory and theta
+
+851
+00:38:13,140 --> 00:38:16,935
+is just equal to 1 over the
+probability of the trajectory
+
+852
+00:38:16,935 --> 00:38:21,360
+of theta times the
+derivative with respect
+
+853
+00:38:21,360 --> 00:38:25,458
+to the trajectory and theta.
+
+854
+00:38:25,458 --> 00:38:27,000
+Because the derivative
+of log is just
+
+855
+00:38:27,000 --> 00:38:29,910
+equal to 1 over the value
+times the derivative
+
+856
+00:38:29,910 --> 00:38:31,620
+of the thing inside the log.
+
+857
+00:38:31,620 --> 00:38:36,520
+So that looks exactly like this.
+
+858
+00:38:36,520 --> 00:38:39,020
+So that's the trick
+that we're playing here.
+
+859
+00:38:39,020 --> 00:38:42,528
+And so we can rewrite this
+then as the probability.
+
+860
+00:38:42,528 --> 00:38:44,445
+And I'll tell you why
+we did this in a second.
+
+861
+00:38:54,515 --> 00:38:55,890
+All right, let me
+just rewrite it
+
+862
+00:38:55,890 --> 00:38:59,660
+one more time, so
+it's more easy to see.
+
+863
+00:39:10,110 --> 00:39:11,800
+Why did we do this?
+
+864
+00:39:11,800 --> 00:39:13,933
+The reason we did this
+is that, in general, it's
+
+865
+00:39:13,933 --> 00:39:15,600
+going to be hard for
+us to think about--
+
+866
+00:39:15,600 --> 00:39:17,392
+or it might be tricky
+for us to think about
+
+867
+00:39:17,392 --> 00:39:19,560
+how do we propagate our
+derivative through something
+
+868
+00:39:19,560 --> 00:39:21,040
+that's an expectation.
+
+869
+00:39:21,040 --> 00:39:24,060
+We had an expectation over
+all the trajectories weighted
+
+870
+00:39:24,060 --> 00:39:25,830
+by the reward of
+those trajectories.
+
+871
+00:39:25,830 --> 00:39:28,590
+We now want to take a
+gradient with respect to it.
+
+872
+00:39:28,590 --> 00:39:32,160
+We want to end up with something
+that is computable from samples,
+
+873
+00:39:32,160 --> 00:39:34,000
+because it's easy for
+us to get samples.
+
+874
+00:39:34,000 --> 00:39:36,200
+We can actually run our
+policy in the environment.
+
+875
+00:39:36,200 --> 00:39:38,550
+So by playing this
+trick, what we now
+
+876
+00:39:38,550 --> 00:39:41,670
+have is something that we can
+also sample, because this is now
+
+877
+00:39:41,670 --> 00:39:45,480
+an expectation over trajectories
+of the reward of the trajectory
+
+878
+00:39:45,480 --> 00:39:48,360
+weighted by the gradient of
+the log of the probability
+
+879
+00:39:48,360 --> 00:39:50,060
+of that trajectory.
+
+880
+00:39:50,060 --> 00:39:53,340
+And we'll talk soon about
+how you compute this part,
+
+881
+00:39:53,340 --> 00:39:58,020
+but this expectation
+can be sampled.
+
+882
+00:39:58,020 --> 00:40:00,640
+Because this is just a
+probability over trajectories.
+
+883
+00:40:00,640 --> 00:40:02,670
+And so we could sample,
+say, hundreds of them
+
+884
+00:40:02,670 --> 00:40:05,980
+and approximate that
+outer expectation.
+
+885
+00:40:05,980 --> 00:40:08,020
+So that's one of the right
+reasons why this is--
+
+886
+00:40:08,020 --> 00:40:10,562
+I'm just writing this out more
+neatly here on the next slide.
+
+887
+00:40:10,562 --> 00:40:16,030
+This is called the likelihood
+ratio, this term here.
+
+888
+00:40:16,030 --> 00:40:18,030
+And so that's one of the
+benefits to doing this,
+
+889
+00:40:18,030 --> 00:40:20,450
+is that we want to end up with
+something that is computable.
+
+890
+00:40:20,450 --> 00:40:22,617
+We want to be able to get
+this gradient with respect
+
+891
+00:40:22,617 --> 00:40:24,922
+to the value function for
+the policy parameters.
+
+892
+00:40:24,922 --> 00:40:26,630
+And so this is going
+to give us something
+
+893
+00:40:26,630 --> 00:40:29,050
+that we can approximate with
+samples and we can compute.
+
+894
+00:40:31,600 --> 00:40:34,660
+All right, now, you still might
+be a little bit concerned,
+
+895
+00:40:34,660 --> 00:40:35,810
+because--
+
+896
+00:40:35,810 --> 00:40:37,610
+all right, maybe
+you think, yeah,
+
+897
+00:40:37,610 --> 00:40:40,605
+I can maybe compute this
+by writing things out
+
+898
+00:40:40,605 --> 00:40:41,980
+in the environment,
+but I'm still
+
+899
+00:40:41,980 --> 00:40:43,900
+going to have to
+take this derivative.
+
+900
+00:40:43,900 --> 00:40:45,700
+And how am I going to do that?
+
+901
+00:40:45,700 --> 00:40:47,710
+And what does it
+end up depending on?
+
+902
+00:40:47,710 --> 00:40:50,740
+So let's do a next step.
+
+903
+00:40:50,740 --> 00:40:53,210
+So as I said, what
+we're going to do here,
+
+904
+00:40:53,210 --> 00:40:56,156
+this is an expectation,
+so an expectation.
+
+905
+00:40:58,750 --> 00:41:01,540
+We're going to approximate
+that expectation
+
+906
+00:41:01,540 --> 00:41:04,697
+with an empirical estimate.
+
+907
+00:41:04,697 --> 00:41:06,530
+So we're just going
+to-- instead of actually
+
+908
+00:41:06,530 --> 00:41:09,000
+taking all possible
+trajectories,
+
+909
+00:41:09,000 --> 00:41:11,147
+particularly in the
+case of vision input,
+
+910
+00:41:11,147 --> 00:41:13,230
+you could imagine that
+would be completely insane.
+
+911
+00:41:13,230 --> 00:41:14,772
+So we're just going
+to approximate it
+
+912
+00:41:14,772 --> 00:41:17,040
+by taking m samples.
+
+913
+00:41:17,040 --> 00:41:19,550
+But we still have
+to handle this.
+
+914
+00:41:19,550 --> 00:41:21,490
+So that's what we're
+going to do next.
+
+915
+00:41:21,490 --> 00:41:23,600
+So this first part
+should all seem clear.
+
+916
+00:41:23,600 --> 00:41:27,040
+The second part should, at
+least certainly, for most of us,
+
+917
+00:41:27,040 --> 00:41:30,890
+would not be clear yet about
+how we do that second part.
+
+918
+00:41:30,890 --> 00:41:32,732
+OK, so what do we do with that?
+
+919
+00:41:32,732 --> 00:41:34,190
+What we're going
+to do now is we're
+
+920
+00:41:34,190 --> 00:41:40,100
+going to decompose that latter
+part into states and actions.
+
+921
+00:41:40,100 --> 00:41:42,740
+So remember that
+what this means here
+
+922
+00:41:42,740 --> 00:41:45,650
+is this is going to be
+a particular trajectory
+
+923
+00:41:45,650 --> 00:41:49,040
+we get by following
+a policy for t steps
+
+924
+00:41:49,040 --> 00:41:50,740
+or until the end of the episode.
+
+925
+00:41:50,740 --> 00:41:51,240
+OK.
+
+926
+00:41:51,240 --> 00:41:53,310
+So let me just
+remind ourselves what
+
+927
+00:41:53,310 --> 00:41:54,620
+t is going to look like here.
+
+928
+00:42:00,480 --> 00:42:03,010
+So this is going to be
+like time step here.
+
+929
+00:42:03,010 --> 00:42:05,890
+I'm using the
+subscript as time step.
+
+930
+00:42:05,890 --> 00:42:09,250
+OK, so let's just write
+out what a trajectory is
+
+931
+00:42:09,250 --> 00:42:12,120
+and what those
+probabilities are.
+
+932
+00:42:12,120 --> 00:42:15,580
+Are we assuming or
+approximating the probability
+
+933
+00:42:15,580 --> 00:42:18,070
+of the trajectory
+just to be 1/n?
+
+934
+00:42:18,070 --> 00:42:20,270
+No, good question or sorry.
+
+935
+00:42:20,270 --> 00:42:21,930
+Yes, for this part?
+
+936
+00:42:21,930 --> 00:42:23,012
+Yes.
+
+937
+00:42:23,012 --> 00:42:24,970
+We're assuming that we
+are [INAUDIBLE] for each
+
+938
+00:42:24,970 --> 00:42:27,303
+of the trajectories, we're
+using a Monte Carlo estimate.
+
+939
+00:42:27,303 --> 00:42:28,960
+We're just using 1/m.
+
+940
+00:42:28,960 --> 00:42:31,220
+But if some trajectories
+are more likely than others,
+
+941
+00:42:31,220 --> 00:42:34,030
+they'll appear more
+in that set of m.
+
+942
+00:42:34,030 --> 00:42:36,610
+Yeah, good question.
+
+943
+00:42:36,610 --> 00:42:39,940
+OK, so let's now try to
+express what the probability is
+
+944
+00:42:39,940 --> 00:42:41,820
+of a trajectory.
+
+945
+00:42:41,820 --> 00:42:45,540
+OK, so the probability of a
+trajectory we can write out as
+
+946
+00:42:45,540 --> 00:42:47,850
+follows.
+
+947
+00:42:47,850 --> 00:42:53,350
+So we're going to still
+have that outside log.
+
+948
+00:42:53,350 --> 00:42:54,950
+We're going to do the following.
+
+949
+00:42:54,950 --> 00:42:55,630
+OK.
+
+950
+00:42:55,630 --> 00:43:00,520
+I'm going to say mu of s0 is
+equal to the probability of s0.
+
+951
+00:43:00,520 --> 00:43:02,890
+That's just like what is
+our probability distribution
+
+952
+00:43:02,890 --> 00:43:04,280
+over our starting state.
+
+953
+00:43:04,280 --> 00:43:05,740
+OK, so that's mu.
+
+954
+00:43:05,740 --> 00:43:09,742
+And then what we're going
+to have is the following.
+
+955
+00:43:09,742 --> 00:43:14,330
+t equals 0 to T minus 1.
+
+956
+00:43:14,330 --> 00:43:15,830
+We're going to have our policy.
+
+957
+00:43:19,220 --> 00:43:21,890
+So this is going to say,
+what is the probability
+
+958
+00:43:21,890 --> 00:43:25,250
+that I pick action I picked,
+given the current state I'm
+
+959
+00:43:25,250 --> 00:43:38,580
+in times the probability of st
+plus 1, given s0 to t, a0 to t.
+
+960
+00:43:41,090 --> 00:43:44,540
+So what I've done is
+I've just written out.
+
+961
+00:43:44,540 --> 00:43:47,540
+What is happening in my
+trajectory here, as I start,
+
+962
+00:43:47,540 --> 00:43:51,140
+I have some distribution
+over C in this initial state.
+
+963
+00:43:51,140 --> 00:43:54,530
+Under my policy, I have some
+probability of picking a0,
+
+964
+00:43:54,530 --> 00:43:55,790
+and that's here.
+
+965
+00:43:55,790 --> 00:43:58,070
+Then I'm going to
+assume for a second
+
+966
+00:43:58,070 --> 00:43:59,520
+that rewards are deterministic.
+
+967
+00:43:59,520 --> 00:44:01,485
+But you could add in
+a reward term here.
+
+968
+00:44:01,485 --> 00:44:03,110
+And then I'm going
+to say, well, what's
+
+969
+00:44:03,110 --> 00:44:05,280
+the chance that I
+get to state s1,
+
+970
+00:44:05,280 --> 00:44:10,730
+given my history, given the
+previous states and the actions?
+
+971
+00:44:10,730 --> 00:44:15,462
+So I've just written this
+out as a joint probability.
+
+972
+00:44:15,462 --> 00:44:17,060
+And now what I can
+do is I can use
+
+973
+00:44:17,060 --> 00:44:19,250
+the fact that log of a
+times b is equal to log
+
+974
+00:44:19,250 --> 00:44:20,352
+of a plus log of b.
+
+975
+00:44:20,352 --> 00:44:22,310
+So I'm just going to
+decompose all these terms.
+
+976
+00:44:22,310 --> 00:44:24,860
+So I'm not applying
+my gradient yet,
+
+977
+00:44:24,860 --> 00:44:31,490
+but I'm just going to have log
+of mu of s0 plus sum over t
+
+978
+00:44:31,490 --> 00:44:39,540
+equals 0 to T minus 1
+just plus sum over t
+
+979
+00:44:39,540 --> 00:44:41,330
+equals 0 to T minus 1.
+
+980
+00:44:49,680 --> 00:44:50,900
+Open the log.
+
+981
+00:44:59,420 --> 00:45:00,480
+Sorry, it's a bit messy.
+
+982
+00:45:00,480 --> 00:45:02,695
+I'll make sure to
+add a clean version.
+
+983
+00:45:05,540 --> 00:45:08,780
+So what I've done is I've
+just decomposed my log.
+
+984
+00:45:08,780 --> 00:45:13,910
+But now this is really nice
+because this term is not
+
+985
+00:45:13,910 --> 00:45:15,230
+a function of theta.
+
+986
+00:45:15,230 --> 00:45:17,580
+This is just my initial
+starting state distribution.
+
+987
+00:45:17,580 --> 00:45:19,110
+It has nothing to
+do with my policy.
+
+988
+00:45:19,110 --> 00:45:20,810
+So this drops out.
+
+989
+00:45:20,810 --> 00:45:23,880
+Does this part
+depend on my policy?
+
+990
+00:45:23,880 --> 00:45:24,690
+Yes.
+
+991
+00:45:24,690 --> 00:45:26,980
+Does this part
+depend on my policy?
+
+992
+00:45:26,980 --> 00:45:28,500
+No.
+
+993
+00:45:28,500 --> 00:45:31,930
+So when we take the derivative
+of it, it disappears.
+
+994
+00:45:31,930 --> 00:45:33,790
+So that is beautiful
+because now it
+
+995
+00:45:33,790 --> 00:45:36,370
+means we don't have to know
+about our dynamics model.
+
+996
+00:45:36,370 --> 00:45:47,550
+So the only term that is still
+around after this is this thing.
+
+997
+00:45:57,970 --> 00:46:00,770
+All right.
+
+998
+00:46:00,770 --> 00:46:03,770
+So this is great
+because now we don't
+
+999
+00:46:03,770 --> 00:46:05,990
+depend on our dynamics model.
+
+1000
+00:46:05,990 --> 00:46:13,935
+We have written down what this
+term is as a function of--
+
+1001
+00:46:13,935 --> 00:46:15,560
+so we're just doing
+this term right now
+
+1002
+00:46:15,560 --> 00:46:17,780
+as just the sum
+of the derivative
+
+1003
+00:46:17,780 --> 00:46:21,800
+of the log of the policy
+at that particular point.
+
+1004
+00:46:21,800 --> 00:46:24,770
+So we're summing up for each of
+the different actions we took
+
+1005
+00:46:24,770 --> 00:46:27,625
+along the way, what was the
+log of their probability
+
+1006
+00:46:27,625 --> 00:46:29,500
+and taking the derivative
+of that whole term.
+
+1007
+00:46:34,340 --> 00:46:36,290
+All right.
+
+1008
+00:46:36,290 --> 00:46:40,880
+So we don't need any dynamics
+model, which is great.
+
+1009
+00:46:40,880 --> 00:46:43,010
+And I'm just going
+to say here, I'm
+
+1010
+00:46:43,010 --> 00:46:45,560
+going to make sure that
+something is consistent here.
+
+1011
+00:46:45,560 --> 00:46:47,120
+Oh, yeah.
+
+1012
+00:46:47,120 --> 00:46:50,020
+I had a question on the slide
+with [? all the math. ?]
+
+1013
+00:46:50,020 --> 00:46:50,970
+With all the math?
+
+1014
+00:46:50,970 --> 00:46:51,930
+Yeah.
+
+1015
+00:46:51,930 --> 00:46:52,430
+Uh-huh.
+
+1016
+00:46:52,430 --> 00:47:00,150
+So in the dynamics model, the ps
+at t plus 1, for the given part,
+
+1017
+00:47:00,150 --> 00:47:02,780
+why did we look at the
+entire history of not
+
+1018
+00:47:02,780 --> 00:47:05,150
+just the past state and action?
+
+1019
+00:47:05,150 --> 00:47:06,060
+Great question.
+
+1020
+00:47:06,060 --> 00:47:07,710
+So what I've written about--
+
+1021
+00:47:07,710 --> 00:47:09,540
+so this question is a good one.
+
+1022
+00:47:09,540 --> 00:47:13,050
+I wrote down here the dynamics
+in a really general form.
+
+1023
+00:47:13,050 --> 00:47:14,690
+I am writing them
+down and I'm not
+
+1024
+00:47:14,690 --> 00:47:16,190
+making the Markov assumption.
+
+1025
+00:47:16,190 --> 00:47:18,152
+We could make the
+Markov assumption.
+
+1026
+00:47:18,152 --> 00:47:19,610
+But what I wanted
+to point out here
+
+1027
+00:47:19,610 --> 00:47:21,870
+is that you don't have to
+make the Markov assumption.
+
+1028
+00:47:21,870 --> 00:47:23,190
+It does not matter.
+
+1029
+00:47:23,190 --> 00:47:26,450
+So because the
+dynamics model are
+
+1030
+00:47:26,450 --> 00:47:29,280
+independent of your policy,
+when you take the derivative,
+
+1031
+00:47:29,280 --> 00:47:31,560
+they completely drop out,
+whether they are Markov,
+
+1032
+00:47:31,560 --> 00:47:33,390
+whether they are
+non-Markov, et cetera.
+
+1033
+00:47:33,390 --> 00:47:34,590
+And so that's really nice.
+
+1034
+00:47:34,590 --> 00:47:36,830
+It shows that in
+this case, it's not
+
+1035
+00:47:36,830 --> 00:47:40,490
+making the Markov assumption.
+
+1036
+00:47:40,490 --> 00:47:42,490
+Now, I did make the Markov
+assumption somewhere.
+
+1037
+00:47:42,490 --> 00:47:44,910
+I made it here because I
+assumed that I made the Markov
+
+1038
+00:47:44,910 --> 00:47:47,260
+assumption in the sense I
+assumed my policy was Markov.
+
+1039
+00:47:47,260 --> 00:47:50,640
+My policy is only depending
+on the current state.
+
+1040
+00:47:50,640 --> 00:47:53,690
+But your policy also could
+depend on a history of states.
+
+1041
+00:47:53,690 --> 00:47:58,080
+You could have a recurrent
+neural network or any
+
+1042
+00:47:58,080 --> 00:48:00,660
+of the other representations
+you might want to choose there,
+
+1043
+00:48:00,660 --> 00:48:03,500
+and then this would just
+depend on your history.
+
+1044
+00:48:06,480 --> 00:48:07,730
+Good question.
+
+1045
+00:48:07,730 --> 00:48:08,230
+All right.
+
+1046
+00:48:08,230 --> 00:48:11,137
+So I just want to go,
+and I want to make sure
+
+1047
+00:48:11,137 --> 00:48:13,720
+that I wrote it down neatly in
+terms of the most general form.
+
+1048
+00:48:13,720 --> 00:48:15,370
+That's why I'm skipping
+this right now.
+
+1049
+00:48:15,370 --> 00:48:18,120
+One of the things to note
+here in terms of just notation
+
+1050
+00:48:18,120 --> 00:48:21,610
+is that people often call this
+thing here a score function.
+
+1051
+00:48:21,610 --> 00:48:25,530
+So this derivative with
+respect to log of the policy
+
+1052
+00:48:25,530 --> 00:48:27,530
+itself, we often call
+a score function.
+
+1053
+00:48:31,500 --> 00:48:37,540
+So in general, the nice thing
+is that it's generally not
+
+1054
+00:48:37,540 --> 00:48:39,590
+very hard to compute
+the score function.
+
+1055
+00:48:39,590 --> 00:48:41,852
+So if you have a
+differentiable function,
+
+1056
+00:48:41,852 --> 00:48:43,810
+we can compute the score
+function pretty easily
+
+1057
+00:48:43,810 --> 00:48:44,440
+in many cases.
+
+1058
+00:48:44,440 --> 00:48:46,630
+Let me just make
+this a bit smaller.
+
+1059
+00:48:46,630 --> 00:48:47,890
+OK.
+
+1060
+00:48:47,890 --> 00:48:49,600
+So let's see what
+that might look
+
+1061
+00:48:49,600 --> 00:48:52,870
+like for a couple of
+different policy classes.
+
+1062
+00:48:52,870 --> 00:48:56,450
+So one thing we could do, which
+is a pretty popular thing to do,
+
+1063
+00:48:56,450 --> 00:48:58,390
+is to do a softmax policy.
+
+1064
+00:48:58,390 --> 00:49:01,990
+So the idea in this
+case is that let's take
+
+1065
+00:49:01,990 --> 00:49:03,710
+a linear combination
+of features,
+
+1066
+00:49:03,710 --> 00:49:07,810
+so phi s, a dot
+product with theta.
+
+1067
+00:49:07,810 --> 00:49:11,680
+And then you could say the
+probability of your action
+
+1068
+00:49:11,680 --> 00:49:14,980
+is proportional to the
+exponentiated weight.
+
+1069
+00:49:14,980 --> 00:49:16,690
+So you take the
+exponent of that dot
+
+1070
+00:49:16,690 --> 00:49:20,050
+product between the features,
+and then you normalize it.
+
+1071
+00:49:20,050 --> 00:49:22,840
+And that gives you generally
+a stochastic policy.
+
+1072
+00:49:22,840 --> 00:49:26,525
+You can also have a temperature
+parameter in there if you want.
+
+1073
+00:49:26,525 --> 00:49:28,960
+And the nice thing about
+this is that we can write it.
+
+1074
+00:49:28,960 --> 00:49:31,750
+We can take the derivative
+of this very easily.
+
+1075
+00:49:31,750 --> 00:49:34,910
+So we can just do that quickly
+here just to illustrate.
+
+1076
+00:49:34,910 --> 00:49:38,680
+So what this is just to
+illustrate that it is often
+
+1077
+00:49:38,680 --> 00:49:41,050
+very feasible to take the
+derivative with respect
+
+1078
+00:49:41,050 --> 00:49:43,870
+to the policy parameterization.
+
+1079
+00:49:43,870 --> 00:49:48,100
+So this is just going to be
+the derivative of the log of e
+
+1080
+00:49:48,100 --> 00:49:58,800
+to phi of s, a t theta
+divided by phi s, a OK.
+
+1081
+00:49:58,800 --> 00:50:03,403
+So we can do this here, and
+we can rewrite this here as--
+
+1082
+00:50:24,556 --> 00:50:26,815
+and so this is just
+going to be equal to phi
+
+1083
+00:50:26,815 --> 00:50:31,291
+s, a minus [INAUDIBLE].
+
+1084
+00:50:44,005 --> 00:50:45,380
+So I'm just taking
+the derivative
+
+1085
+00:50:45,380 --> 00:50:49,600
+of this for a particular theta.
+
+1086
+00:50:49,600 --> 00:50:58,503
+And so we can just rewrite that
+as phi s, a minus sum a theta.
+
+1087
+00:51:06,460 --> 00:51:07,040
+OK.
+
+1088
+00:51:07,040 --> 00:51:08,767
+So what I've done
+here is I've taken
+
+1089
+00:51:08,767 --> 00:51:10,600
+the derivative with
+respect to this function
+
+1090
+00:51:10,600 --> 00:51:13,230
+for a particular theta.
+
+1091
+00:51:13,230 --> 00:51:15,110
+And then what I've
+said here is, well, you
+
+1092
+00:51:15,110 --> 00:51:18,180
+could notice that this
+here is exactly just
+
+1093
+00:51:18,180 --> 00:51:21,600
+equal to my pi theta of s, a.
+
+1094
+00:51:21,600 --> 00:51:25,740
+So it's like I'm getting this
+weighting over the features.
+
+1095
+00:51:25,740 --> 00:51:28,780
+OK, put this on the
+next slide neatly.
+
+1096
+00:51:28,780 --> 00:51:33,640
+OK, so the score function
+for the softmax policy
+
+1097
+00:51:33,640 --> 00:51:36,246
+is just going to be
+equal to the feature s,
+
+1098
+00:51:36,246 --> 00:51:39,790
+a phi s, a minus
+the expected value
+
+1099
+00:51:39,790 --> 00:51:43,490
+of the policy of the features.
+
+1100
+00:51:43,490 --> 00:51:44,390
+Yeah.
+
+1101
+00:51:44,390 --> 00:51:44,940
+I'm sorry.
+
+1102
+00:51:44,940 --> 00:51:47,535
+What does phi usually mean?
+
+1103
+00:51:47,535 --> 00:51:48,160
+Great question.
+
+1104
+00:51:48,160 --> 00:51:50,470
+Well, if phi could
+be, for example,
+
+1105
+00:51:50,470 --> 00:51:53,295
+you could think of it as like if
+you have a large neural network
+
+1106
+00:51:53,295 --> 00:51:54,670
+that's doing some
+representation,
+
+1107
+00:51:54,670 --> 00:51:57,768
+it could be the last layer,
+like the second to last layer.
+
+1108
+00:51:57,768 --> 00:52:00,310
+And then you could just do like
+a linear dot product of that.
+
+1109
+00:52:02,880 --> 00:52:04,210
+Yeah, that's a good question.
+
+1110
+00:52:04,210 --> 00:52:06,293
+Or in case of customers,
+it could be a whole bunch
+
+1111
+00:52:06,293 --> 00:52:07,380
+of different features.
+
+1112
+00:52:07,380 --> 00:52:09,297
+And then you have different
+groups over there.
+
+1113
+00:52:11,790 --> 00:52:12,310
+All right.
+
+1114
+00:52:12,310 --> 00:52:16,330
+So this is also possible
+to do for other functions.
+
+1115
+00:52:16,330 --> 00:52:19,345
+So for Gaussians, we
+often want to think
+
+1116
+00:52:19,345 --> 00:52:20,970
+about that for
+continuous action spaces
+
+1117
+00:52:20,970 --> 00:52:23,178
+which are really useful for
+robotics, where you might
+
+1118
+00:52:23,178 --> 00:52:25,940
+have continuous torques or
+continuous accelerations, et
+
+1119
+00:52:25,940 --> 00:52:26,440
+cetera.
+
+1120
+00:52:26,440 --> 00:52:28,190
+You can think of there
+being a mean, which
+
+1121
+00:52:28,190 --> 00:52:30,550
+is a linear combination
+of some state features.
+
+1122
+00:52:30,550 --> 00:52:33,780
+Your variance might be fixed or
+it could also be parameterized,
+
+1123
+00:52:33,780 --> 00:52:35,920
+and then your policy
+is a Gaussian.
+
+1124
+00:52:35,920 --> 00:52:39,000
+So maybe you're sampling
+some particular action
+
+1125
+00:52:39,000 --> 00:52:41,490
+dependent on your state
+along with some variance.
+
+1126
+00:52:41,490 --> 00:52:43,620
+And then you can
+again, just directly
+
+1127
+00:52:43,620 --> 00:52:46,470
+compute what the
+score function would
+
+1128
+00:52:46,470 --> 00:52:48,798
+be in this case in closed form.
+
+1129
+00:52:48,798 --> 00:52:50,590
+But in general, you're
+often probably going
+
+1130
+00:52:50,590 --> 00:52:52,190
+to be using this with
+deep neural networks.
+
+1131
+00:52:52,190 --> 00:52:53,290
+And then you can
+just use autodiff
+
+1132
+00:52:53,290 --> 00:52:55,157
+to do this just to
+illustrate that there's
+
+1133
+00:52:55,157 --> 00:52:56,740
+a number of different
+functional forms
+
+1134
+00:52:56,740 --> 00:53:00,980
+where you can compute
+this analytically.
+
+1135
+00:53:00,980 --> 00:53:01,750
+OK.
+
+1136
+00:53:01,750 --> 00:53:02,250
+All right.
+
+1137
+00:53:02,250 --> 00:53:04,910
+So just to recap this,
+what we've shown so far
+
+1138
+00:53:04,910 --> 00:53:06,890
+is that we can
+have policy methods
+
+1139
+00:53:06,890 --> 00:53:09,380
+where we have a direct
+parameterization of the policy.
+
+1140
+00:53:09,380 --> 00:53:10,880
+We can write down
+the value function
+
+1141
+00:53:10,880 --> 00:53:13,172
+as being a weighted sum over
+the trajectories generated
+
+1142
+00:53:13,172 --> 00:53:14,907
+by that policy times the reward.
+
+1143
+00:53:14,907 --> 00:53:17,490
+It turns out that when we want
+to take the derivative of that,
+
+1144
+00:53:17,490 --> 00:53:19,490
+we can re-express
+it so that we just
+
+1145
+00:53:19,490 --> 00:53:22,430
+think of we don't need
+the dynamics model,
+
+1146
+00:53:22,430 --> 00:53:27,030
+and we're weighing
+these score functions.
+
+1147
+00:53:27,030 --> 00:53:29,920
+So now let's just
+do a small check
+
+1148
+00:53:29,920 --> 00:53:34,530
+your understanding about
+likelihood ratio, score function
+
+1149
+00:53:34,530 --> 00:53:35,560
+policy gradients.
+
+1150
+00:53:35,560 --> 00:53:37,480
+And so I'd like
+you to do is say,
+
+1151
+00:53:37,480 --> 00:53:40,390
+does it require that your reward
+function is differentiable?
+
+1152
+00:53:40,390 --> 00:53:42,460
+Can you only use it with
+Markov decision process?
+
+1153
+00:53:42,460 --> 00:53:46,620
+Is it useful mostly for infinite
+horizon tasks? a and b; a, b,
+
+1154
+00:53:46,620 --> 00:53:49,305
+and c; none of the
+above. or not sure?
+
+1155
+00:53:49,305 --> 00:53:50,805
+Let's just take a
+second to do that.
+
+1156
+00:53:59,970 --> 00:54:01,140
+All right.
+
+1157
+00:54:01,140 --> 00:54:02,530
+We have a good
+split of opinions.
+
+1158
+00:54:02,530 --> 00:54:05,827
+Nobody is not sure, but
+there is a lot of spread.
+
+1159
+00:54:05,827 --> 00:54:07,410
+So why don't you
+talk to your neighbor
+
+1160
+00:54:07,410 --> 00:54:10,150
+and see if we can come
+to more consensus.
+
+1161
+00:54:10,150 --> 00:54:13,482
+[SIDE CONVERSATION]
+
+1162
+00:54:28,990 --> 00:54:31,120
+I'm sorry to interrupt
+some good discussions,
+
+1163
+00:54:31,120 --> 00:54:33,520
+but I want to make sure we
+get through reinforced today.
+
+1164
+00:54:33,520 --> 00:54:35,922
+So there's a little
+bit of a tricky one.
+
+1165
+00:54:35,922 --> 00:54:37,880
+In fact, when I was giving
+it to one of my TAs,
+
+1166
+00:54:37,880 --> 00:54:39,430
+I forgot to put a
+none of the above,
+
+1167
+00:54:39,430 --> 00:54:42,010
+and he was like,
+wait, what the hell.
+
+1168
+00:54:42,010 --> 00:54:44,080
+So it's none of the above.
+
+1169
+00:54:44,080 --> 00:54:47,260
+And so the first one's part
+of the actual elegant aspect
+
+1170
+00:54:47,260 --> 00:54:48,710
+of policy gradients.
+
+1171
+00:54:48,710 --> 00:54:52,180
+So as you can see here, you
+need the policy function
+
+1172
+00:54:52,180 --> 00:54:54,490
+to be differentiable,
+but the reward function
+
+1173
+00:54:54,490 --> 00:54:55,768
+does not have to be.
+
+1174
+00:54:55,768 --> 00:54:57,310
+The reward function
+is not a function
+
+1175
+00:54:57,310 --> 00:54:59,788
+of the policy in the way
+that we've written it here.
+
+1176
+00:54:59,788 --> 00:55:00,830
+So that's pretty elegant.
+
+1177
+00:55:00,830 --> 00:55:04,020
+So that has motivated people
+in a really wide range
+
+1178
+00:55:04,020 --> 00:55:06,520
+of areas where you really might
+have very complicated reward
+
+1179
+00:55:06,520 --> 00:55:09,670
+functions to be interested
+in using what we're going
+
+1180
+00:55:09,670 --> 00:55:12,520
+to see soon, which is reinforce,
+which is based on this idea
+
+1181
+00:55:12,520 --> 00:55:15,820
+because you just need the
+policy parameterization to be
+
+1182
+00:55:15,820 --> 00:55:16,600
+differentiable.
+
+1183
+00:55:16,600 --> 00:55:17,980
+So that's really cool.
+
+1184
+00:55:17,980 --> 00:55:21,710
+B doesn't have to be
+Markov because as we saw,
+
+1185
+00:55:21,710 --> 00:55:23,410
+the dynamics model drops out.
+
+1186
+00:55:23,410 --> 00:55:25,040
+And so what you're
+saying in that case,
+
+1187
+00:55:25,040 --> 00:55:26,960
+it doesn't appear at all.
+
+1188
+00:55:26,960 --> 00:55:28,560
+So it doesn't need to be Markov.
+
+1189
+00:55:28,560 --> 00:55:29,935
+You don't need
+differentiability.
+
+1190
+00:55:29,935 --> 00:55:32,810
+And we are assuming
+that it's finite horizon
+
+1191
+00:55:32,810 --> 00:55:34,640
+so that we can
+actually-- episodic
+
+1192
+00:55:34,640 --> 00:55:36,750
+so we can get m more than one.
+
+1193
+00:55:36,750 --> 00:55:39,980
+If it was infinite horizon,
+we'd only get m equals 1.
+
+1194
+00:55:39,980 --> 00:55:41,455
+So all three of these are false.
+
+1195
+00:55:44,510 --> 00:55:48,150
+So let me just make
+sure I circle that.
+
+1196
+00:55:50,780 --> 00:55:51,280
+OK.
+
+1197
+00:55:51,280 --> 00:55:53,590
+So just to give brief
+intuitions because to make sure
+
+1198
+00:55:53,590 --> 00:55:56,230
+that we get to
+reinforce, you can
+
+1199
+00:55:56,230 --> 00:55:58,730
+think of if this is a generic
+way of writing this down,
+
+1200
+00:55:58,730 --> 00:56:01,030
+we have some function
+times the derivative
+
+1201
+00:56:01,030 --> 00:56:04,030
+of log of some other
+probability function.
+
+1202
+00:56:04,030 --> 00:56:05,530
+And you can think
+of this first part
+
+1203
+00:56:05,530 --> 00:56:07,670
+as measuring how
+good a sample is.
+
+1204
+00:56:07,670 --> 00:56:10,670
+And what the idea is that
+when you have the derivative,
+
+1205
+00:56:10,670 --> 00:56:14,080
+you're trying to move up the
+log probability of samples
+
+1206
+00:56:14,080 --> 00:56:17,220
+that have high reward.
+
+1207
+00:56:17,220 --> 00:56:18,690
+Because you generally
+want policies
+
+1208
+00:56:18,690 --> 00:56:20,700
+that visit parts of the
+state and action space
+
+1209
+00:56:20,700 --> 00:56:21,860
+where you get high reward.
+
+1210
+00:56:21,860 --> 00:56:23,290
+So that's the intuition.
+
+1211
+00:56:23,290 --> 00:56:25,680
+And the nice thing
+is that f doesn't
+
+1212
+00:56:25,680 --> 00:56:27,100
+have to be differentiable.
+
+1213
+00:56:27,100 --> 00:56:28,330
+It could be discontinuous.
+
+1214
+00:56:28,330 --> 00:56:31,440
+It could be unknown as long as
+you can get samples from it.
+
+1215
+00:56:31,440 --> 00:56:33,480
+So it can be extremely
+flexible to what
+
+1216
+00:56:33,480 --> 00:56:36,940
+is that reward or
+objective function.
+
+1217
+00:56:36,940 --> 00:56:41,410
+So I put a couple
+of slides here.
+
+1218
+00:56:41,410 --> 00:56:43,780
+I believe it was
+John [? Schulman ?]
+
+1219
+00:56:43,780 --> 00:56:45,580
+who originally had these ones.
+
+1220
+00:56:45,580 --> 00:56:47,180
+I put some credits at the front.
+
+1221
+00:56:47,180 --> 00:56:49,960
+But you can think of taking
+a combination between what
+
+1222
+00:56:49,960 --> 00:56:52,030
+the probability is of
+your input of your x
+
+1223
+00:56:52,030 --> 00:56:53,120
+as well as your function.
+
+1224
+00:56:53,120 --> 00:56:55,703
+So in our case, that's going
+to be the reward function.
+
+1225
+00:56:55,703 --> 00:56:57,370
+This is generally
+going to be the reward
+
+1226
+00:56:57,370 --> 00:57:00,330
+function over trajectories, and
+this is going to be our policy.
+
+1227
+00:57:03,040 --> 00:57:05,080
+It gives us probabilities
+of the trajectories.
+
+1228
+00:57:05,080 --> 00:57:07,690
+And so you can think of
+combining between these two
+
+1229
+00:57:07,690 --> 00:57:12,262
+to actually change
+your parameter space.
+
+1230
+00:57:12,262 --> 00:57:13,970
+So just to give a
+little bit of intuition
+
+1231
+00:57:13,970 --> 00:57:17,980
+over what this sort of
+gradient estimation is doing.
+
+1232
+00:57:21,058 --> 00:57:23,830
+So in general, we can also
+write down a policy gradient
+
+1233
+00:57:23,830 --> 00:57:27,250
+theorem, which says, we
+could either use something
+
+1234
+00:57:27,250 --> 00:57:29,700
+like episodic reward.
+
+1235
+00:57:29,700 --> 00:57:32,850
+Or we could be trying to look
+at average reward per time step.
+
+1236
+00:57:32,850 --> 00:57:35,350
+Or we could be trying to
+look at average value.
+
+1237
+00:57:35,350 --> 00:57:38,010
+And in all of these
+cases, we can end up
+
+1238
+00:57:38,010 --> 00:57:40,560
+writing something that looks
+really similar to the equation I
+
+1239
+00:57:40,560 --> 00:57:44,250
+showed you before, which is
+the derivative with respect
+
+1240
+00:57:44,250 --> 00:57:46,470
+to these value
+functions or something
+
+1241
+00:57:46,470 --> 00:57:48,900
+like a value function is
+going to look something
+
+1242
+00:57:48,900 --> 00:57:51,990
+like the derivative
+with the score function,
+
+1243
+00:57:51,990 --> 00:57:54,000
+the expected value of
+the trajectories you're
+
+1244
+00:57:54,000 --> 00:57:59,250
+going to get, of the log of the
+parameters times the Q function
+
+1245
+00:57:59,250 --> 00:58:05,180
+or the return for that
+particular state action
+
+1246
+00:58:05,180 --> 00:58:08,060
+pair following the policy.
+
+1247
+00:58:08,060 --> 00:58:11,660
+And there's a nice derivation
+in Sutton and Barto about that.
+
+1248
+00:58:11,660 --> 00:58:13,910
+At a high level, I think the
+useful thing to know here
+
+1249
+00:58:13,910 --> 00:58:17,690
+is just that can extend
+it beyond just thinking
+
+1250
+00:58:17,690 --> 00:58:20,150
+of like the sample of return.
+
+1251
+00:58:20,150 --> 00:58:22,460
+And we can think of
+there being Q functions.
+
+1252
+00:58:22,460 --> 00:58:23,100
+All right.
+
+1253
+00:58:23,100 --> 00:58:27,318
+Now what I've shown you so far
+is something that is correct,
+
+1254
+00:58:27,318 --> 00:58:28,860
+and we can turn it
+into an algorithm,
+
+1255
+00:58:28,860 --> 00:58:31,760
+but it does not leverage much
+of the temporal structure.
+
+1256
+00:58:31,760 --> 00:58:33,360
+So what do I mean by that?
+
+1257
+00:58:33,360 --> 00:58:36,450
+So what we've written down
+here is a valid gradient.
+
+1258
+00:58:36,450 --> 00:58:39,990
+It's unbiased, but
+it can be very noisy.
+
+1259
+00:58:39,990 --> 00:58:42,650
+So we're estimating this
+by Monte Carlo method
+
+1260
+00:58:42,650 --> 00:58:44,240
+because we have these m samples.
+
+1261
+00:58:44,240 --> 00:58:46,710
+And as we know from Monte
+Carlo methods before,
+
+1262
+00:58:46,710 --> 00:58:49,910
+they are unbiased, but they
+can be very high variance.
+
+1263
+00:58:49,910 --> 00:58:52,520
+And so some of the ways to
+make this more practical,
+
+1264
+00:58:52,520 --> 00:58:55,490
+and what I mean by that is a
+better estimate of the gradient
+
+1265
+00:58:55,490 --> 00:58:57,930
+and hopefully with less
+data, because ultimately,
+
+1266
+00:58:57,930 --> 00:59:00,290
+we're going to have to
+be using this information
+
+1267
+00:59:00,290 --> 00:59:03,397
+to update our weights to
+try to get to a good policy.
+
+1268
+00:59:03,397 --> 00:59:04,980
+So we want this to
+be data efficient--
+
+1269
+00:59:04,980 --> 00:59:07,022
+is we can try to leverage
+the temporal structure,
+
+1270
+00:59:07,022 --> 00:59:09,500
+and we can also
+include baselines.
+
+1271
+00:59:09,500 --> 00:59:10,110
+All right.
+
+1272
+00:59:10,110 --> 00:59:12,420
+So let's first see the
+temporal structure.
+
+1273
+00:59:12,420 --> 00:59:16,050
+So what we've done before is
+we've summed up all the rewards
+
+1274
+00:59:16,050 --> 00:59:17,880
+from a whole
+trajectory, and we've
+
+1275
+00:59:17,880 --> 00:59:21,480
+multiplied it by the sum
+of the score function
+
+1276
+00:59:21,480 --> 00:59:22,690
+for the whole trajectory.
+
+1277
+00:59:22,690 --> 00:59:24,570
+That's what we've done so far.
+
+1278
+00:59:24,570 --> 00:59:26,790
+We can instead
+think of it as, what
+
+1279
+00:59:26,790 --> 00:59:29,010
+if we have the gradient
+estimator for a single reward
+
+1280
+00:59:29,010 --> 00:59:31,350
+term?
+
+1281
+00:59:31,350 --> 00:59:34,560
+So this is just
+for one time step.
+
+1282
+00:59:34,560 --> 00:59:36,450
+We can think of it
+for there, which
+
+1283
+00:59:36,450 --> 00:59:40,290
+is we have that single
+time step times the score
+
+1284
+00:59:40,290 --> 00:59:42,870
+function for the
+remaining time steps
+
+1285
+00:59:42,870 --> 00:59:47,208
+or for the time steps
+up to that point.
+
+1286
+00:59:47,208 --> 00:59:49,710
+So it's like we just think
+of the partial trajectory
+
+1287
+00:59:49,710 --> 00:59:50,795
+until we got that reward.
+
+1288
+00:59:53,410 --> 00:59:56,255
+So we want to think about
+the derivative of this.
+
+1289
+00:59:56,255 --> 00:59:58,130
+This is the reward we
+got at this time point.
+
+1290
+00:59:58,130 --> 00:59:59,630
+So instead of having
+this whole sum,
+
+1291
+00:59:59,630 --> 01:00:02,920
+we just think of, well, what is
+the trajectory that we got up
+
+1292
+01:00:02,920 --> 01:00:05,870
+to that time point and all
+of their score functions?
+
+1293
+01:00:09,465 --> 01:00:10,440
+Does that make sense?
+
+1294
+01:00:10,440 --> 01:00:12,273
+I remember having
+questions about that part.
+
+1295
+01:00:15,510 --> 01:00:19,350
+OK, so this is like for a
+single time step t prime.
+
+1296
+01:00:19,350 --> 01:00:23,390
+And so now what we
+can do is we can
+
+1297
+01:00:23,390 --> 01:00:25,470
+sum this over all time steps.
+
+1298
+01:00:25,470 --> 01:00:29,700
+So instead of having the sum
+of all rewards times this,
+
+1299
+01:00:29,700 --> 01:00:32,790
+we can say, well, we know
+that for one time step,
+
+1300
+01:00:32,790 --> 01:00:34,790
+it is equal to the expected
+value of the reward
+
+1301
+01:00:34,790 --> 01:00:38,630
+for that time step
+times the score
+
+1302
+01:00:38,630 --> 01:00:39,990
+functions up to that point.
+
+1303
+01:00:39,990 --> 01:00:41,510
+So let's just
+rewrite it like that.
+
+1304
+01:00:41,510 --> 01:00:42,890
+Now we're just going
+to sum over the rewards
+
+1305
+01:00:42,890 --> 01:00:44,125
+we got for all time steps.
+
+1306
+01:00:46,900 --> 01:00:48,370
+All right.
+
+1307
+01:00:48,370 --> 01:00:53,190
+So now what we can do is we
+can do slight rearrangement.
+
+1308
+01:00:53,190 --> 01:00:57,800
+So what we can notice is
+that for each of the points,
+
+1309
+01:00:57,800 --> 01:01:00,310
+so you can think
+of it as, I have--
+
+1310
+01:01:00,310 --> 01:01:04,810
+so this is t, 0, 1, 2, 3.
+
+1311
+01:01:04,810 --> 01:01:08,490
+And you can think of
+all of these score
+
+1312
+01:01:08,490 --> 01:01:10,860
+functions I have
+at each time point.
+
+1313
+01:01:10,860 --> 01:01:14,700
+So the score function
+at time step 0
+
+1314
+01:01:14,700 --> 01:01:22,110
+is going to appear for r0,
+r1, r2, r3, dot, dot dot.
+
+1315
+01:01:22,110 --> 01:01:23,680
+So that's what I've
+just done here.
+
+1316
+01:01:23,680 --> 01:01:25,590
+I've said this
+first term is going
+
+1317
+01:01:25,590 --> 01:01:32,330
+to appear with a reward function
+of all of the subsequent time
+
+1318
+01:01:32,330 --> 01:01:34,880
+points.
+
+1319
+01:01:34,880 --> 01:01:37,390
+Because that decision happened,
+and then we got a reward,
+
+1320
+01:01:37,390 --> 01:01:39,348
+and then we got a whole
+bunch of rewards later.
+
+1321
+01:01:41,880 --> 01:01:44,370
+On the first time
+step, it can affect
+
+1322
+01:01:44,370 --> 01:01:46,230
+the reward you
+get at time step 1
+
+1323
+01:01:46,230 --> 01:01:49,430
+and all the feature after that.
+
+1324
+01:01:49,430 --> 01:01:54,350
+So this term here, this score
+function can influence--
+
+1325
+01:01:54,350 --> 01:01:55,970
+the one that we
+get on time step 1
+
+1326
+01:01:55,970 --> 01:01:58,460
+can influence time
+step 1 all the way out
+
+1327
+01:01:58,460 --> 01:02:00,110
+to the end of the episode.
+
+1328
+01:02:00,110 --> 01:02:03,350
+The one we get on time step
+2 can influence time step 2
+
+1329
+01:02:03,350 --> 01:02:06,780
+all the way out to the
+end of the episode.
+
+1330
+01:02:06,780 --> 01:02:08,400
+So essentially this
+is like saying,
+
+1331
+01:02:08,400 --> 01:02:12,180
+my reward on time step 3 cannot
+be impacted by decisions I make
+
+1332
+01:02:12,180 --> 01:02:13,470
+on time step 4.
+
+1333
+01:02:13,470 --> 01:02:16,380
+Time only flows one way.
+
+1334
+01:02:16,380 --> 01:02:18,890
+So if we think about what
+those score functions were
+
+1335
+01:02:18,890 --> 01:02:20,640
+and like we think of
+the trajectories that
+
+1336
+01:02:20,640 --> 01:02:23,470
+were generated, they're
+a temporal structure.
+
+1337
+01:02:23,470 --> 01:02:27,240
+And so it means that
+we cannot have--
+
+1338
+01:02:27,240 --> 01:02:30,000
+if we change the policy
+parameters such that decisions
+
+1339
+01:02:30,000 --> 01:02:32,880
+in the future change, that
+can't affect my reward
+
+1340
+01:02:32,880 --> 01:02:34,920
+on earlier time steps.
+
+1341
+01:02:34,920 --> 01:02:37,620
+So this is leveraging
+the temporal structure.
+
+1342
+01:02:37,620 --> 01:02:42,300
+So this just allows us to
+rewrite the equation so that now
+
+1343
+01:02:42,300 --> 01:02:45,390
+we have for each of the
+different score functions
+
+1344
+01:02:45,390 --> 01:02:49,020
+essentially which of the
+rewards they influence.
+
+1345
+01:02:49,020 --> 01:02:50,880
+And the reason this
+is important is
+
+1346
+01:02:50,880 --> 01:02:54,540
+because here you could see
+that we're multiplying each
+
+1347
+01:02:54,540 --> 01:02:57,780
+of the score functions
+by all of the rewards,
+
+1348
+01:02:57,780 --> 01:02:59,850
+and now we're only
+going to multiply them
+
+1349
+01:02:59,850 --> 01:03:01,925
+by the rewards they influence.
+
+1350
+01:03:01,925 --> 01:03:04,500
+And so in general, that's going
+to be way less than having
+
+1351
+01:03:04,500 --> 01:03:05,970
+the full set of rewards.
+
+1352
+01:03:05,970 --> 01:03:08,430
+So this is going to reduce
+the variance of our estimator
+
+1353
+01:03:08,430 --> 01:03:11,550
+without causing any bias,
+just leveraging the fact
+
+1354
+01:03:11,550 --> 01:03:13,860
+that decisions in the
+future can't affect
+
+1355
+01:03:13,860 --> 01:03:14,930
+your rewards in the past.
+
+1356
+01:03:18,480 --> 01:03:19,180
+All right.
+
+1357
+01:03:19,180 --> 01:03:21,150
+So that is one of
+the first things
+
+1358
+01:03:21,150 --> 01:03:24,000
+that we're going
+to do in this case.
+
+1359
+01:03:24,000 --> 01:03:26,340
+So we're going to write--
+
+1360
+01:03:26,340 --> 01:03:29,597
+so remember in this case that
+if we sum up all the rewards
+
+1361
+01:03:29,597 --> 01:03:31,180
+from the current
+time step to the end,
+
+1362
+01:03:31,180 --> 01:03:32,730
+we just called that the return.
+
+1363
+01:03:32,730 --> 01:03:35,610
+We've seen that before
+from Monte Carlo.
+
+1364
+01:03:35,610 --> 01:03:38,950
+So we can just rewrite
+this expression like that.
+
+1365
+01:03:38,950 --> 01:03:41,860
+And that gives us the
+reinforce algorithm.
+
+1366
+01:03:41,860 --> 01:03:43,330
+So this is the
+reinforce algorithm
+
+1367
+01:03:43,330 --> 01:03:46,510
+that has been incredibly
+influential in NLP
+
+1368
+01:03:46,510 --> 01:03:49,420
+and robotics and
+many, many areas.
+
+1369
+01:03:49,420 --> 01:03:52,030
+And so what this says
+here is that the way
+
+1370
+01:03:52,030 --> 01:03:55,650
+we change our parameter
+is just our learning rate
+
+1371
+01:03:55,650 --> 01:03:58,620
+times our score function
+times the return
+
+1372
+01:03:58,620 --> 01:04:01,643
+we got from that time step
+till the end of the episode.
+
+1373
+01:04:01,643 --> 01:04:03,810
+So we still have to wait
+till the end of the episode
+
+1374
+01:04:03,810 --> 01:04:05,080
+to update anything.
+
+1375
+01:04:05,080 --> 01:04:06,990
+But what happens is
+we run a full episode
+
+1376
+01:04:06,990 --> 01:04:08,340
+with our current policy.
+
+1377
+01:04:08,340 --> 01:04:10,650
+And then for each
+time step, we slightly
+
+1378
+01:04:10,650 --> 01:04:14,460
+change our policy parameters by
+using a learning rate, the score
+
+1379
+01:04:14,460 --> 01:04:16,980
+function for that time
+step plus the return
+
+1380
+01:04:16,980 --> 01:04:20,530
+we got from that time step
+till the end of the episode.
+
+1381
+01:04:20,530 --> 01:04:23,140
+And then we just step through
+that for the whole episode.
+
+1382
+01:04:23,140 --> 01:04:25,230
+And that's given us
+T different updates
+
+1383
+01:04:25,230 --> 01:04:28,110
+to our policy parameterization.
+
+1384
+01:04:28,110 --> 01:04:32,040
+And then we just repeat over
+and over and over again.
+
+1385
+01:04:32,040 --> 01:04:34,620
+And what that guarantees
+to us is that eventually we
+
+1386
+01:04:34,620 --> 01:04:37,980
+will land in a local
+optima of the value
+
+1387
+01:04:37,980 --> 01:04:40,330
+function for the policy
+parameterization.
+
+1388
+01:04:43,841 --> 01:04:46,000
+So this is called Monte
+Carlo policy gradient
+
+1389
+01:04:46,000 --> 01:04:47,330
+or known as the reinforce.
+
+1390
+01:04:47,330 --> 01:04:53,200
+I believe this was in roughly
+1992, so about 30 years ago.
+
+1391
+01:04:53,200 --> 01:04:56,590
+And it's been many, many, many
+policy gradient algorithms are
+
+1392
+01:04:56,590 --> 01:04:57,405
+built on this idea.
+
+1393
+01:05:01,580 --> 01:05:03,000
+Now, when you're
+looking at this,
+
+1394
+01:05:03,000 --> 01:05:05,930
+you might still be concerned,
+from remembering back
+
+1395
+01:05:05,930 --> 01:05:08,280
+from the Monte Carlo
+methods we've covered,
+
+1396
+01:05:08,280 --> 01:05:12,650
+that this estimate G can
+often be pretty high variance.
+
+1397
+01:05:12,650 --> 01:05:15,500
+So in general, if you're
+just directly averaging
+
+1398
+01:05:15,500 --> 01:05:18,440
+over sample returns, that
+might be high variance.
+
+1399
+01:05:18,440 --> 01:05:20,510
+So one of the next
+fixes we can do,
+
+1400
+01:05:20,510 --> 01:05:23,450
+and we'll get to this
+more on Wednesday,
+
+1401
+01:05:23,450 --> 01:05:27,150
+is to introduce a baseline.
+
+1402
+01:05:27,150 --> 01:05:30,095
+And I'll just say
+the goals here is
+
+1403
+01:05:30,095 --> 01:05:31,470
+that we're going
+to hopefully try
+
+1404
+01:05:31,470 --> 01:05:34,140
+to converge as quickly as
+possible to local optima.
+
+1405
+01:05:34,140 --> 01:05:37,290
+So we want to
+reduce the variance
+
+1406
+01:05:37,290 --> 01:05:39,780
+over our gradient estimate.
+
+1407
+01:05:39,780 --> 01:05:42,390
+And so the baseline is going
+to allow us to hopefully
+
+1408
+01:05:42,390 --> 01:05:45,450
+reduce, well, in general,
+yes, reduce the variance
+
+1409
+01:05:45,450 --> 01:05:47,950
+over this estimation process.
+
+1410
+01:05:47,950 --> 01:05:55,210
+And we'll see two ideas next,
+which is introducing a baseline
+
+1411
+01:05:55,210 --> 01:05:57,730
+and then thinking about an
+alternative to the Monte Carlo
+
+1412
+01:05:57,730 --> 01:05:59,650
+returns.
+
+1413
+01:05:59,650 --> 01:06:02,450
+So those are the ideas that
+we're going to go through next.
+
+1414
+01:06:02,450 --> 01:06:04,360
+I guess I'll just
+do one more thing,
+
+1415
+01:06:04,360 --> 01:06:06,433
+and we will go through
+the proof of it next time.
+
+1416
+01:06:06,433 --> 01:06:08,350
+So I'll just introduce
+the concept of baseline
+
+1417
+01:06:08,350 --> 01:06:09,908
+and then we'll
+prove it next time.
+
+1418
+01:06:09,908 --> 01:06:11,950
+So the idea in this case
+is that we're just going
+
+1419
+01:06:11,950 --> 01:06:13,693
+to subtract something off.
+
+1420
+01:06:13,693 --> 01:06:15,610
+And we're going to
+subtract something off that
+
+1421
+01:06:15,610 --> 01:06:18,490
+only depends on the state.
+
+1422
+01:06:18,490 --> 01:06:25,180
+This only depends on the state.
+
+1423
+01:06:25,180 --> 01:06:27,820
+OK, so this is not a
+function of your policy,
+
+1424
+01:06:27,820 --> 01:06:29,290
+only depends on the state.
+
+1425
+01:06:29,290 --> 01:06:32,200
+And it will turn out, and
+we'll prove this next time--
+
+1426
+01:06:32,200 --> 01:06:35,350
+it's pretty elegant-- that for
+any choice of something that
+
+1427
+01:06:35,350 --> 01:06:38,560
+only depends on your state,
+the gradient estimator is still
+
+1428
+01:06:38,560 --> 01:06:40,210
+unbiased.
+
+1429
+01:06:40,210 --> 01:06:42,977
+So you couldn't subtract
+off anything there.
+
+1430
+01:06:42,977 --> 01:06:44,560
+That is only a
+function of your state,
+
+1431
+01:06:44,560 --> 01:06:47,350
+and you didn't change the
+bias of your estimator, which
+
+1432
+01:06:47,350 --> 01:06:49,420
+is wild.
+
+1433
+01:06:49,420 --> 01:06:52,375
+And we'll prove that next time.
+
+1434
+01:06:52,375 --> 01:06:54,010
+But the goal is that
+we can hopefully
+
+1435
+01:06:54,010 --> 01:06:56,590
+reduce the variance of
+our estimated gradient
+
+1436
+01:06:56,590 --> 01:07:00,210
+by subtracting off
+the right thing.
+
+1437
+01:07:00,210 --> 01:07:03,070
+And just intuitively, the way
+to think about the baseline
+
+1438
+01:07:03,070 --> 01:07:06,850
+is that you don't necessarily
+just care about whether or not
+
+1439
+01:07:06,850 --> 01:07:09,070
+the gradient is
+positive or negative
+
+1440
+01:07:09,070 --> 01:07:12,303
+and whether the returns
+were good or bad.
+
+1441
+01:07:12,303 --> 01:07:14,470
+You might care about, well,
+how much better or worse
+
+1442
+01:07:14,470 --> 01:07:16,510
+are these returns
+compared to something
+
+1443
+01:07:16,510 --> 01:07:17,830
+else I could have done?
+
+1444
+01:07:17,830 --> 01:07:20,230
+Like, I want to know whether
+this policy A is better
+
+1445
+01:07:20,230 --> 01:07:23,210
+than policy B. And maybe both of
+them give you positive returns.
+
+1446
+01:07:23,210 --> 01:07:25,880
+One of them gives you 100
+and of them gives you 90,
+
+1447
+01:07:25,880 --> 01:07:27,650
+but you'd really like
+the one with 100.
+
+1448
+01:07:27,650 --> 01:07:30,370
+So you'd really like to
+move your policy parameters
+
+1449
+01:07:30,370 --> 01:07:31,870
+in the direction
+of stuff that is
+
+1450
+01:07:31,870 --> 01:07:34,010
+better than other alternatives.
+
+1451
+01:07:34,010 --> 01:07:35,823
+And that's the
+idea of a baseline,
+
+1452
+01:07:35,823 --> 01:07:37,240
+is to say like,
+well, maybe I know
+
+1453
+01:07:37,240 --> 01:07:39,310
+that I could probably
+always get like 90
+
+1454
+01:07:39,310 --> 01:07:40,790
+for this particular state.
+
+1455
+01:07:40,790 --> 01:07:43,180
+How much better is this
+policy for this state compared
+
+1456
+01:07:43,180 --> 01:07:45,340
+to something I
+could do on average?
+
+1457
+01:07:45,340 --> 01:07:47,890
+And so we're going to
+intuitively increase
+
+1458
+01:07:47,890 --> 01:07:50,710
+the log probability of an action
+proportionally to how much
+
+1459
+01:07:50,710 --> 01:07:54,910
+its returns were better than
+expected, where the baseline is
+
+1460
+01:07:54,910 --> 01:07:57,400
+giving you that expected value.
+
+1461
+01:07:57,400 --> 01:07:59,770
+And we'll see
+formally on Wednesday
+
+1462
+01:07:59,770 --> 01:08:01,820
+how by doing this
+with the baseline,
+
+1463
+01:08:01,820 --> 01:08:03,382
+it doesn't introduce any bias.
+
+1464
+01:08:03,382 --> 01:08:04,840
+So it's going to
+be one of the ways
+
+1465
+01:08:04,840 --> 01:08:07,155
+that we're going to
+get better gradients.
+
+1466
+01:08:07,155 --> 01:08:09,280
+The other thing that we're
+going to do on Wednesday
+
+1467
+01:08:09,280 --> 01:08:12,760
+is we're at least going to
+start talking about PPO, which
+
+1468
+01:08:12,760 --> 01:08:15,940
+is part of your homework
+2, bless you, which
+
+1469
+01:08:15,940 --> 01:08:19,330
+is going to involve more ways to
+be more efficient and effective
+
+1470
+01:08:19,330 --> 01:08:20,779
+in the policies that we do.
+
+1471
+01:08:20,779 --> 01:08:21,529
+I'll see you then.
+
+1472
+01:08:21,529 --> 01:08:24,879
+Thanks
+

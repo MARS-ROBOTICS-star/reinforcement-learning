@@ -1,0 +1,5164 @@
+1
+00:00:05,480 --> 00:00:08,520
+For today, we're going to be talking about autonomous
+
+2
+00:00:08,520 --> 00:00:11,280
+learning, specifically in the context of reinforcement
+
+3
+00:00:11,280 --> 00:00:12,800
+learning for robots
+
+4
+00:00:12,800 --> 00:00:15,440
+And this lecture and the next lecture
+
+5
+00:00:15,440 --> 00:00:18,040
+are going to be focusing a bit more on robotics use
+
+6
+00:00:18,040 --> 00:00:21,040
+cases, where today, we'll be talking about autonomy
+
+7
+00:00:21,040 --> 00:00:23,640
+And on Wednesday, we'll be talking about--
+
+8
+00:00:23,640 --> 00:00:26,240
+we have a guest lecture talking about sim to real transfer
+
+9
+00:00:26,240 --> 00:00:28,840
+and humanoid robots
+
+10
+00:00:28,840 --> 00:00:32,560
+So we'll be talking about why robots aren't autonomous
+
+11
+00:00:32,560 --> 00:00:35,840
+already, defining the problem of autonomous reinforcement
+
+12
+00:00:35,840 --> 00:00:36,720
+learning
+
+13
+00:00:36,720 --> 00:00:38,640
+And then developing the algorithms
+
+14
+00:00:38,640 --> 00:00:40,520
+specifically thinking about learning policies
+
+15
+00:00:40,520 --> 00:00:43,480
+without human intervention, and a formulation
+
+16
+00:00:43,480 --> 00:00:46,880
+of reinforcement learning called single life reinforcement
+
+17
+00:00:46,880 --> 00:00:48,880
+learning
+
+18
+00:00:48,880 --> 00:00:51,280
+So the goal here will be to think
+
+19
+00:00:51,280 --> 00:00:54,800
+about how we can imbue intelligent machines
+
+20
+00:00:54,800 --> 00:00:58,860
+with autonomy, the ability to allow them to, on their own
+
+21
+00:00:58,860 --> 00:01:03,270
+learn, interact, practice, get better
+
+22
+00:01:03,270 --> 00:01:06,550
+without a human in the loop
+
+23
+00:01:06,550 --> 00:01:07,570
+Cool
+
+24
+00:01:07,570 --> 00:01:12,690
+So let's start with some of the motivation
+
+25
+00:01:12,690 --> 00:01:15,130
+So we've been talking a lot about reinforcement learning
+
+26
+00:01:15,130 --> 00:01:17,350
+We also talked a little bit about imitation learning
+
+27
+00:01:17,350 --> 00:01:19,350
+where imitation learning, typically, we
+
+28
+00:01:19,350 --> 00:01:23,550
+are training an agent to mimic some demonstrations that
+
+29
+00:01:23,550 --> 00:01:25,090
+are provided from an expert
+
+30
+00:01:25,090 --> 00:01:26,890
+Whereas, in reinforcement learning
+
+31
+00:01:26,890 --> 00:01:29,790
+the agent is practicing through trial and error
+
+32
+00:01:29,790 --> 00:01:32,670
+And this notion of practicing is something
+
+33
+00:01:32,670 --> 00:01:36,390
+that is already more autonomous because the agent is
+
+34
+00:01:36,390 --> 00:01:39,670
+learning from its own experience in the world
+
+35
+00:01:39,670 --> 00:01:43,470
+But it actually isn't entirely autonomous in practice
+
+36
+00:01:43,470 --> 00:01:45,470
+when you think about running these algorithms
+
+37
+00:01:45,470 --> 00:01:48,670
+on physical robots
+
+38
+00:01:48,670 --> 00:01:50,950
+And in particular, if we think about saying
+
+39
+00:01:50,950 --> 00:01:54,310
+that we want some robot that's going from some initial state
+
+40
+00:01:54,310 --> 00:02:00,330
+distribution, some distribution over initial states
+
+41
+00:02:00,330 --> 00:02:02,430
+So this is the starting conditions
+
+42
+00:02:02,430 --> 00:02:04,670
+that our agent might be faced with
+
+43
+00:02:04,670 --> 00:02:10,389
+when it's actually deployed to some region of the state
+
+44
+00:02:10,389 --> 00:02:12,390
+space that has high reward
+
+45
+00:02:12,390 --> 00:02:16,210
+Then, typically when we think about this learning process
+
+46
+00:02:16,210 --> 00:02:18,550
+we will collect trials
+
+47
+00:02:18,550 --> 00:02:20,930
+So for example, maybe at the beginning
+
+48
+00:02:20,930 --> 00:02:23,390
+the first attempt at the task will look something
+
+49
+00:02:23,390 --> 00:02:29,130
+like this, where because we haven't learned anything yet
+
+50
+00:02:29,130 --> 00:02:30,890
+maybe we haven't practiced very much
+
+51
+00:02:30,890 --> 00:02:35,270
+we don't have a trajectory that is very good
+
+52
+00:02:35,270 --> 00:02:38,050
+And then from there, typically, we've thought about, OK
+
+53
+00:02:38,050 --> 00:02:40,890
+can we retry the task and attempt the task again
+
+54
+00:02:40,890 --> 00:02:44,230
+where we, again, start from a state in our initial state
+
+55
+00:02:44,230 --> 00:02:50,590
+distribution and rollout our policy again
+
+56
+00:02:50,590 --> 00:02:53,930
+Now when we're rolling out these policies
+
+57
+00:02:53,930 --> 00:03:01,340
+we are sampling actions from our policy distribution
+
+58
+00:03:01,340 --> 00:03:06,240
+and acting according to the agent's own actions
+
+59
+00:03:06,240 --> 00:03:08,780
+And so each of these trajectories
+
+60
+00:03:08,780 --> 00:03:13,380
+are under the control of the robot or the agent
+
+61
+00:03:13,380 --> 00:03:16,000
+And as you're rolling out your policy
+
+62
+00:03:16,000 --> 00:03:19,100
+this part is fully autonomous
+
+63
+00:03:19,100 --> 00:03:22,860
+Control is fully with the policy pi
+
+64
+00:03:22,860 --> 00:03:25,580
+But one thing, one little catch is
+
+65
+00:03:25,580 --> 00:03:28,860
+that after you've attempted the task, once you're
+
+66
+00:03:28,860 --> 00:03:30,380
+in a state over here
+
+67
+00:03:30,380 --> 00:03:32,860
+And we've been thinking about when you then
+
+68
+00:03:32,860 --> 00:03:35,080
+attempt the task again, magically
+
+69
+00:03:35,080 --> 00:03:37,460
+you'll somehow get back over here
+
+70
+00:03:37,460 --> 00:03:41,060
+and attempt the task from this starting place
+
+71
+00:03:41,060 --> 00:03:43,220
+And we haven't really talked about how do you
+
+72
+00:03:43,220 --> 00:03:48,380
+get from here, all the way back to here
+
+73
+00:03:48,380 --> 00:03:51,780
+And in practice, when you take traditional reinforcement
+
+74
+00:03:51,780 --> 00:03:53,860
+learning algorithms that we've been talking about
+
+75
+00:03:53,860 --> 00:03:57,130
+we've been assuming that a human or, somehow, you'll
+
+76
+00:03:57,130 --> 00:03:59,630
+magically get reset to this initial starting place
+
+77
+00:03:59,630 --> 00:04:03,250
+And in practice, that might mean that a human is actually
+
+78
+00:04:03,250 --> 00:04:05,130
+physically moving the robot or physically
+
+79
+00:04:05,130 --> 00:04:06,930
+moving the objects in the scene, back
+
+80
+00:04:06,930 --> 00:04:09,730
+to some set of initial conditions
+
+81
+00:04:09,730 --> 00:04:14,770
+And as a result, this process isn't actually fully autonomous
+
+82
+00:04:14,770 --> 00:04:18,570
+So on the slides, we'll execute actions from our policy
+
+83
+00:04:18,570 --> 00:04:21,350
+observe data from the environment, update our policy
+
+84
+00:04:21,350 --> 00:04:25,730
+repeat that process, and eventually, we'll
+
+85
+00:04:25,730 --> 00:04:29,070
+get a policy that is able to get high reward
+
+86
+00:04:29,070 --> 00:04:31,330
+For example, in this problem, reaching a state
+
+87
+00:04:31,330 --> 00:04:35,610
+within some region of goal states
+
+88
+00:04:35,610 --> 00:04:38,010
+And we think about that as rolling out
+
+89
+00:04:38,010 --> 00:04:42,050
+some trajectory of length h and then rolling out
+
+90
+00:04:42,050 --> 00:04:46,230
+another trajectory of length h and so forth
+
+91
+00:04:46,230 --> 00:04:47,650
+But we need to think about, how do
+
+92
+00:04:47,650 --> 00:04:50,930
+we get from the end of one trajectory
+
+93
+00:04:50,930 --> 00:04:54,730
+to the start of another trajectory
+
+94
+00:04:54,730 --> 00:04:58,720
+Now, if we're in a simulation-based environment
+
+95
+00:04:58,720 --> 00:05:01,180
+then what we can do is we can create the environment
+
+96
+00:05:01,180 --> 00:05:03,640
+take actions for a thousand time steps
+
+97
+00:05:03,640 --> 00:05:06,200
+And then once we're done, then we
+
+98
+00:05:06,200 --> 00:05:10,280
+can call env.reset, which is a very
+
+99
+00:05:10,280 --> 00:05:12,960
+nice little friendly utility
+
+100
+00:05:12,960 --> 00:05:15,540
+But that's something that we can only really do in simulation
+
+101
+00:05:15,540 --> 00:05:22,840
+We can't reset the physical world to our own will
+
+102
+00:05:22,840 --> 00:05:25,640
+And so as some specific examples
+
+103
+00:05:25,640 --> 00:05:29,080
+say that you are trying to learn how to navigate to a basketball
+
+104
+00:05:29,080 --> 00:05:29,580
+court
+
+105
+00:05:29,580 --> 00:05:31,310
+Maybe you have a small mobile robot
+
+106
+00:05:31,310 --> 00:05:33,520
+that is trying to deliver something to the basketball
+
+107
+00:05:33,520 --> 00:05:35,280
+court, or an autonomous vehicle that's
+
+108
+00:05:35,280 --> 00:05:38,520
+trying to navigate to the basketball court
+
+109
+00:05:38,520 --> 00:05:42,120
+As it tries to explore and attempt this task
+
+110
+00:05:42,120 --> 00:05:44,640
+it might make a wrong turn, and rather
+
+111
+00:05:44,640 --> 00:05:46,640
+if it makes that wrong turn, it ends up
+
+112
+00:05:46,640 --> 00:05:49,200
+in that physical location and would
+
+113
+00:05:49,200 --> 00:05:51,580
+need to, for example, figure out how to navigate
+
+114
+00:05:51,580 --> 00:05:53,080
+either back to the starting position
+
+115
+00:05:53,080 --> 00:05:56,040
+or find its way from that wrong turn
+
+116
+00:05:56,040 --> 00:06:01,080
+back to where the basketball truly is
+
+117
+00:06:01,080 --> 00:06:02,760
+If we have a robot manipulator, we
+
+118
+00:06:02,760 --> 00:06:04,680
+might want to learn how to grasp the mug
+
+119
+00:06:04,680 --> 00:06:07,240
+As we're learning how to grasp the mug
+
+120
+00:06:07,240 --> 00:06:10,880
+the robot might make a mistake and knock the mug over
+
+121
+00:06:10,880 --> 00:06:13,120
+And then, if it wants to attempt and learn
+
+122
+00:06:13,120 --> 00:06:16,400
+how to grasp things again, then, somehow, it
+
+123
+00:06:16,400 --> 00:06:20,520
+needs to be within reach of the robot
+
+124
+00:06:20,520 --> 00:06:24,280
+Or for more of a mobile system, and we
+
+125
+00:06:24,280 --> 00:06:28,040
+want to learn how to put books onto bookshelves, again
+
+126
+00:06:28,040 --> 00:06:31,320
+we might make some mistakes and need
+
+127
+00:06:31,320 --> 00:06:37,080
+to figure out how to get back to some starting position, where
+
+128
+00:06:37,080 --> 00:06:40,020
+the book is in reach or some initial state distribution
+
+129
+00:06:40,020 --> 00:06:43,120
+if our goal is to go from one set of initial states
+
+130
+00:06:43,120 --> 00:06:47,480
+to regions with high reward
+
+131
+00:06:47,480 --> 00:06:51,240
+And one of the reasons why this is actually especially important
+
+132
+00:06:51,240 --> 00:06:54,810
+is that reinforcement learning often takes many attempts
+
+133
+00:06:54,810 --> 00:06:57,950
+It's not a matter of taking trying three times
+
+134
+00:06:57,950 --> 00:06:59,510
+and then solving the task
+
+135
+00:06:59,510 --> 00:07:01,430
+Oftentimes, there's many different trials
+
+136
+00:07:01,430 --> 00:07:04,470
+that you'll be attempting and practicing over and over again
+
+137
+00:07:04,470 --> 00:07:07,610
+And every time the agent tries again
+
+138
+00:07:07,610 --> 00:07:10,390
+that means that you have some human intervention
+
+139
+00:07:10,390 --> 00:07:13,390
+or some other intervention that is bringing you back
+
+140
+00:07:13,390 --> 00:07:16,110
+to the initial state distribution
+
+141
+00:07:16,110 --> 00:07:21,630
+As more of real examples, this video on the left
+
+142
+00:07:21,630 --> 00:07:25,590
+is a video of a robot, learning how to hit a hockey
+
+143
+00:07:25,590 --> 00:07:26,730
+puck into a goal
+
+144
+00:07:26,730 --> 00:07:30,470
+And you can see that the human here-- this
+
+145
+00:07:30,470 --> 00:07:33,030
+is a friend of mine, Yevgen-- he's probably
+
+146
+00:07:33,030 --> 00:07:35,790
+doing more work than the robot is right now
+
+147
+00:07:35,790 --> 00:07:38,510
+as it attempts to do this
+
+148
+00:07:38,510 --> 00:07:40,070
+Here's another example, where Ali
+
+149
+00:07:40,070 --> 00:07:42,630
+is closing the doors so that the robot can
+
+150
+00:07:42,630 --> 00:07:44,710
+learn how to open them
+
+151
+00:07:44,710 --> 00:07:46,910
+And here's an example where Archit
+
+152
+00:07:46,910 --> 00:07:50,990
+who you gave a guest lecture earlier this quarter
+
+153
+00:07:50,990 --> 00:07:52,820
+is resetting the robot so that it
+
+154
+00:07:52,820 --> 00:08:00,420
+can attempt to fold the towel
+
+155
+00:08:00,420 --> 00:08:05,180
+OK, so how do we think about this problem
+
+156
+00:08:05,180 --> 00:08:07,540
+The problem is reset, often in practice
+
+157
+00:08:07,540 --> 00:08:09,660
+requires some human intervention
+
+158
+00:08:09,660 --> 00:08:12,040
+that we want to be able to ideally eliminate
+
+159
+00:08:12,040 --> 00:08:15,360
+so that our agents can practice and get better on their own
+
+160
+00:08:15,360 --> 00:08:20,210
+rather than requiring some expert or some human
+
+161
+00:08:20,210 --> 00:08:22,040
+Now, one way that we could look at this is--
+
+162
+00:08:22,040 --> 00:08:24,280
+I mean, what if we could just increase h
+
+163
+00:08:24,280 --> 00:08:25,740
+What if we just increase the length
+
+164
+00:08:25,740 --> 00:08:30,060
+of the episodes in which our agents are attempting the task
+
+165
+00:08:30,060 --> 00:08:32,880
+And if we increase the length of the episodes, then in principle
+
+166
+00:08:32,880 --> 00:08:36,280
+we won't require as much human supervision
+
+167
+00:08:36,280 --> 00:08:38,700
+And we might be able to apply the same exact reinforcement
+
+168
+00:08:38,700 --> 00:08:43,020
+learning algorithms that we've learned about in the course
+
+169
+00:08:43,020 --> 00:08:49,580
+just with less supervision during the learning process
+
+170
+00:08:49,580 --> 00:08:50,970
+So we can do that
+
+171
+00:08:50,970 --> 00:08:55,370
+And so the we'll see an example of what increasing age
+
+172
+00:08:55,370 --> 00:08:56,650
+looks like in a minute
+
+173
+00:08:56,650 --> 00:08:59,570
+But generally, the definition of what we want to accomplish
+
+174
+00:08:59,570 --> 00:09:02,790
+is initialize the scene, the environment
+
+175
+00:09:02,790 --> 00:09:05,010
+Maybe it's already initialized in some way
+
+176
+00:09:05,010 --> 00:09:06,370
+Then, we do that once
+
+177
+00:09:06,370 --> 00:09:10,290
+We have the agent interact autonomously with the world
+
+178
+00:09:10,290 --> 00:09:12,810
+without any environment resets
+
+179
+00:09:12,810 --> 00:09:15,090
+We could also relax this constraint occasionally
+
+180
+00:09:15,090 --> 00:09:17,270
+to only reset at a very low frequency
+
+181
+00:09:17,270 --> 00:09:20,290
+For example, if h is very large
+
+182
+00:09:20,290 --> 00:09:23,630
+Now, as we start to think about these systems
+
+183
+00:09:23,630 --> 00:09:25,210
+we need to think about how we actually
+
+184
+00:09:25,210 --> 00:09:27,710
+want to evaluate these systems
+
+185
+00:09:27,710 --> 00:09:29,630
+And there's actually a couple different ways--
+
+186
+00:09:29,630 --> 00:09:31,380
+there's actually a couple different things
+
+187
+00:09:31,380 --> 00:09:32,530
+that we might care about
+
+188
+00:09:32,530 --> 00:09:35,410
+So one thing that we might care about
+
+189
+00:09:35,410 --> 00:09:39,410
+is after, for example, autonomously
+
+190
+00:09:39,410 --> 00:09:44,850
+learned in some environment, we might care about--
+
+191
+00:09:44,850 --> 00:09:51,570
+maybe let's-- well, let's say that we have autonomously
+
+192
+00:09:51,570 --> 00:09:52,530
+explored
+
+193
+00:09:52,530 --> 00:09:59,970
+And for example, we have some experience that we've collected
+
+194
+00:09:59,970 --> 00:10:02,550
+Maybe that looks something like this
+
+195
+00:10:02,550 --> 00:10:06,810
+where there's no resets, no going back to the initial state
+
+196
+00:10:06,810 --> 00:10:09,490
+One thing that we might care about is we might care about
+
+197
+00:10:09,490 --> 00:10:13,650
+did you achieve high reward as you went
+
+198
+00:10:13,650 --> 00:10:16,190
+about the agent's experience
+
+199
+00:10:16,190 --> 00:10:18,650
+And basically, did it actually complete the task at the end
+
+200
+00:10:18,650 --> 00:10:20,830
+of the day, as it was learning
+
+201
+00:10:20,830 --> 00:10:22,250
+And that would be looking at, what
+
+202
+00:10:22,250 --> 00:10:28,230
+is the sum of the rewards that accomplished over its lifetime
+
+203
+00:10:28,230 --> 00:10:29,810
+And alternatively, instead of thinking
+
+204
+00:10:29,810 --> 00:10:32,630
+about evaluating autonomous RL from that perspective
+
+205
+00:10:32,630 --> 00:10:35,490
+we could think about after the learning process
+
+206
+00:10:35,490 --> 00:10:38,530
+did we learn a good policy that we could then deploy and be
+
+207
+00:10:38,530 --> 00:10:40,690
+able to repeatedly do the task
+
+208
+00:10:40,690 --> 00:10:43,530
+And so that would be looking at if we-- instead of looking
+
+209
+00:10:43,530 --> 00:10:45,230
+at the rewards of this red trajectory
+
+210
+00:10:45,230 --> 00:10:47,150
+it would be saying after the learning process
+
+211
+00:10:47,150 --> 00:10:51,420
+if we've learned some policy, how good is it at
+
+212
+00:10:51,420 --> 00:10:54,720
+for example, going to the goal
+
+213
+00:10:54,720 --> 00:10:57,320
+How good is the policy that it learned
+
+214
+00:10:57,320 --> 00:11:01,640
+as an outcome of the reinforcement learning process
+
+215
+00:11:01,640 --> 00:11:03,780
+So two things here
+
+216
+00:11:03,780 --> 00:11:06,400
+One could be the amount of reward recovered
+
+217
+00:11:06,400 --> 00:11:08,560
+over the course of its life
+
+218
+00:11:08,560 --> 00:11:11,760
+As one example of this, imagine that you're deploying the Mars
+
+219
+00:11:11,760 --> 00:11:16,960
+Rover, and you want the Rover to be able to collect
+
+220
+00:11:16,960 --> 00:11:18,880
+scientific data
+
+221
+00:11:18,880 --> 00:11:23,080
+You don't really care about whether it learned a good policy
+
+222
+00:11:23,080 --> 00:11:27,700
+that you're going to deploy after the learning process
+
+223
+00:11:27,700 --> 00:11:29,200
+You really care about whether or not
+
+224
+00:11:29,200 --> 00:11:33,680
+it did a good job, as it was deployed, as it was learning
+
+225
+00:11:33,680 --> 00:11:34,920
+and so forth
+
+226
+00:11:34,920 --> 00:11:37,760
+So that's more like trying to measure how
+
+227
+00:11:37,760 --> 00:11:42,960
+good is this red trajectory
+
+228
+00:11:42,960 --> 00:11:48,910
+And so here's my graphical depiction of this on the slide
+
+229
+00:11:48,910 --> 00:11:52,170
+Or you could learn about the quality of the learn policy
+
+230
+00:11:52,170 --> 00:11:53,670
+An example of this is that if you're
+
+231
+00:11:53,670 --> 00:11:55,630
+learning how to cook meals, maybe
+
+232
+00:11:55,630 --> 00:11:57,670
+there's some training process
+
+233
+00:11:57,670 --> 00:11:59,670
+And you don't really care that much about
+
+234
+00:11:59,670 --> 00:12:02,070
+during the training process, how well it
+
+235
+00:12:02,070 --> 00:12:04,470
+was able to cook as it was learning
+
+236
+00:12:04,470 --> 00:12:07,110
+But then you really care about, then can I deploy this system
+
+237
+00:12:07,110 --> 00:12:12,390
+and have it be able to cook meals effectively, repeatedly
+
+238
+00:12:12,390 --> 00:12:17,730
+for a variety of customers in the future
+
+239
+00:12:17,730 --> 00:12:18,230
+Cool
+
+240
+00:12:18,230 --> 00:12:20,350
+So that would be typical
+
+241
+00:12:20,350 --> 00:12:24,550
+If we then took a policy that we learned, initialized it
+
+242
+00:12:24,550 --> 00:12:27,870
+at the starting state and ran it
+
+243
+00:12:27,870 --> 00:12:32,950
+does it achieve good reward under those conditions
+
+244
+00:12:32,950 --> 00:12:35,290
+So we'll think about these as two different things
+
+245
+00:12:35,290 --> 00:12:40,630
+So we can-- first, let's think about what we'll call
+
+246
+00:12:40,630 --> 00:12:42,450
+deployed policy evaluation
+
+247
+00:12:42,450 --> 00:12:44,350
+So how good is the policy that we learned
+
+248
+00:12:44,350 --> 00:12:46,580
+if we were to then deploy it
+
+249
+00:12:46,580 --> 00:12:49,300
+And the objective for this circumstance
+
+250
+00:12:49,300 --> 00:12:53,900
+can be defined as an objective that looks very similar to what
+
+251
+00:12:53,900 --> 00:12:57,060
+we've been seeing in the course previously
+
+252
+00:12:57,060 --> 00:13:01,140
+which is that you would sample a state from your initial state
+
+253
+00:13:01,140 --> 00:13:06,260
+distribution and act according to your policy
+
+254
+00:13:06,260 --> 00:13:12,500
+and measure the sum of rewards, or the sum of discounted rewards
+
+255
+00:13:12,500 --> 00:13:17,900
+that was observed after running an episode
+
+256
+00:13:17,900 --> 00:13:23,540
+This should be an expectation after starting from the state
+
+257
+00:13:23,540 --> 00:13:27,580
+and acting according to the policy
+
+258
+00:13:27,580 --> 00:13:30,600
+So this is deployed policy evaluation
+
+259
+00:13:30,600 --> 00:13:33,180
+How good is the policy if it's starting from the initial state
+
+260
+00:13:33,180 --> 00:13:37,740
+distribution and acting according to the policy
+
+261
+00:13:37,740 --> 00:13:41,180
+Alternatively, if we were to think about more
+
+262
+00:13:41,180 --> 00:13:44,500
+the continuing policy evaluation, how good are
+
+263
+00:13:44,500 --> 00:13:48,300
+if we just deploy the system, and it's trying to learn
+
+264
+00:13:48,300 --> 00:13:52,470
+as it goes, and how good is it during that learning process
+
+265
+00:13:52,470 --> 00:13:54,260
+Then we'd actually be considering something
+
+266
+00:13:54,260 --> 00:13:56,700
+a little bit different
+
+267
+00:13:56,700 --> 00:14:00,140
+We would want to be considering what
+
+268
+00:14:00,140 --> 00:14:06,180
+is the average reward that it saw during that learning
+
+269
+00:14:06,180 --> 00:14:07,460
+process
+
+270
+00:14:07,460 --> 00:14:17,480
+And so we'd be looking at something some average quantity
+
+271
+00:14:17,480 --> 00:14:27,780
+So we'll write this as 1/h of t equals 1 to h of the reward
+
+272
+00:14:27,780 --> 00:14:34,260
+And if h is small, this is not going
+
+273
+00:14:34,260 --> 00:14:35,920
+to be averaged over small things
+
+274
+00:14:35,920 --> 00:14:39,860
+And so we want to be evaluating this, usually
+
+275
+00:14:39,860 --> 00:14:43,160
+as our lifetime might be getting longer and longer
+
+276
+00:14:43,160 --> 00:14:47,970
+So this would be a limit, evaluating
+
+277
+00:14:47,970 --> 00:14:53,130
+average reward and the limit in which h goes to infinity
+
+278
+00:14:53,130 --> 00:14:56,530
+So something like this
+
+279
+00:14:56,530 --> 00:15:02,110
+And there should be an expectation over this quantity
+
+280
+00:15:02,110 --> 00:15:07,290
+Now, this expectation isn't under a single policy
+
+281
+00:15:07,290 --> 00:15:10,730
+It's over the learning process itself
+
+282
+00:15:10,730 --> 00:15:13,290
+So that's another difference from measuring
+
+283
+00:15:13,290 --> 00:15:17,370
+how good a learned policy is
+
+284
+00:15:17,370 --> 00:15:17,970
+Cool
+
+285
+00:15:17,970 --> 00:15:20,830
+And so we'll look at algorithms for both of these circumstances
+
+286
+00:15:20,830 --> 00:15:22,290
+Yeah, so the question is, why do we
+
+287
+00:15:22,290 --> 00:15:27,210
+need an expectation if we're just running one trajectory
+
+288
+00:15:27,210 --> 00:15:33,610
+If you want to evaluate, just a single lifetime
+
+289
+00:15:33,610 --> 00:15:37,430
+or a single rollout of your learning process
+
+290
+00:15:37,430 --> 00:15:41,450
+then you could just measure precisely that
+
+291
+00:15:41,450 --> 00:15:43,780
+run it and see how well it does
+
+292
+00:15:43,780 --> 00:15:46,260
+Now, in practice, there's variability
+
+293
+00:15:46,260 --> 00:15:48,260
+that's caused by variability in the environment
+
+294
+00:15:48,260 --> 00:15:50,120
+variability in your learning process
+
+295
+00:15:50,120 --> 00:15:52,560
+like how you sample batches and so forth
+
+296
+00:15:52,560 --> 00:15:56,540
+And you may want to measure, like at the algorithm level
+
+297
+00:15:56,540 --> 00:16:00,600
+how good is your algorithm at this problem
+
+298
+00:16:00,600 --> 00:16:03,640
+And if you want to measure how good the algorithm is
+
+299
+00:16:03,640 --> 00:16:08,660
+you want an expectation over multiple runs of the algorithm
+
+300
+00:16:08,660 --> 00:16:09,580
+Why is this important
+
+301
+00:16:09,580 --> 00:16:12,240
+We've already talked a bit about the motivation
+
+302
+00:16:12,240 --> 00:16:16,120
+but to elaborate on a little bit more
+
+303
+00:16:16,120 --> 00:16:19,350
+we want robots to operate with minimal human supervision
+
+304
+00:16:19,350 --> 00:16:21,640
+But we also want them to train with minimal supervision
+
+305
+00:16:21,640 --> 00:16:22,680
+as well
+
+306
+00:16:22,680 --> 00:16:27,400
+And generally, reinforcement learning on real robots
+
+307
+00:16:27,400 --> 00:16:30,880
+is a promising path towards achieving really high success
+
+308
+00:16:30,880 --> 00:16:34,680
+rates, really high reliability compared to imitation learning
+
+309
+00:16:34,680 --> 00:16:39,180
+And if you're able to train with minimal human supervision
+
+310
+00:16:39,180 --> 00:16:41,200
+then you're able to collect more data
+
+311
+00:16:41,200 --> 00:16:44,840
+and more data may also unlock both greater reliability
+
+312
+00:16:44,840 --> 00:16:48,400
+and also greater generalization, if these systems are
+
+313
+00:16:48,400 --> 00:16:52,280
+able to be deployed at scale in a variety of real world
+
+314
+00:16:52,280 --> 00:16:54,520
+environments
+
+315
+00:16:54,520 --> 00:16:56,520
+So that's the problem setup
+
+316
+00:16:56,520 --> 00:17:00,120
+Now, let's dive a bit into algorithms
+
+317
+00:17:00,120 --> 00:17:05,980
+So we'd like to learn policies without human supervision
+
+318
+00:17:05,980 --> 00:17:07,440
+And we talked about this question
+
+319
+00:17:07,440 --> 00:17:09,720
+before of, what if we just increase
+
+320
+00:17:09,720 --> 00:17:13,520
+the length of the episode
+
+321
+00:17:13,520 --> 00:17:15,599
+And can we just take a traditional standard
+
+322
+00:17:15,599 --> 00:17:17,560
+reinforcement learning algorithm
+
+323
+00:17:17,560 --> 00:17:21,160
+In this case, I think we'll be looking at a soft actor-critic
+
+324
+00:17:21,160 --> 00:17:24,440
+and just run it with longer and longer episodes, which
+
+325
+00:17:24,440 --> 00:17:29,480
+in principle, should require less and less supervision
+
+326
+00:17:29,480 --> 00:17:33,540
+If we do this, we see performance changes a bit
+
+327
+00:17:33,540 --> 00:17:36,480
+So this is a plot that's evaluating
+
+328
+00:17:36,480 --> 00:17:41,030
+how good is the learned policy after training for some number
+
+329
+00:17:41,030 --> 00:17:42,970
+of steps, shown on the x-axis
+
+330
+00:17:42,970 --> 00:17:46,030
+So the y-axis is reward, accomplished
+
+331
+00:17:46,030 --> 00:17:47,890
+by the deployed policy
+
+332
+00:17:47,890 --> 00:17:52,950
+So it's measuring this blue equation right here
+
+333
+00:17:52,950 --> 00:17:57,880
+And this green line is if you run with an episode
+
+334
+00:17:57,880 --> 00:17:59,010
+length of a thousand steps
+
+335
+00:17:59,010 --> 00:18:01,190
+If you run SAC, you get a learning curve
+
+336
+00:18:01,190 --> 00:18:03,190
+where it's able to learn a policy that's
+
+337
+00:18:03,190 --> 00:18:06,430
+able to effectively complete the task
+
+338
+00:18:06,430 --> 00:18:09,390
+Now, if you increase the length of the episodes
+
+339
+00:18:09,390 --> 00:18:12,390
+during training by a factor of 2
+
+340
+00:18:12,390 --> 00:18:15,750
+we see that the algorithm does worse
+
+341
+00:18:15,750 --> 00:18:18,630
+and then we increase it by a factor of 10
+
+342
+00:18:18,630 --> 00:18:20,390
+We see that it does even worse
+
+343
+00:18:20,390 --> 00:18:24,790
+And basically, as we increase and make the episode length
+
+344
+00:18:24,790 --> 00:18:28,550
+longer, and as a result, reduce the supervision required
+
+345
+00:18:28,550 --> 00:18:31,870
+for training, the algorithm at the very end
+
+346
+00:18:31,870 --> 00:18:35,450
+is hardly able to learn how to do the task at all
+
+347
+00:18:35,450 --> 00:18:39,140
+how to learn a policy that can do the task at all
+
+348
+00:18:39,140 --> 00:18:43,540
+And I should mention this is a very simple fish control
+
+349
+00:18:43,540 --> 00:18:47,820
+task, where your goal is to navigate with what the fish can
+
+350
+00:18:47,820 --> 00:18:51,120
+do to a particular position
+
+351
+00:18:51,120 --> 00:18:52,580
+So pretty simple task
+
+352
+00:18:52,580 --> 00:18:56,380
+Even for the simple task, if you increase your episode length
+
+353
+00:18:56,380 --> 00:18:58,560
+and don't give it resets very frequently
+
+354
+00:18:58,560 --> 00:19:01,660
+you're aren't able to learn a good policy
+
+355
+00:19:01,660 --> 00:19:03,240
+Now, why is this the case
+
+356
+00:19:03,240 --> 00:19:07,460
+Does anyone have hypotheses for why we're not getting a good
+
+357
+00:19:07,460 --> 00:19:14,100
+policy, if we only reset every 50,000 steps or 100,000 steps
+
+358
+00:19:14,100 --> 00:19:14,820
+Yeah
+
+359
+00:19:14,820 --> 00:19:19,620
+So the first issue that can happen is it can make a mistake
+
+360
+00:19:19,620 --> 00:19:22,460
+and do something that's bad, maybe leads it
+
+361
+00:19:22,460 --> 00:19:24,380
+to a part of the state space that
+
+362
+00:19:24,380 --> 00:19:26,470
+is very hard to recover from
+
+363
+00:19:26,470 --> 00:19:27,850
+In this particular environment, I
+
+364
+00:19:27,850 --> 00:19:30,520
+don't think it's possible for it to break its tail or something
+
+365
+00:19:30,520 --> 00:19:34,060
+but you can basically drift away from the state
+
+366
+00:19:34,060 --> 00:19:36,220
+distribution that's good
+
+367
+00:19:36,220 --> 00:19:39,250
+And so if we were to think about this
+
+368
+00:19:39,250 --> 00:19:41,450
+maybe that diagram is getting a little bit messy
+
+369
+00:19:41,450 --> 00:19:43,770
+Our goal is to learn a policy that
+
+370
+00:19:43,770 --> 00:19:48,270
+goes from some initial state distribution to some goal
+
+371
+00:19:48,270 --> 00:19:50,390
+as a simple reinforcement learning problem
+
+372
+00:19:50,390 --> 00:19:51,810
+As we're learning, we might simply
+
+373
+00:19:51,810 --> 00:19:59,570
+deviate from where the set of good states is
+
+374
+00:19:59,570 --> 00:20:01,730
+And because of this drift, it might
+
+375
+00:20:01,730 --> 00:20:04,370
+be very hard to recover and get closer
+
+376
+00:20:04,370 --> 00:20:07,930
+to the parts that have high reward
+
+377
+00:20:07,930 --> 00:20:09,530
+So that's one challenge
+
+378
+00:20:09,530 --> 00:20:13,650
+Does anyone else have ideas on another challenge
+
+379
+00:20:13,650 --> 00:20:16,450
+The other challenge is actually a little bit more nuanced
+
+380
+00:20:16,450 --> 00:20:19,470
+and in particular, say that we drift away
+
+381
+00:20:19,470 --> 00:20:23,690
+But maybe either in another episode after one reset
+
+382
+00:20:23,690 --> 00:20:30,090
+or even for this episode, if you are able to eventually get
+
+383
+00:20:30,090 --> 00:20:31,470
+to the goal, which is good
+
+384
+00:20:31,470 --> 00:20:34,170
+You got reward
+
+385
+00:20:34,170 --> 00:20:40,810
+From there, you might simply stay in this region of the state
+
+386
+00:20:40,810 --> 00:20:42,460
+space
+
+387
+00:20:42,460 --> 00:20:44,170
+And if you start collecting a lot of data
+
+388
+00:20:44,170 --> 00:20:47,010
+in this part of the state space, you're getting lots of reward
+
+389
+00:20:47,010 --> 00:20:50,130
+And so the learning process is great
+
+390
+00:20:50,130 --> 00:20:54,370
+But then, if your goal is to learn a policy that
+
+391
+00:20:54,370 --> 00:20:56,410
+starts from here and goes to here
+
+392
+00:20:56,410 --> 00:20:58,930
+you're not actually visiting the states
+
+393
+00:20:58,930 --> 00:21:02,770
+that will yield a good policy
+
+394
+00:21:02,770 --> 00:21:06,930
+And so you might actually not be visiting the states that
+
+395
+00:21:06,930 --> 00:21:10,610
+allow you to actually go effectively from one
+
+396
+00:21:10,610 --> 00:21:14,890
+initial state to the goal
+
+397
+00:21:14,890 --> 00:21:18,650
+So two challenges, if we think about this rho
+
+398
+00:21:18,650 --> 00:21:21,570
+star as the optimal state distribution
+
+399
+00:21:21,570 --> 00:21:25,950
+for getting from start to goal, then in an episodic learning
+
+400
+00:21:25,950 --> 00:21:28,530
+you can always retry the task from the initial state
+
+401
+00:21:28,530 --> 00:21:30,250
+distribution
+
+402
+00:21:30,250 --> 00:21:35,240
+Whereas, in autonomous learning or non-episodic learning
+
+403
+00:21:35,240 --> 00:21:37,360
+you'll continue from where you left off
+
+404
+00:21:37,360 --> 00:21:39,680
+and that exploration might lead you
+
+405
+00:21:39,680 --> 00:21:43,840
+to drift away from the set of good states for getting
+
+406
+00:21:43,840 --> 00:21:46,320
+to the goal
+
+407
+00:21:46,320 --> 00:21:48,560
+And then even if you do eventually get to the goal
+
+408
+00:21:48,560 --> 00:21:51,520
+your state distribution in your replay buffer
+
+409
+00:21:51,520 --> 00:21:58,400
+might collapse and might be concentrated around the goal
+
+410
+00:21:58,400 --> 00:22:02,400
+rather than capturing the state distribution that's
+
+411
+00:22:02,400 --> 00:22:04,150
+around the optimal policy
+
+412
+00:22:04,150 --> 00:22:06,360
+And if you don't have states from the optimal policy
+
+413
+00:22:06,360 --> 00:22:08,960
+you won't know what to do or what actions to take
+
+414
+00:22:08,960 --> 00:22:12,680
+when you're in this part of the state space
+
+415
+00:22:12,680 --> 00:22:13,460
+Cool
+
+416
+00:22:13,460 --> 00:22:14,680
+So as an outcome of this, you'll never
+
+417
+00:22:14,680 --> 00:22:19,600
+actually learn a good policy
+
+418
+00:22:19,600 --> 00:22:24,360
+So how can we learn an effective policy
+
+419
+00:22:24,360 --> 00:22:28,360
+So if the agent is allowed to reset from the initial state
+
+420
+00:22:28,360 --> 00:22:31,200
+distribution, we do learn successfully
+
+421
+00:22:31,200 --> 00:22:34,670
+And so one very simple idea is to try
+
+422
+00:22:34,670 --> 00:22:39,870
+to learn a policy that brings us from wherever we ended up
+
+423
+00:22:39,870 --> 00:22:43,070
+after attempting the task back to the initial state
+
+424
+00:22:43,070 --> 00:22:45,010
+distribution
+
+425
+00:22:45,010 --> 00:22:46,430
+And we can call this idea-- we can
+
+426
+00:22:46,430 --> 00:22:50,030
+think of this as a reset policy or a backwards policy that's
+
+427
+00:22:50,030 --> 00:22:56,310
+trying to undo the task rather than do the task forward
+
+428
+00:22:56,310 --> 00:23:00,410
+And so we can think of this as a forward backward RL
+
+429
+00:23:00,410 --> 00:23:03,310
+because we will be learning a forward policy that
+
+430
+00:23:03,310 --> 00:23:07,870
+does the task, and a backward policy that undoes the task
+
+431
+00:23:07,870 --> 00:23:14,190
+And where to put this
+
+432
+00:23:14,190 --> 00:23:15,990
+Maybe let's do it over here
+
+433
+00:23:15,990 --> 00:23:25,750
+So you'll first-- maybe step 0 is to initialize and sample
+
+434
+00:23:25,750 --> 00:23:30,550
+an initial state from your initial state distribution
+
+435
+00:23:30,550 --> 00:23:32,590
+basically initializing the agent
+
+436
+00:23:32,590 --> 00:23:39,740
+And then you're going to repeatedly run
+
+437
+00:23:39,740 --> 00:23:43,620
+your forward policy, which I'll call pi f
+
+438
+00:23:43,620 --> 00:23:49,780
+then update your forward policy by trying
+
+439
+00:23:49,780 --> 00:23:53,400
+to maximize the sum of rewards
+
+440
+00:23:53,400 --> 00:23:57,460
+And this will be using the reward function
+
+441
+00:23:57,460 --> 00:23:59,180
+for completing the task
+
+442
+00:23:59,180 --> 00:24:04,460
+I'll call that rf, the forward-reward function
+
+443
+00:24:04,460 --> 00:24:08,500
+And then we'll reach some state we won't reset
+
+444
+00:24:08,500 --> 00:24:13,820
+and we'll run our backward policy, pi b
+
+445
+00:24:13,820 --> 00:24:20,540
+And then we can likewise update our backward policy
+
+446
+00:24:20,540 --> 00:24:23,220
+In this case, we need to update it
+
+447
+00:24:23,220 --> 00:24:25,600
+for the reverse of the forward task
+
+448
+00:24:25,600 --> 00:24:28,060
+And so we'll actually rely on a reward function that
+
+449
+00:24:28,060 --> 00:24:33,780
+will tell us if we are reaching the initial state distribution
+
+450
+00:24:33,780 --> 00:24:36,260
+And so this is going to require a second reward
+
+451
+00:24:36,260 --> 00:24:41,580
+function, rb that is going to serve as reward
+
+452
+00:24:41,580 --> 00:24:43,780
+for the backward policy
+
+453
+00:24:43,780 --> 00:24:45,240
+Now in terms of these update steps
+
+454
+00:24:45,240 --> 00:24:47,740
+you can use your favorite reinforcement
+
+455
+00:24:47,740 --> 00:24:50,900
+learning algorithm for this
+
+456
+00:24:50,900 --> 00:24:54,300
+And critically, after we run the backward policy
+
+457
+00:24:54,300 --> 00:24:55,980
+we're not going to reset
+
+458
+00:24:55,980 --> 00:25:02,220
+We'll then go back to running the forward policy again
+
+459
+00:25:02,220 --> 00:25:04,860
+And so what this would look like is we
+
+460
+00:25:04,860 --> 00:25:07,440
+will define this backward-reward function
+
+461
+00:25:07,440 --> 00:25:12,660
+which is rewards us for reaching states in the initial state
+
+462
+00:25:12,660 --> 00:25:14,220
+distribution
+
+463
+00:25:14,220 --> 00:25:16,220
+Then we'll initialize them and repeatedly
+
+464
+00:25:16,220 --> 00:25:20,140
+roll out the forward policy, then update the forward policy
+
+465
+00:25:20,140 --> 00:25:22,100
+with respect to reaching the goal
+
+466
+00:25:22,100 --> 00:25:24,420
+Roll out the backward policy, which
+
+467
+00:25:24,420 --> 00:25:27,980
+is going to try to go back to the initial state distribution
+
+468
+00:25:27,980 --> 00:25:30,890
+then update the backward policy
+
+469
+00:25:30,890 --> 00:25:32,670
+And then without resetting, again
+
+470
+00:25:32,670 --> 00:25:34,150
+try to roll out the forward policy
+
+471
+00:25:34,150 --> 00:25:38,170
+roll out the backward policy, and repeat this process
+
+472
+00:25:38,170 --> 00:25:42,330
+You can also have a reset very infrequently, so occasionally
+
+473
+00:25:42,330 --> 00:25:44,970
+reset it, just in case it does get stuck
+
+474
+00:25:44,970 --> 00:25:49,570
+in a really challenging state
+
+475
+00:25:49,570 --> 00:25:52,590
+And then at test time, once you're done with this process
+
+476
+00:25:52,590 --> 00:25:54,250
+you can discard the backward policy
+
+477
+00:25:54,250 --> 00:25:56,370
+and just deploy your forward policy, which
+
+478
+00:25:56,370 --> 00:25:58,570
+should have learned, ideally, how
+
+479
+00:25:58,570 --> 00:26:02,810
+to get efficiently from the initial state distribution
+
+480
+00:26:02,810 --> 00:26:06,370
+to the goal, or generally, to maximize
+
+481
+00:26:06,370 --> 00:26:09,610
+the forward-forward function
+
+482
+00:26:09,610 --> 00:26:11,990
+One other small note here is that we're going to be
+
+483
+00:26:11,990 --> 00:26:14,130
+Typically, you need to decide how long to roll out
+
+484
+00:26:14,130 --> 00:26:15,870
+the forward policy for
+
+485
+00:26:15,870 --> 00:26:17,290
+The simplest thing to do is simply
+
+486
+00:26:17,290 --> 00:26:20,010
+to roll it out for h time steps, so
+
+487
+00:26:20,010 --> 00:26:22,930
+choose a constant number of time steps to roll it out for
+
+488
+00:26:22,930 --> 00:26:25,770
+You could imagine doing something more sophisticated
+
+489
+00:26:25,770 --> 00:26:28,950
+for example, before the forward policy has learned anything
+
+490
+00:26:28,950 --> 00:26:31,420
+the backward policy, if it's not moving anywhere
+
+491
+00:26:31,420 --> 00:26:33,500
+the backward policy won't really have any job
+
+492
+00:26:33,500 --> 00:26:34,460
+to do at the beginning
+
+493
+00:26:34,460 --> 00:26:36,090
+And so you, for example, could run this
+
+494
+00:26:36,090 --> 00:26:38,040
+for a little bit longer at the beginning
+
+495
+00:26:38,040 --> 00:26:39,200
+but then at some point, you also need
+
+496
+00:26:39,200 --> 00:26:41,360
+to run the backward policy for a little bit longer
+
+497
+00:26:41,360 --> 00:26:46,440
+And it's a bit simpler to just use a fixed number of steps
+
+498
+00:26:46,440 --> 00:26:48,520
+And ideally, if this process is autonomous
+
+499
+00:26:48,520 --> 00:26:50,680
+then the number of time steps actually
+
+500
+00:26:50,680 --> 00:26:52,800
+matters a little bit less because you
+
+501
+00:26:52,800 --> 00:26:56,940
+can go to sleep while your robot is trying to learn
+
+502
+00:26:56,940 --> 00:26:59,360
+Yeah, so the question is, is there any information sharing
+
+503
+00:26:59,360 --> 00:27:02,200
+between the forward policy and backward policy
+
+504
+00:27:02,200 --> 00:27:03,800
+If you're using replay buffers, you
+
+505
+00:27:03,800 --> 00:27:06,000
+could consider sharing data between the two
+
+506
+00:27:06,000 --> 00:27:09,480
+and relabeling the rewards for the forward policy for backward
+
+507
+00:27:09,480 --> 00:27:12,560
+policy, and vice-versa
+
+508
+00:27:12,560 --> 00:27:15,480
+In practice, it's fairly common to actually
+
+509
+00:27:15,480 --> 00:27:17,100
+not share much information
+
+510
+00:27:17,100 --> 00:27:19,920
+You can also share an image encoder, for example
+
+511
+00:27:19,920 --> 00:27:22,440
+share some of the weights
+
+512
+00:27:22,440 --> 00:27:26,120
+That can be helpful, but they are actually trying to learn
+
+513
+00:27:26,120 --> 00:27:27,950
+in some ways, very different things
+
+514
+00:27:27,950 --> 00:27:29,660
+And so that makes it a little bit tricky
+
+515
+00:27:29,660 --> 00:27:34,600
+We'll also see some algorithms later on that do more sharing
+
+516
+00:27:34,600 --> 00:27:38,600
+So the upside of this algorithm is quite simple
+
+517
+00:27:38,600 --> 00:27:41,520
+One of the downsides is that this backward policy
+
+518
+00:27:41,520 --> 00:27:43,400
+that's trying to undo the task
+
+519
+00:27:43,400 --> 00:27:48,040
+Ultimately, this is not particularly useful
+
+520
+00:27:48,040 --> 00:27:51,320
+So in some ways, it seems a little bit
+
+521
+00:27:51,320 --> 00:27:53,200
+wasteful to learn this policy, but it
+
+522
+00:27:53,200 --> 00:27:58,720
+does enable the autonomous learning which is quite nice
+
+523
+00:27:58,720 --> 00:28:03,800
+So this is the most simple algorithm
+
+524
+00:28:03,800 --> 00:28:07,320
+you could use for trying to learn autonomously
+
+525
+00:28:07,320 --> 00:28:10,400
+But there are also some alternatives that, in some ways
+
+526
+00:28:10,400 --> 00:28:13,080
+have a number of appealing properties
+
+527
+00:28:13,080 --> 00:28:16,570
+So first, for your backward policy
+
+528
+00:28:16,570 --> 00:28:18,360
+you can actually change the reward function
+
+529
+00:28:18,360 --> 00:28:22,520
+that it uses to actually not reset all the way back
+
+530
+00:28:22,520 --> 00:28:24,000
+to the beginning, but potentially
+
+531
+00:28:24,000 --> 00:28:29,310
+to reset from a larger variety of states
+
+532
+00:28:29,310 --> 00:28:32,310
+Second, we could, instead of learning forward and backward
+
+533
+00:28:32,310 --> 00:28:34,070
+just for one task, we could think
+
+534
+00:28:34,070 --> 00:28:37,950
+about practicing a cycle of different tasks
+
+535
+00:28:37,950 --> 00:28:41,290
+and not just learning a forward task and a backward task
+
+536
+00:28:41,290 --> 00:28:42,460
+We'll talk about that a bit
+
+537
+00:28:42,460 --> 00:28:44,160
+And then the other option is you can also
+
+538
+00:28:44,160 --> 00:28:46,910
+set up a task that can be done repeatedly, where you can just
+
+539
+00:28:46,910 --> 00:28:50,190
+keep on attempting the task over and over again
+
+540
+00:28:50,190 --> 00:28:52,500
+in certain special circumstances
+
+541
+00:28:52,500 --> 00:28:56,730
+And we'll talk about that briefly as well
+
+542
+00:28:56,730 --> 00:28:57,230
+Cool
+
+543
+00:28:57,230 --> 00:28:59,030
+Let's first talk about learning to reset
+
+544
+00:28:59,030 --> 00:29:01,330
+to a different initial state distribution
+
+545
+00:29:01,330 --> 00:29:02,290
+from the initial state
+
+546
+00:29:02,290 --> 00:29:06,750
+And so the motivation here is that in forward-backward RL
+
+547
+00:29:06,750 --> 00:29:09,070
+we're trying the task, going back, trying the task
+
+548
+00:29:09,070 --> 00:29:10,190
+going back
+
+549
+00:29:10,190 --> 00:29:16,630
+And ultimately, we want to be able to do complete
+
+550
+00:29:16,630 --> 00:29:18,950
+the task from the initial state distribution
+
+551
+00:29:18,950 --> 00:29:21,350
+but we also need to know how to take
+
+552
+00:29:21,350 --> 00:29:26,300
+good actions, all along the expert state distribution as
+
+553
+00:29:26,300 --> 00:29:27,230
+well
+
+554
+00:29:27,230 --> 00:29:28,940
+And so one of the things that we could do
+
+555
+00:29:28,940 --> 00:29:30,440
+is instead of going back all the way
+
+556
+00:29:30,440 --> 00:29:32,300
+to the beginning, every single time
+
+557
+00:29:32,300 --> 00:29:35,700
+we could actually reset to different states
+
+558
+00:29:35,700 --> 00:29:39,700
+along the expert state distribution
+
+559
+00:29:39,700 --> 00:29:41,700
+And there's actually work that shows
+
+560
+00:29:41,700 --> 00:29:44,840
+that if you were to do this and had a way to do this
+
+561
+00:29:44,840 --> 00:29:46,860
+then you'd actually learn a bit more efficiently
+
+562
+00:29:46,860 --> 00:29:50,200
+than always starting from the initial state distribution
+
+563
+00:29:50,200 --> 00:29:52,780
+even in episodic learning settings
+
+564
+00:29:52,780 --> 00:29:55,660
+And so the way that this works is it's
+
+565
+00:29:55,660 --> 00:29:57,580
+basically going to be the same exact thing
+
+566
+00:29:57,580 --> 00:30:04,740
+as before, but with basically two small modifications
+
+567
+00:30:04,740 --> 00:30:07,980
+And the first is that if we want to be able to reset and learn
+
+568
+00:30:07,980 --> 00:30:11,500
+a policy that brings us to the expert state distribution, then
+
+569
+00:30:11,500 --> 00:30:13,820
+we need a way to approximate what that expert state
+
+570
+00:30:13,820 --> 00:30:15,300
+distribution is
+
+571
+00:30:15,300 --> 00:30:19,940
+And so we'll assume that we have a few demonstrations
+
+572
+00:30:19,940 --> 00:30:27,130
+And so maybe negative 1 here is you're basically
+
+573
+00:30:27,130 --> 00:30:33,850
+given some set of expert trajectories or expert
+
+574
+00:30:33,850 --> 00:30:37,450
+demonstrations, and these will be examples
+
+575
+00:30:37,450 --> 00:30:40,610
+of ways to accomplish the task
+
+576
+00:30:40,610 --> 00:30:43,530
+And then you need to change the reward function
+
+577
+00:30:43,530 --> 00:30:46,770
+for the backward policy, where the reward function shouldn't
+
+578
+00:30:46,770 --> 00:30:50,030
+be to reach the initial state distribution
+
+579
+00:30:50,030 --> 00:30:54,890
+but instead, it should be to reach states
+
+580
+00:30:54,890 --> 00:30:58,570
+that the expert visits
+
+581
+00:30:58,570 --> 00:31:00,450
+And so in particular, we'll be given
+
+582
+00:31:00,450 --> 00:31:02,250
+a small set of demonstrations
+
+583
+00:31:02,250 --> 00:31:04,330
+And ideally, what we want this to look like is
+
+584
+00:31:04,330 --> 00:31:06,210
+we'd run our forward policy
+
+585
+00:31:06,210 --> 00:31:08,890
+And then when we run our backward policy
+
+586
+00:31:08,890 --> 00:31:12,290
+after it's learned something reasonable
+
+587
+00:31:12,290 --> 00:31:14,210
+ideally, it would just bring us back
+
+588
+00:31:14,210 --> 00:31:20,050
+to the set of the set of states in the expert distribution
+
+589
+00:31:20,050 --> 00:31:21,740
+Then we run our forward policy again
+
+590
+00:31:21,740 --> 00:31:23,370
+and then it would bring us back, again
+
+591
+00:31:23,370 --> 00:31:25,490
+somewhere in this pink region that
+
+592
+00:31:25,490 --> 00:31:27,550
+is showing the distribution of states
+
+593
+00:31:27,550 --> 00:31:32,570
+that are visited by the expert
+
+594
+00:31:32,570 --> 00:31:38,250
+And so the forward-backward process is the same
+
+595
+00:31:38,250 --> 00:31:41,130
+but we have this modified backward-reward function
+
+596
+00:31:41,130 --> 00:31:46,050
+And we're actually going to learn this reward function
+
+597
+00:31:46,050 --> 00:31:50,330
+And in particular, we talked about in the lecture
+
+598
+00:31:50,330 --> 00:31:55,730
+on learning reward functions, how you can train discriminators
+
+599
+00:31:55,730 --> 00:31:59,730
+to discriminate between good states and bad states
+
+600
+00:31:59,730 --> 00:32:05,290
+and use states from the policy as examples of bad states
+
+601
+00:32:05,290 --> 00:32:07,430
+And we can do the same exact thing here
+
+602
+00:32:07,430 --> 00:32:11,130
+where this reward function will be trained to distinguish states
+
+603
+00:32:11,130 --> 00:32:16,210
+visited by the policy and states visited in the demonstrations
+
+604
+00:32:16,210 --> 00:32:18,810
+And then you'll be trying to-- when
+
+605
+00:32:18,810 --> 00:32:20,510
+you're training the backward policy
+
+606
+00:32:20,510 --> 00:32:23,180
+you'll be trying to trick this reward function into thinking
+
+607
+00:32:23,180 --> 00:32:24,640
+that it's the state that's visiting
+
+608
+00:32:24,640 --> 00:32:29,670
+our states from the expert and not from the policy
+
+609
+00:32:29,670 --> 00:32:31,800
+And then, again, we'll discard our backward policy
+
+610
+00:32:31,800 --> 00:32:38,340
+when we're done, and deploy our forward policy
+
+611
+00:32:38,340 --> 00:32:38,840
+Cool
+
+612
+00:32:38,840 --> 00:32:40,210
+So let's see some demonstrations
+
+613
+00:32:40,210 --> 00:32:43,760
+run our forward policy, backward policy, and so forth
+
+614
+00:32:43,760 --> 00:32:47,840
+This forward-backward RL addresses the challenge
+
+615
+00:32:47,840 --> 00:32:50,400
+of preventing the agent from drifting away
+
+616
+00:32:50,400 --> 00:32:54,760
+And it also avoids collapsing the distribution that we
+
+617
+00:32:54,760 --> 00:32:59,240
+talked about before as well
+
+618
+00:32:59,240 --> 00:32:59,740
+Cool
+
+619
+00:32:59,740 --> 00:33:02,320
+And then the upside that I mentioned very briefly
+
+620
+00:33:02,320 --> 00:33:06,880
+is that if you try the task from a wide set of initial states
+
+621
+00:33:06,880 --> 00:33:09,240
+both easier states, like states that
+
+622
+00:33:09,240 --> 00:33:11,840
+are closer to the goal and further states, then
+
+623
+00:33:11,840 --> 00:33:14,040
+you could actually improve the efficiency
+
+624
+00:33:14,040 --> 00:33:17,510
+of the entire reinforcement learning algorithm
+
+625
+00:33:17,510 --> 00:33:19,880
+The last thing that I'll mention is that you can actually
+
+626
+00:33:19,880 --> 00:33:24,510
+use these demonstrations in the replay buffers
+
+627
+00:33:24,510 --> 00:33:27,070
+as data to help train the forward policy
+
+628
+00:33:27,070 --> 00:33:29,750
+and the reverse policy as well
+
+629
+00:33:29,750 --> 00:33:32,870
+So the question is, if the agent finishes the task
+
+630
+00:33:32,870 --> 00:33:35,430
+does the backward policy just stay there
+
+631
+00:33:35,430 --> 00:33:38,330
+And here the answer is no
+
+632
+00:33:38,330 --> 00:33:40,670
+So in the case of forward-backward RL
+
+633
+00:33:40,670 --> 00:33:42,290
+it would go back to the initial state
+
+634
+00:33:42,290 --> 00:33:46,450
+Whereas, in the case of this MEDAL algorithm
+
+635
+00:33:46,450 --> 00:33:50,790
+it'll try to push the policy to a state in the expert state
+
+636
+00:33:50,790 --> 00:33:52,110
+distribution
+
+637
+00:33:52,110 --> 00:33:56,870
+And specifically when we're training the classifier
+
+638
+00:33:56,870 --> 00:34:00,610
+to classify between policy states and expert states
+
+639
+00:34:00,610 --> 00:34:03,630
+we're using all of the states in the trajectories, all
+
+640
+00:34:03,630 --> 00:34:05,430
+the states in the demos
+
+641
+00:34:05,430 --> 00:34:09,010
+And so it's going to, for example, like in this graphic
+
+642
+00:34:09,010 --> 00:34:12,310
+go back to somewhere over here so that the policy then
+
+643
+00:34:12,310 --> 00:34:15,650
+learns and practices how to do the task from here
+
+644
+00:34:15,650 --> 00:34:19,150
+rather than only practicing it from the goal state
+
+645
+00:34:19,150 --> 00:34:20,650
+The question is, what prevents it
+
+646
+00:34:20,650 --> 00:34:22,320
+from actually staying in the goal state
+
+647
+00:34:22,320 --> 00:34:25,380
+Because the goal state is part of the demonstrations
+
+648
+00:34:25,380 --> 00:34:28,570
+The specifics of--
+
+649
+00:34:28,570 --> 00:34:30,280
+I was thinking about not going into this
+
+650
+00:34:30,280 --> 00:34:32,860
+But basically, the specifics of this reward function
+
+651
+00:34:32,860 --> 00:34:36,659
+is actually a state distribution matching objective
+
+652
+00:34:36,659 --> 00:34:42,699
+where it's goal is to match the states that it visits
+
+653
+00:34:42,699 --> 00:34:44,500
+with the states and the demos
+
+654
+00:34:44,500 --> 00:34:47,880
+And if it only resets to the goal state
+
+655
+00:34:47,880 --> 00:34:50,620
+then the classifier or the discriminator of this reward
+
+656
+00:34:50,620 --> 00:34:53,179
+function will learn that if you're only in the goal state
+
+657
+00:34:53,179 --> 00:34:55,300
+then that's probably coming from the policy and not
+
+658
+00:34:55,300 --> 00:34:57,220
+from the expert demos
+
+659
+00:34:57,220 --> 00:35:01,180
+And it will be able to distinguish that
+
+660
+00:35:01,180 --> 00:35:03,700
+And the way that you can formalize that is you
+
+661
+00:35:03,700 --> 00:35:06,380
+can actually think about it as a divergence
+
+662
+00:35:06,380 --> 00:35:09,020
+between the distribution of states
+
+663
+00:35:09,020 --> 00:35:11,740
+visited by the backward policy and the distribution of states
+
+664
+00:35:11,740 --> 00:35:16,060
+visited by the experts
+
+665
+00:35:16,060 --> 00:35:16,740
+Cool
+
+666
+00:35:16,740 --> 00:35:21,940
+So let's actually briefly look at how these algorithms perform
+
+667
+00:35:21,940 --> 00:35:27,660
+So there's actually a benchmark for this autonomous
+
+668
+00:35:27,660 --> 00:35:30,740
+reinforcement learning setting called EARL
+
+669
+00:35:30,740 --> 00:35:35,460
+And during training, you only get a reset every 200,000
+
+670
+00:35:35,460 --> 00:35:38,580
+environment steps, so very infrequently
+
+671
+00:35:38,580 --> 00:35:41,500
+And the evaluation is, how good is the policy
+
+672
+00:35:41,500 --> 00:35:45,330
+when you start it from some initial state distribution
+
+673
+00:35:45,330 --> 00:35:47,000
+The benchmark has a few different tasks
+
+674
+00:35:47,000 --> 00:35:48,420
+This is probably the simplest task
+
+675
+00:35:48,420 --> 00:35:53,340
+in the benchmark, where you can basically try to grab a cup
+
+676
+00:35:53,340 --> 00:35:54,620
+and move it
+
+677
+00:35:54,620 --> 00:35:58,140
+And there's this very simple grabbing mechanism
+
+678
+00:35:58,140 --> 00:36:00,220
+that makes the task simpler
+
+679
+00:36:00,220 --> 00:36:02,900
+And then we'll also look at a more complex task
+
+680
+00:36:02,900 --> 00:36:06,620
+on the next slide
+
+681
+00:36:06,620 --> 00:36:09,340
+And if we look at what different algorithms do in this
+
+682
+00:36:09,340 --> 00:36:13,740
+environment, where they only get resets every 200,000 steps--
+
+683
+00:36:13,740 --> 00:36:19,090
+First, if we just run SAC without a backward policy, where
+
+684
+00:36:19,090 --> 00:36:20,710
+it only gets very infrequent resets
+
+685
+00:36:20,710 --> 00:36:23,170
+like we saw with the fish, the performance isn't very good
+
+686
+00:36:23,170 --> 00:36:27,490
+and it doesn't learn a good forward policy
+
+687
+00:36:27,490 --> 00:36:33,090
+If we use an Oracle that is able to get resets
+
+688
+00:36:33,090 --> 00:36:34,770
+much more frequently than it is actually
+
+689
+00:36:34,770 --> 00:36:37,730
+able to learn a good policy
+
+690
+00:36:37,730 --> 00:36:41,890
+And then there's a few reset-free algorithms
+
+691
+00:36:41,890 --> 00:36:44,330
+One is something that tries to perturb it, and encourage
+
+692
+00:36:44,330 --> 00:36:46,330
+it to visit novel states
+
+693
+00:36:46,330 --> 00:36:49,970
+Another, showed in orange, is the vanilla forward-backward
+
+694
+00:36:49,970 --> 00:36:53,010
+reinforcement learning algorithm
+
+695
+00:36:53,010 --> 00:36:55,650
+We can also give it some goal curriculum
+
+696
+00:36:55,650 --> 00:36:58,370
+I didn't talk specifically about this algorithm
+
+697
+00:36:58,370 --> 00:37:00,690
+And then the blue algorithm is the algorithm
+
+698
+00:37:00,690 --> 00:37:07,170
+that's trying to reset back to states in the demonstrations
+
+699
+00:37:07,170 --> 00:37:10,530
+And so we see that, first, I guess the main takeaway here
+
+700
+00:37:10,530 --> 00:37:14,330
+is that these algorithms that are specifically designed
+
+701
+00:37:14,330 --> 00:37:17,840
+for this autonomous or reset-free learning setting
+
+702
+00:37:17,840 --> 00:37:20,960
+are able to do much better than if you don't design it
+
+703
+00:37:20,960 --> 00:37:22,800
+for that case
+
+704
+00:37:22,800 --> 00:37:24,680
+And in this simple environment, they all
+
+705
+00:37:24,680 --> 00:37:27,720
+perform fairly similarly
+
+706
+00:37:27,720 --> 00:37:31,600
+And then as we move towards more complex environments
+
+707
+00:37:31,600 --> 00:37:35,720
+we see that forward-backward RL and MEDAL
+
+708
+00:37:35,720 --> 00:37:38,340
+are able to do the best
+
+709
+00:37:38,340 --> 00:37:39,800
+Whereas, simply, if you instead try
+
+710
+00:37:39,800 --> 00:37:44,680
+to encourage it to visit various states or goals
+
+711
+00:37:44,680 --> 00:37:47,640
+those algorithms aren't doing quite as well
+
+712
+00:37:47,640 --> 00:37:50,760
+Yeah, the question is, we're you assuming some expert
+
+713
+00:37:50,760 --> 00:37:54,400
+trajectories, how are those generated
+
+714
+00:37:54,400 --> 00:37:58,300
+So there's a variety of ways that you can generate them
+
+715
+00:37:58,300 --> 00:37:59,800
+On a real robot, you would typically
+
+716
+00:37:59,800 --> 00:38:03,080
+use some teleoperation device
+
+717
+00:38:03,080 --> 00:38:09,160
+And that could be using a puppeteering-like setup or a VR
+
+718
+00:38:09,160 --> 00:38:11,760
+controller or a 3D mouse or a keyboard
+
+719
+00:38:11,760 --> 00:38:14,440
+In simulation, it can either be something
+
+720
+00:38:14,440 --> 00:38:18,890
+that's like a scripted policy that is designed by a person
+
+721
+00:38:18,890 --> 00:38:23,030
+or it could be a policy that's trained with RL ahead of time
+
+722
+00:38:23,030 --> 00:38:25,990
+just to test the algorithms
+
+723
+00:38:25,990 --> 00:38:28,490
+Can I describe what the episodic part is
+
+724
+00:38:28,490 --> 00:38:31,350
+So episodic is a term that often refers
+
+725
+00:38:31,350 --> 00:38:33,190
+to the traditional reinforcement learning
+
+726
+00:38:33,190 --> 00:38:35,910
+setting, where we can attempt the task
+
+727
+00:38:35,910 --> 00:38:37,930
+and reset and attempt the task again
+
+728
+00:38:37,930 --> 00:38:40,290
+where each attempt is like an episode
+
+729
+00:38:40,290 --> 00:38:41,370
+And so it's very episodic
+
+730
+00:38:41,370 --> 00:38:42,450
+You get one episode
+
+731
+00:38:42,450 --> 00:38:44,630
+You try again, you get another episode
+
+732
+00:38:44,630 --> 00:38:48,570
+And then it's not the best term, but that's one term
+
+733
+00:38:48,570 --> 00:38:51,350
+and then non-episodic refers to the setting
+
+734
+00:38:51,350 --> 00:38:53,150
+where you don't get those resets
+
+735
+00:38:53,150 --> 00:38:54,390
+You just let it go
+
+736
+00:38:54,390 --> 00:38:57,210
+And so it's no longer a bunch of episodes
+
+737
+00:38:57,210 --> 00:39:01,800
+It's just like one long learning process
+
+738
+00:39:01,800 --> 00:39:03,470
+Sometimes, that learning process is also
+
+739
+00:39:03,470 --> 00:39:08,220
+called reset-free because there are no resets in the process
+
+740
+00:39:08,220 --> 00:39:10,390
+Oh, the other thing that I should mention, actually
+
+741
+00:39:10,390 --> 00:39:12,410
+that's cool about this particular task
+
+742
+00:39:12,410 --> 00:39:15,150
+is the forward task is to close the door
+
+743
+00:39:15,150 --> 00:39:17,010
+and the backward task is to open the door
+
+744
+00:39:17,010 --> 00:39:18,750
+And the backward task is, actually
+
+745
+00:39:18,750 --> 00:39:20,750
+depending on where the arm starts
+
+746
+00:39:20,750 --> 00:39:23,670
+it can actually be quite a bit harder than the forward task
+
+747
+00:39:23,670 --> 00:39:25,750
+And so you could, sometimes, have these mismatches
+
+748
+00:39:25,750 --> 00:39:28,070
+between how hard it is to do the forward task
+
+749
+00:39:28,070 --> 00:39:29,910
+and how hard it is to do the backward task
+
+750
+00:39:29,910 --> 00:39:32,790
+And that can make these algorithms-- that can generally
+
+751
+00:39:32,790 --> 00:39:35,650
+sometimes, make the learning process a bit more challenging
+
+752
+00:39:35,650 --> 00:39:37,790
+Because the forward policy, the backward policy
+
+753
+00:39:37,790 --> 00:39:40,590
+will learn at different rates
+
+754
+00:39:40,590 --> 00:39:41,970
+Similarly, if you could imagine--
+
+755
+00:39:41,970 --> 00:39:44,490
+if your forward task is to do a backflip
+
+756
+00:39:44,490 --> 00:39:47,490
+for example, maybe doing a backflip is really challenging
+
+757
+00:39:47,490 --> 00:39:50,030
+but getting up and standing up to start doing the backflip
+
+758
+00:39:50,030 --> 00:39:52,350
+is comparably easier
+
+759
+00:39:52,350 --> 00:39:55,030
+And so it's fairly common to have
+
+760
+00:39:55,030 --> 00:39:58,850
+a mismatch in that difficulty
+
+761
+00:39:58,850 --> 00:40:00,870
+These algorithms have also--
+
+762
+00:40:00,870 --> 00:40:03,610
+you can actually run them on real robots, and it's cool
+
+763
+00:40:03,610 --> 00:40:06,230
+You can watch time lapses of them
+
+764
+00:40:06,230 --> 00:40:08,870
+The left video is running forward-backward RL
+
+765
+00:40:08,870 --> 00:40:10,410
+where it's learning a forward policy
+
+766
+00:40:10,410 --> 00:40:11,810
+learning a backward policy
+
+767
+00:40:11,810 --> 00:40:15,620
+And you can see that both policies make mistakes
+
+768
+00:40:15,620 --> 00:40:18,020
+and it's able to--
+
+769
+00:40:18,020 --> 00:40:20,100
+I don't know if you can see it in the context
+
+770
+00:40:20,100 --> 00:40:23,020
+of this single video, but it is able to improve just
+
+771
+00:40:23,020 --> 00:40:26,920
+through a fully autonomous process
+
+772
+00:40:26,920 --> 00:40:30,040
+And then the right is the metal algorithm
+
+773
+00:40:30,040 --> 00:40:31,900
+And you can see that, for example
+
+774
+00:40:31,900 --> 00:40:34,780
+if the forward policy misses, then the backward policy
+
+775
+00:40:34,780 --> 00:40:36,420
+doesn't really have much to do
+
+776
+00:40:36,420 --> 00:40:40,260
+And so you do see, yeah, that another property
+
+777
+00:40:40,260 --> 00:40:46,020
+of the algorithm in the video
+
+778
+00:40:46,020 --> 00:40:47,050
+Cool
+
+779
+00:40:47,050 --> 00:40:48,420
+One other thing that I'll mention
+
+780
+00:40:48,420 --> 00:40:51,520
+is that rewards are also something that provide
+
+781
+00:40:51,520 --> 00:40:53,940
+And so using reward learning algorithms
+
+782
+00:40:53,940 --> 00:40:58,260
+in conjunction with autonomous or reset-free algorithms
+
+783
+00:40:58,260 --> 00:41:01,080
+is also quite common, and in both of these circumstances
+
+784
+00:41:01,080 --> 00:41:04,500
+the rewards were using models rather than using humans
+
+785
+00:41:04,500 --> 00:41:07,380
+So that this entire process can be autonomous
+
+786
+00:41:07,380 --> 00:41:12,130
+and you can actually run it overnight, for example
+
+787
+00:41:12,130 --> 00:41:14,230
+Yeah, so the question is, it seems
+
+788
+00:41:14,230 --> 00:41:15,730
+like for some of these tasks, if you
+
+789
+00:41:15,730 --> 00:41:17,210
+don't have a good backward policy
+
+790
+00:41:17,210 --> 00:41:19,290
+then it's really hard to learn the forward policy
+
+791
+00:41:19,290 --> 00:41:20,810
+And also, vice-versa, if you don't
+
+792
+00:41:20,810 --> 00:41:23,150
+have a good forward policy, then you're
+
+793
+00:41:23,150 --> 00:41:25,150
+never actually going to be picking up the towel
+
+794
+00:41:25,150 --> 00:41:29,530
+And then you need to figure out how to--
+
+795
+00:41:29,530 --> 00:41:33,140
+then you're not really getting actually any good states
+
+796
+00:41:33,140 --> 00:41:34,810
+In general, one of the things you can do
+
+797
+00:41:34,810 --> 00:41:36,270
+is, you can provide demonstrations
+
+798
+00:41:36,270 --> 00:41:38,760
+both for the forward task and for the backward task
+
+799
+00:41:38,760 --> 00:41:40,890
+and use that to help bootstrap the learning process
+
+800
+00:41:40,890 --> 00:41:43,410
+for both of them
+
+801
+00:41:43,410 --> 00:41:46,410
+Other than that, it is just generally
+
+802
+00:41:46,410 --> 00:41:53,170
+a challenge and to try to balance these two things
+
+803
+00:41:53,170 --> 00:41:56,010
+Yeah, in general, the algorithms are
+
+804
+00:41:56,010 --> 00:41:58,690
+able to work in some settings
+
+805
+00:41:58,690 --> 00:42:01,200
+I should also mention that these works--
+
+806
+00:42:01,200 --> 00:42:06,280
+most that are doing these, they're still--
+
+807
+00:42:06,280 --> 00:42:08,650
+I mean, certainly, still in the research stages, I think
+
+808
+00:42:08,650 --> 00:42:13,810
+This is not something that robot companies are using today
+
+809
+00:42:13,810 --> 00:42:15,490
+Yeah
+
+810
+00:42:15,490 --> 00:42:16,530
+Cool
+
+811
+00:42:16,530 --> 00:42:18,250
+So we've talked about algorithms that
+
+812
+00:42:18,250 --> 00:42:22,330
+learn a reset policy to help learning a forward policy
+
+813
+00:42:22,330 --> 00:42:27,210
+Now, we can also think about a slightly different setting
+
+814
+00:42:27,210 --> 00:42:30,090
+which is that if we're trying to learn, not just one task
+
+815
+00:42:30,090 --> 00:42:33,730
+but multiple tasks, then we could actually
+
+816
+00:42:33,730 --> 00:42:36,830
+think about not just going forward and backward
+
+817
+00:42:36,830 --> 00:42:41,010
+but practicing going in cycles and practicing different tasks
+
+818
+00:42:41,010 --> 00:42:43,730
+depending on what state you're in
+
+819
+00:42:43,730 --> 00:42:46,090
+So for example, if you have a robot
+
+820
+00:42:46,090 --> 00:42:50,130
+that's trying to make coffee, maybe the first task is to put--
+
+821
+00:42:50,130 --> 00:42:54,450
+or the first subtask is to put the cup in the coffee machine
+
+822
+00:42:54,450 --> 00:42:57,530
+And maybe if it attempts that, it actually
+
+823
+00:42:57,530 --> 00:43:00,410
+drops the cup on accident
+
+824
+00:43:00,410 --> 00:43:02,530
+And then, traditionally, what you would do
+
+825
+00:43:02,530 --> 00:43:05,330
+is you would have a human reset the cup back
+
+826
+00:43:05,330 --> 00:43:07,250
+to where it started
+
+827
+00:43:07,250 --> 00:43:09,720
+But we don't want to do that
+
+828
+00:43:09,720 --> 00:43:12,640
+And so, instead, maybe the second task
+
+829
+00:43:12,640 --> 00:43:14,740
+is instead of-- because it made a mistake
+
+830
+00:43:14,740 --> 00:43:17,620
+the second task shouldn't be to turn on the coffee machine
+
+831
+00:43:17,620 --> 00:43:20,750
+Instead, it should be to pick up the cup
+
+832
+00:43:20,750 --> 00:43:22,920
+And so we can imagine having these different cycles
+
+833
+00:43:22,920 --> 00:43:25,800
+where we practice task 1
+
+834
+00:43:25,800 --> 00:43:28,480
+Then if we fail, we practice task 2
+
+835
+00:43:28,480 --> 00:43:31,620
+And then task 2 maybe is resetting task 1
+
+836
+00:43:31,620 --> 00:43:33,360
+We maybe then go back to task 1, which
+
+837
+00:43:33,360 --> 00:43:35,840
+is to put the cup in the coffee machine
+
+838
+00:43:35,840 --> 00:43:39,760
+If we didn't succeed at task 2, we might keep trying it
+
+839
+00:43:39,760 --> 00:43:42,220
+If we do succeed at task 1 at putting the coffee machine
+
+840
+00:43:42,220 --> 00:43:46,840
+we might move to task 3, and so on, and so forth
+
+841
+00:43:46,840 --> 00:43:50,640
+And so we can have this graph or cycle of different tasks
+
+842
+00:43:50,640 --> 00:43:52,680
+that we're trying, at different points in time
+
+843
+00:43:52,680 --> 00:43:54,300
+depending on the state we're in
+
+844
+00:43:54,300 --> 00:43:56,040
+We'll practice a different task that
+
+845
+00:43:56,040 --> 00:43:58,240
+is possible to practice from that state
+
+846
+00:43:58,240 --> 00:44:05,080
+and exclude tasks that are not feasible from that state
+
+847
+00:44:05,080 --> 00:44:06,960
+Cool
+
+848
+00:44:06,960 --> 00:44:10,150
+So what this would look like is, we
+
+849
+00:44:10,150 --> 00:44:13,230
+will be learning a task condition policy, so
+
+850
+00:44:13,230 --> 00:44:15,430
+like a multi-task policy
+
+851
+00:44:15,430 --> 00:44:28,350
+And we will be in some state, and so we'll observe the state
+
+852
+00:44:28,350 --> 00:44:29,940
+that we're in
+
+853
+00:44:29,940 --> 00:44:31,690
+And then based on the state that we're in
+
+854
+00:44:31,690 --> 00:44:33,070
+we'll propose a task that we want
+
+855
+00:44:33,070 --> 00:44:34,790
+to practice from that state
+
+856
+00:44:34,790 --> 00:44:38,630
+So we'll have a step that is proposing
+
+857
+00:44:38,630 --> 00:44:44,510
+a task that we can use Zi to denote the task that we're
+
+858
+00:44:44,510 --> 00:44:46,350
+proposing
+
+859
+00:44:46,350 --> 00:44:50,030
+And this could be the descriptor for that task
+
+860
+00:44:50,030 --> 00:44:58,350
+And then we will run the policy for that task
+
+861
+00:44:58,350 --> 00:45:03,670
+And so this could be a multi-task policy
+
+862
+00:45:03,670 --> 00:45:08,820
+that's conditioned on Zi
+
+863
+00:45:08,820 --> 00:45:12,180
+And then we could also have an update step
+
+864
+00:45:12,180 --> 00:45:13,980
+where we update our policy
+
+865
+00:45:13,980 --> 00:45:16,640
+If we have more on-policy algorithm
+
+866
+00:45:16,640 --> 00:45:19,480
+then this would be updating it for this particular task
+
+867
+00:45:19,480 --> 00:45:21,260
+If we have an off-policy algorithm
+
+868
+00:45:21,260 --> 00:45:24,060
+we could update it for any of the tasks
+
+869
+00:45:24,060 --> 00:45:26,820
+and then repeat this process, where
+
+870
+00:45:26,820 --> 00:45:30,520
+after we've run it for that task for some number of steps
+
+871
+00:45:30,520 --> 00:45:35,060
+we'll then propose a different task and practice that task
+
+872
+00:45:35,060 --> 00:45:38,100
+So initialize our policy, propose a task
+
+873
+00:45:38,100 --> 00:45:41,480
+roll out the policy for each steps, and then update
+
+874
+00:45:41,480 --> 00:45:43,060
+And specifically, we'll be updating it
+
+875
+00:45:43,060 --> 00:45:47,900
+with the reward function that takes into account the tasks
+
+876
+00:45:47,900 --> 00:45:48,970
+that we're practicing
+
+877
+00:45:48,970 --> 00:45:51,140
+So we'll need a reward function for all of the tasks
+
+878
+00:45:51,140 --> 00:45:54,600
+that we might be doing
+
+879
+00:45:54,600 --> 00:45:55,100
+Yeah
+
+880
+00:45:55,100 --> 00:45:56,950
+And then, again, we won't have resets
+
+881
+00:45:56,950 --> 00:46:01,100
+or we'll have a very infrequent reset
+
+882
+00:46:01,100 --> 00:46:03,100
+And then, at test time, we can then
+
+883
+00:46:03,100 --> 00:46:05,660
+deploy this multitask policy, which can do not just one task
+
+884
+00:46:05,660 --> 00:46:09,260
+but multiple different tasks
+
+885
+00:46:09,260 --> 00:46:12,980
+And as an example, this is a robot system that
+
+886
+00:46:12,980 --> 00:46:16,450
+is the goal is to pick up--
+
+887
+00:46:16,450 --> 00:46:18,620
+basically, it's different stages and different tasks
+
+888
+00:46:18,620 --> 00:46:19,450
+or different stages
+
+889
+00:46:19,450 --> 00:46:26,420
+You want to pick up this object, flip it over, and rotate it
+
+890
+00:46:26,420 --> 00:46:28,920
+And there are different subtasks here
+
+891
+00:46:28,920 --> 00:46:32,160
+And so at the beginning, it doesn't know how to flip it
+
+892
+00:46:32,160 --> 00:46:35,020
+and it doesn't certainly doesn't know how to rotate it
+
+893
+00:46:35,020 --> 00:46:37,960
+Or maybe it does actually know how to flip it
+
+894
+00:46:37,960 --> 00:46:39,840
+but it isn't very good at rotating it
+
+895
+00:46:39,840 --> 00:46:41,620
+It's something where, at the beginning
+
+896
+00:46:41,620 --> 00:46:43,600
+you don't know how to flip it or rotate it
+
+897
+00:46:43,600 --> 00:46:46,060
+and you'll basically just be like practicing picking it up
+
+898
+00:46:46,060 --> 00:46:50,580
+from the hand and putting it back, picking it up, putting it
+
+899
+00:46:50,580 --> 00:46:52,220
+down, put it down
+
+900
+00:46:52,220 --> 00:46:54,360
+And then once you get better at picking it up
+
+901
+00:46:54,360 --> 00:46:59,100
+then you'll start to actually rotate it or flip it
+
+902
+00:46:59,100 --> 00:47:00,780
+over and rotate it
+
+903
+00:47:00,780 --> 00:47:03,460
+And so depending on which state you're actually in you'll
+
+904
+00:47:03,460 --> 00:47:05,290
+actually practice something that makes
+
+905
+00:47:05,290 --> 00:47:07,690
+sense for that given state
+
+906
+00:47:07,690 --> 00:47:10,210
+And this can actually address some of the challenges
+
+907
+00:47:10,210 --> 00:47:13,770
+that we talked about with regard to imbalance and tasks, where
+
+908
+00:47:13,770 --> 00:47:17,170
+if you haven't actually yet successfully run
+
+909
+00:47:17,170 --> 00:47:20,230
+the forward policy to actually change the state
+
+910
+00:47:20,230 --> 00:47:21,650
+And you may not even be in a state
+
+911
+00:47:21,650 --> 00:47:23,650
+where it makes sense to run the backward policy
+
+912
+00:47:23,650 --> 00:47:27,970
+then you can keep on running the policy for a task that
+
+913
+00:47:27,970 --> 00:47:30,450
+makes sense
+
+914
+00:47:30,450 --> 00:47:32,210
+As a couple examples-- more examples
+
+915
+00:47:32,210 --> 00:47:35,830
+of this, this example on the left
+
+916
+00:47:35,830 --> 00:47:40,170
+you're trying to learn both for walking forward and walking
+
+917
+00:47:40,170 --> 00:47:41,130
+backwards
+
+918
+00:47:41,130 --> 00:47:46,890
+And you also, at the same time, are actually
+
+919
+00:47:46,890 --> 00:47:48,690
+learning how to get back up
+
+920
+00:47:48,690 --> 00:47:51,130
+And so you can see it kind of transitioning between going
+
+921
+00:47:51,130 --> 00:47:52,570
+forward, going backward
+
+922
+00:47:52,570 --> 00:47:54,950
+If it's too far to the back, then it
+
+923
+00:47:54,950 --> 00:47:56,830
+will doesn't want to keep on going backwards
+
+924
+00:47:56,830 --> 00:48:00,370
+and so then you'll practice the task of going forwards
+
+925
+00:48:00,370 --> 00:48:03,420
+And likewise, this example on the right, there's actually
+
+926
+00:48:03,420 --> 00:48:04,880
+it's like a seven-stage test, where
+
+927
+00:48:04,880 --> 00:48:11,640
+you need to pick it up, position it, and screw repeatedly
+
+928
+00:48:11,640 --> 00:48:13,680
+And so it's running these different policies
+
+929
+00:48:13,680 --> 00:48:18,520
+or these different controllers based on the state that it's in
+
+930
+00:48:18,520 --> 00:48:22,320
+And eventually, it will also run the backward policy of putting
+
+931
+00:48:22,320 --> 00:48:25,500
+the wrench back on the table
+
+932
+00:48:25,500 --> 00:48:26,000
+Yeah
+
+933
+00:48:26,000 --> 00:48:30,560
+So the question is, how do we select these tasks, basically
+
+934
+00:48:30,560 --> 00:48:35,740
+Yeah, basically, there are two approaches
+
+935
+00:48:35,740 --> 00:48:36,780
+that have been done here
+
+936
+00:48:36,780 --> 00:48:41,720
+And this is also at the bleeding edge of research in some ways
+
+937
+00:48:41,720 --> 00:48:44,120
+The verses that you could predefine a set of tasks
+
+938
+00:48:44,120 --> 00:48:47,900
+and also predefine that graph, saying if you failed task 1
+
+939
+00:48:47,900 --> 00:48:49,880
+then you should go should practice task 2
+
+940
+00:48:49,880 --> 00:48:52,320
+And basically, upfront, predefine
+
+941
+00:48:52,320 --> 00:48:56,760
+that graph of what you should do in different circumstances
+
+942
+00:48:56,760 --> 00:48:59,520
+and then act according to that graph
+
+943
+00:48:59,520 --> 00:49:03,070
+Alternatively, you could also train a model that
+
+944
+00:49:03,070 --> 00:49:05,430
+proposes tasks for you to do
+
+945
+00:49:05,430 --> 00:49:08,470
+And so, for example, in general, I
+
+946
+00:49:08,470 --> 00:49:11,030
+think it's an open question, with regard to which tasks
+
+947
+00:49:11,030 --> 00:49:13,870
+you pick to collect for at a given point in time
+
+948
+00:49:13,870 --> 00:49:16,280
+But you could, for example, ask a language model to say
+
+949
+00:49:16,280 --> 00:49:18,030
+what are the different things that I could
+
+950
+00:49:18,030 --> 00:49:21,630
+do in this environment to get better and actually
+
+951
+00:49:21,630 --> 00:49:25,550
+then practice the tasks that it describes as output
+
+952
+00:49:25,550 --> 00:49:31,070
+And so as an example of that, if we are at--
+
+953
+00:49:31,070 --> 00:49:33,560
+if this is the frame that we're in
+
+954
+00:49:33,560 --> 00:49:35,890
+then there's certain things that we can do in this task
+
+955
+00:49:35,890 --> 00:49:38,290
+We could open this toy microwave
+
+956
+00:49:38,290 --> 00:49:39,490
+We could pick up the banana
+
+957
+00:49:39,490 --> 00:49:42,150
+We could push the eggplant, move the pot
+
+958
+00:49:42,150 --> 00:49:44,710
+But if we instead told it to pick up the carrot
+
+959
+00:49:44,710 --> 00:49:47,470
+that's not something that you can do in the scene
+
+960
+00:49:47,470 --> 00:49:49,070
+And if we're trying to actually train
+
+961
+00:49:49,070 --> 00:49:50,490
+it to do lots of different things
+
+962
+00:49:50,490 --> 00:49:52,950
+these tasks are going to be seen dependent
+
+963
+00:49:52,950 --> 00:49:57,430
+So then you could ask a VLM to understand--
+
+964
+00:49:57,430 --> 00:49:59,190
+think about what are the things that you
+
+965
+00:49:59,190 --> 00:50:02,250
+can do in this environment, and then have it predict
+
+966
+00:50:02,250 --> 00:50:06,110
+for example, take the banana out of the silver pot
+
+967
+00:50:06,110 --> 00:50:07,870
+And then from there, actually, have
+
+968
+00:50:07,870 --> 00:50:11,790
+it practice doing this task versus practicing
+
+969
+00:50:11,790 --> 00:50:13,530
+doing some other task
+
+970
+00:50:13,530 --> 00:50:15,110
+The question is, how is this different
+
+971
+00:50:15,110 --> 00:50:16,550
+from hierarchical learning
+
+972
+00:50:16,550 --> 00:50:19,930
+So it's a good question
+
+973
+00:50:19,930 --> 00:50:23,210
+So this task proposer, you can think of it--
+
+974
+00:50:23,210 --> 00:50:25,750
+it shares some similarities with the high-level policy that's
+
+975
+00:50:25,750 --> 00:50:28,670
+telling you what to do in a certain circumstance
+
+976
+00:50:28,670 --> 00:50:30,570
+But its purpose is actually quite different
+
+977
+00:50:30,570 --> 00:50:34,390
+So the purpose here is actually having it propose things
+
+978
+00:50:34,390 --> 00:50:36,230
+that you could do in the environment
+
+979
+00:50:36,230 --> 00:50:37,910
+that you could practice
+
+980
+00:50:37,910 --> 00:50:40,510
+Whereas, in a hierarchical system
+
+981
+00:50:40,510 --> 00:50:42,470
+the high-level policy goal is to say like
+
+982
+00:50:42,470 --> 00:50:45,630
+what is the next subtask that will achieve some outcome
+
+983
+00:50:45,630 --> 00:50:46,660
+at the end of the day
+
+984
+00:50:46,660 --> 00:50:48,030
+And so this is actually something
+
+985
+00:50:48,030 --> 00:50:50,830
+where you want it to give you lots of different things
+
+986
+00:50:50,830 --> 00:50:53,350
+that allow you to learn lots of different things
+
+987
+00:50:53,350 --> 00:50:55,270
+Whereas, a high-level policy, you're much more
+
+988
+00:50:55,270 --> 00:50:56,890
+goal directed in terms of accomplishing
+
+989
+00:50:56,890 --> 00:50:59,470
+some long-term objective
+
+990
+00:50:59,470 --> 00:51:03,980
+This particular work chooses to actually use
+
+991
+00:51:03,980 --> 00:51:06,900
+a hierarchical method
+
+992
+00:51:06,900 --> 00:51:12,100
+It's actually builds upon one of the works
+
+993
+00:51:12,100 --> 00:51:14,740
+that we talked about previously, where it actually then feeds
+
+994
+00:51:14,740 --> 00:51:18,060
+this into an image editing diffusion model
+
+995
+00:51:18,060 --> 00:51:20,380
+to generate an image of a generated goal
+
+996
+00:51:20,380 --> 00:51:25,790
+And then it trains the policy to try to reach this goal image
+
+997
+00:51:25,790 --> 00:51:27,620
+And one of the things that's nice about this
+
+998
+00:51:27,620 --> 00:51:30,820
+is that with this approach, you need
+
+999
+00:51:30,820 --> 00:51:35,660
+to update this, using a reward function for each task
+
+1000
+00:51:35,660 --> 00:51:39,100
+And it can be quite challenging to define a reward function
+
+1001
+00:51:39,100 --> 00:51:41,100
+for all of the different tasks
+
+1002
+00:51:41,100 --> 00:51:43,460
+Whereas, if you have an image of the task
+
+1003
+00:51:43,460 --> 00:51:44,840
+that you're trying to accomplish
+
+1004
+00:51:44,840 --> 00:51:47,540
+then your reward function can be based on whether or not
+
+1005
+00:51:47,540 --> 00:51:49,820
+you're close to this image
+
+1006
+00:51:49,820 --> 00:51:52,860
+And so it makes it easier to define the reward functions
+
+1007
+00:51:52,860 --> 00:51:59,050
+Your question is, would this proposer give those outputs
+
+1008
+00:51:59,050 --> 00:51:59,810
+Yeah
+
+1009
+00:51:59,810 --> 00:52:00,010
+Yeah
+
+1010
+00:52:00,010 --> 00:52:00,640
+So, absolutely
+
+1011
+00:52:00,640 --> 00:52:05,150
+So this framework was applied to these simple robot scenes
+
+1012
+00:52:05,150 --> 00:52:07,800
+But you could also, for example, like in the hockey example
+
+1013
+00:52:07,800 --> 00:52:09,170
+ask it, like, what are the things
+
+1014
+00:52:09,170 --> 00:52:10,430
+I could do in this situation
+
+1015
+00:52:10,430 --> 00:52:11,990
+Should I practice passing
+
+1016
+00:52:11,990 --> 00:52:14,010
+Should I practice shooting
+
+1017
+00:52:14,010 --> 00:52:15,850
+For those particular examples, I think
+
+1018
+00:52:15,850 --> 00:52:19,470
+it's also reasonable to just-- there's only
+
+1019
+00:52:19,470 --> 00:52:21,590
+limited number of things that you need to practice
+
+1020
+00:52:21,590 --> 00:52:24,050
+and so you could just have one session on practicing goals
+
+1021
+00:52:24,050 --> 00:52:26,490
+one session on passing
+
+1022
+00:52:26,490 --> 00:52:28,450
+But, yeah, you could also use an idea like this
+
+1023
+00:52:28,450 --> 00:52:34,180
+to actually propose what to try to do in different situations
+
+1024
+00:52:34,180 --> 00:52:36,390
+Those are a couple of autonomous learning algorithms
+
+1025
+00:52:36,390 --> 00:52:37,990
+the first category being algorithms
+
+1026
+00:52:37,990 --> 00:52:39,570
+where you try to do the task, and then
+
+1027
+00:52:39,570 --> 00:52:41,620
+undo the task in various ways
+
+1028
+00:52:41,620 --> 00:52:43,410
+The second, where you're trying to then try
+
+1029
+00:52:43,410 --> 00:52:46,050
+to do one task and then another task, and then another task
+
+1030
+00:52:46,050 --> 00:52:48,260
+and try to just get better at lots of different tasks
+
+1031
+00:52:48,260 --> 00:52:50,030
+all at once
+
+1032
+00:52:50,030 --> 00:52:51,570
+There's also actually some scenarios
+
+1033
+00:52:51,570 --> 00:52:53,530
+where you can actually set up the task in a way
+
+1034
+00:52:53,530 --> 00:52:55,690
+that you can do it repeatedly
+
+1035
+00:52:55,690 --> 00:53:00,410
+And there isn't necessarily a lot
+
+1036
+00:53:00,410 --> 00:53:02,540
+of research on this particular idea
+
+1037
+00:53:02,540 --> 00:53:04,210
+but in this particular example, the goal
+
+1038
+00:53:04,210 --> 00:53:09,210
+is to fold napkins for businesses, where you
+
+1039
+00:53:09,210 --> 00:53:11,570
+need to fold lots of napkins
+
+1040
+00:53:11,570 --> 00:53:14,410
+So those are all circumstances, where we want to learn a policy
+
+1041
+00:53:14,410 --> 00:53:18,610
+And like our goal is to get a good policy rather than simply
+
+1042
+00:53:18,610 --> 00:53:22,930
+the Mars Rover example, where we want to maximize rewards
+
+1043
+00:53:22,930 --> 00:53:27,530
+There's also the second category of problems
+
+1044
+00:53:27,530 --> 00:53:31,170
+and the motivation is that we've been trying to learn policies
+
+1045
+00:53:31,170 --> 00:53:32,190
+without resets
+
+1046
+00:53:32,190 --> 00:53:33,820
+You'd improve the quality of the policy
+
+1047
+00:53:33,820 --> 00:53:35,930
+through practice, but then at some point
+
+1048
+00:53:35,930 --> 00:53:38,250
+we're actually going to be deploying the policy
+
+1049
+00:53:38,250 --> 00:53:41,050
+And ideally, this policy will be pretty good
+
+1050
+00:53:41,050 --> 00:53:44,190
+And maybe you're in a scenario where, obviously, everything's
+
+1051
+00:53:44,190 --> 00:53:45,190
+going to work perfectly
+
+1052
+00:53:45,190 --> 00:53:47,650
+Nothing will ever go wrong, when you actually go and deploy
+
+1053
+00:53:47,650 --> 00:53:49,130
+your policy
+
+1054
+00:53:49,130 --> 00:53:51,130
+But in practice, that's not the case
+
+1055
+00:53:51,130 --> 00:53:54,390
+And the natural world, things will go wrong
+
+1056
+00:53:54,390 --> 00:53:57,040
+despite having a lot of training
+
+1057
+00:53:57,040 --> 00:53:59,640
+And this latter setting is thinking about
+
+1058
+00:53:59,640 --> 00:54:02,800
+after we've learned some sort of policy
+
+1059
+00:54:02,800 --> 00:54:05,440
+when it's out in the world on its own
+
+1060
+00:54:05,440 --> 00:54:11,120
+can it recover from mistakes and learn after the deployment
+
+1061
+00:54:11,120 --> 00:54:13,560
+process
+
+1062
+00:54:13,560 --> 00:54:17,620
+And this is something that even humans do to some extent
+
+1063
+00:54:17,620 --> 00:54:21,840
+So here's a video where a person is trying to open a door
+
+1064
+00:54:21,840 --> 00:54:23,420
+And if you look really carefully
+
+1065
+00:54:23,420 --> 00:54:26,080
+you'll notice that, actually, the person makes a mistake
+
+1066
+00:54:26,080 --> 00:54:30,000
+and then adapts, really, in a split second in order
+
+1067
+00:54:30,000 --> 00:54:31,720
+to accomplish the task
+
+1068
+00:54:31,720 --> 00:54:33,600
+So if you play this video again, we'll
+
+1069
+00:54:33,600 --> 00:54:37,240
+see that right here, the person is trying to apply force
+
+1070
+00:54:37,240 --> 00:54:39,840
+and the key actually isn't correctly in the hole
+
+1071
+00:54:39,840 --> 00:54:45,400
+And then they try again by removing the key backwards
+
+1072
+00:54:45,400 --> 00:54:49,080
+and then putting it back into the keyhole
+
+1073
+00:54:49,080 --> 00:54:52,520
+And there's lots of examples like this, hopefully
+
+1074
+00:54:52,520 --> 00:54:57,830
+that you've encountered in your own deployed policy
+
+1075
+00:54:57,830 --> 00:54:59,830
+And we'd like to think about this setting, where
+
+1076
+00:54:59,830 --> 00:55:06,150
+we could actually adapt, within an episode, during deployment
+
+1077
+00:55:06,150 --> 00:55:08,570
+So in terms of how this compares to previous algorithms
+
+1078
+00:55:08,570 --> 00:55:09,630
+we've talked about--
+
+1079
+00:55:09,630 --> 00:55:11,130
+a lot of the course has been talking
+
+1080
+00:55:11,130 --> 00:55:13,630
+about this episodic setting, where you attempt it
+
+1081
+00:55:13,630 --> 00:55:15,270
+from the initial state repeatedly
+
+1082
+00:55:15,270 --> 00:55:17,190
+and then deploy the policy once
+
+1083
+00:55:17,190 --> 00:55:20,670
+We also talked today about this reset-free setting
+
+1084
+00:55:20,670 --> 00:55:23,970
+where you learn how to attempt the task
+
+1085
+00:55:23,970 --> 00:55:29,220
+undo the task repeatedly, and then want to deploy your policy
+
+1086
+00:55:29,220 --> 00:55:31,350
+And this more recent setting is something where you
+
+1087
+00:55:31,350 --> 00:55:32,690
+have some prior training data
+
+1088
+00:55:32,690 --> 00:55:35,910
+Maybe you've trained a policy, and you're
+
+1089
+00:55:35,910 --> 00:55:39,510
+in some new out-of-distribution circumstance
+
+1090
+00:55:39,510 --> 00:55:44,850
+And as you're trying to actually do the task, because you're
+
+1091
+00:55:44,850 --> 00:55:47,430
+in some new circumstances, you need to do some problem solving
+
+1092
+00:55:47,430 --> 00:55:51,750
+and actually adapt and learn during deployment
+
+1093
+00:55:51,750 --> 00:55:57,540
+during a single episode without resets
+
+1094
+00:55:57,540 --> 00:56:00,740
+And so you can think of this as after previous data
+
+1095
+00:56:00,740 --> 00:56:04,260
+or previous training, you have one life to autonomously
+
+1096
+00:56:04,260 --> 00:56:08,460
+complete the task
+
+1097
+00:56:08,460 --> 00:56:10,780
+As a fairly simple example, maybe you
+
+1098
+00:56:10,780 --> 00:56:13,660
+have training experience in a flat
+
+1099
+00:56:13,660 --> 00:56:15,570
+like running in like flat ground
+
+1100
+00:56:15,570 --> 00:56:17,700
+And then at some point, you encounter some obstacle
+
+1101
+00:56:17,700 --> 00:56:19,740
+that you hadn't seen before, and you
+
+1102
+00:56:19,740 --> 00:56:22,300
+need to figure out how to get over this obstacle
+
+1103
+00:56:22,300 --> 00:56:24,430
+despite not having seen this during training
+
+1104
+00:56:24,430 --> 00:56:26,180
+And you want to use reinforcement learning
+
+1105
+00:56:26,180 --> 00:56:27,860
+or use some ideas from reinforcement
+
+1106
+00:56:27,860 --> 00:56:30,460
+learning to adapt to the new circumstances
+
+1107
+00:56:30,460 --> 00:56:35,020
+live within an episode
+
+1108
+00:56:35,020 --> 00:56:39,560
+So one thing we might think about is, can we just run--
+
+1109
+00:56:39,560 --> 00:56:41,980
+can we continue to fine tune our policy with reinforcement
+
+1110
+00:56:41,980 --> 00:56:44,260
+learning at test time
+
+1111
+00:56:44,260 --> 00:56:45,720
+If, for example, we make a mistake
+
+1112
+00:56:45,720 --> 00:56:47,180
+maybe we can just update our policy
+
+1113
+00:56:47,180 --> 00:56:51,860
+with TD updates or policy gradients
+
+1114
+00:56:51,860 --> 00:56:56,780
+live, as we're rolling out our policy
+
+1115
+00:56:56,780 --> 00:56:59,980
+And so if we actually do that-- so we train a policy
+
+1116
+00:56:59,980 --> 00:57:06,860
+and then try to fine tune it at test time with this obstacle
+
+1117
+00:57:06,860 --> 00:57:08,440
+we get something that looks like this
+
+1118
+00:57:08,440 --> 00:57:10,420
+So the policy actually does figure out
+
+1119
+00:57:10,420 --> 00:57:12,040
+how to get over the first obstacle
+
+1120
+00:57:12,040 --> 00:57:16,300
+even though it has never seen that obstacle before
+
+1121
+00:57:16,300 --> 00:57:18,260
+And then, eventually, it actually
+
+1122
+00:57:18,260 --> 00:57:21,620
+gets stuck on flipped over
+
+1123
+00:57:21,620 --> 00:57:24,380
+And even though it's running reinforcement learning
+
+1124
+00:57:24,380 --> 00:57:25,540
+and you can see it's--
+
+1125
+00:57:25,540 --> 00:57:28,020
+it is somewhat trying to get up
+
+1126
+00:57:28,020 --> 00:57:30,460
+It essentially gets stuck
+
+1127
+00:57:30,460 --> 00:57:32,540
+And even though you're still running reinforcement
+
+1128
+00:57:32,540 --> 00:57:34,000
+learning, still running the policy
+
+1129
+00:57:34,000 --> 00:57:36,220
+and still running updates, it isn't
+
+1130
+00:57:36,220 --> 00:57:38,940
+able to recover from these states
+
+1131
+00:57:38,940 --> 00:57:42,160
+that it hasn't seen before, without on its own
+
+1132
+00:57:42,160 --> 00:57:43,810
+without interventions
+
+1133
+00:57:43,810 --> 00:57:46,020
+And ideally, we'd have a policy that could figure out
+
+1134
+00:57:46,020 --> 00:57:50,300
+how to get up and how to retry during deployment
+
+1135
+00:57:50,300 --> 00:57:54,210
+in these new circumstances
+
+1136
+00:57:54,210 --> 00:57:58,810
+Now this is also something that's
+
+1137
+00:57:58,810 --> 00:58:00,490
+bleeding edge of research
+
+1138
+00:58:00,490 --> 00:58:03,330
+And I'll just mention a few ideas that have been proposed
+
+1139
+00:58:03,330 --> 00:58:09,410
+that seem to be quite helpful for addressing this problem
+
+1140
+00:58:09,410 --> 00:58:14,090
+One is that when you're getting stuck, you end up in this state
+
+1141
+00:58:14,090 --> 00:58:15,870
+that it's hard to recover from
+
+1142
+00:58:15,870 --> 00:58:18,490
+And if you're doing reinforcement learning updates
+
+1143
+00:58:18,490 --> 00:58:20,650
+say that you are running your policy
+
+1144
+00:58:20,650 --> 00:58:23,410
+and somehow, you get stuck right here
+
+1145
+00:58:23,410 --> 00:58:25,490
+If you're running reinforcement learning updates
+
+1146
+00:58:25,490 --> 00:58:27,990
+you are running reinforcement learning updates
+
+1147
+00:58:27,990 --> 00:58:31,450
+with regard to the task of getting to the goal
+
+1148
+00:58:31,450 --> 00:58:35,610
+And if instead of trying to run RL updates to get to the goal
+
+1149
+00:58:35,610 --> 00:58:39,690
+if you instead tried to run RL updates to get back to states
+
+1150
+00:58:39,690 --> 00:58:42,650
+that are familiar, like good states that you visited
+
+1151
+00:58:42,650 --> 00:58:44,570
+in your previous experience, then
+
+1152
+00:58:44,570 --> 00:58:47,170
+you might have a better time at getting unstuck
+
+1153
+00:58:47,170 --> 00:58:49,010
+where, for example, these states might
+
+1154
+00:58:49,010 --> 00:58:52,360
+be closer to the ones that are at the goal
+
+1155
+00:58:52,360 --> 00:58:55,740
+and help perturb the agent back to something that it knows
+
+1156
+00:58:55,740 --> 00:58:59,360
+So that it could then continue doing the task
+
+1157
+00:58:59,360 --> 00:59:01,760
+So that's one idea
+
+1158
+00:59:01,760 --> 00:59:04,800
+And then another idea is to try to leverage pre-training
+
+1159
+00:59:04,800 --> 00:59:09,880
+So if you're trying to run reinforcement learning
+
+1160
+00:59:09,880 --> 00:59:13,520
+on the policy weights, like in the low-level action space
+
+1161
+00:59:13,520 --> 00:59:15,840
+you can only change the policy so much
+
+1162
+00:59:15,840 --> 00:59:19,400
+And there's only so many ways you can adapt
+
+1163
+00:59:19,400 --> 00:59:21,800
+And if instead, if you could adapt in a higher level
+
+1164
+00:59:21,800 --> 00:59:25,400
+space, if you had some set of pre-trained skills
+
+1165
+00:59:25,400 --> 00:59:27,960
+then you might be able to actually adapt more drastically
+
+1166
+00:59:27,960 --> 00:59:30,470
+and actually try to change a strategy that you're taking
+
+1167
+00:59:30,470 --> 00:59:32,640
+rather than just changing the weights or the actions
+
+1168
+00:59:32,640 --> 00:59:34,240
+that you're using
+
+1169
+00:59:34,240 --> 00:59:38,120
+So, for example, if you learned a skill for a pre-trained skill
+
+1170
+00:59:38,120 --> 00:59:40,400
+for walking forward and a pre-trained skill
+
+1171
+00:59:40,400 --> 00:59:43,680
+for getting back on your feet, then instead of trying
+
+1172
+00:59:43,680 --> 00:59:46,260
+to continue walk forward in that new state
+
+1173
+00:59:46,260 --> 00:59:49,000
+if you tried to explore the different skills that you have
+
+1174
+00:59:49,000 --> 00:59:51,230
+and explore the state of getting back up
+
+1175
+00:59:51,230 --> 00:59:52,870
+then you might be able to actually
+
+1176
+00:59:52,870 --> 00:59:55,720
+be more successful at handling these circumstances
+
+1177
+00:59:55,720 --> 00:59:58,390
+Because you're basically able to try different strategies rather
+
+1178
+00:59:58,390 --> 01:00:02,630
+than just trying different actions or different weights
+
+1179
+01:00:02,630 --> 01:00:05,880
+The other thing here is that pre-trained LLMs
+
+1180
+01:00:05,880 --> 01:00:07,670
+might have some common sense reasoning that
+
+1181
+01:00:07,670 --> 01:00:12,210
+could allow an agent to adapt a novel circumstances as well
+
+1182
+01:00:12,210 --> 01:00:14,350
+and try different strategies
+
+1183
+01:00:14,350 --> 01:00:15,990
+So let's look at a couple examples
+
+1184
+01:00:15,990 --> 01:00:18,230
+of these ideas in practice
+
+1185
+01:00:18,230 --> 01:00:19,710
+So if we take the first idea that's
+
+1186
+01:00:19,710 --> 01:00:22,190
+trying to guide the agent with reinforcement learning
+
+1187
+01:00:22,190 --> 01:00:25,390
+to familiar states rather than to the goal
+
+1188
+01:00:25,390 --> 01:00:29,110
+we can actually run it on that same example
+
+1189
+01:00:29,110 --> 01:00:33,200
+And we see that the agent does actually--
+
+1190
+01:00:33,200 --> 01:00:35,570
+I mean, this is still an out-of-distribution environment
+
+1191
+01:00:35,570 --> 01:00:38,890
+It does get stuck on its back, but it is able to, for example
+
+1192
+01:00:38,890 --> 01:00:43,050
+get back up after trying
+
+1193
+01:00:43,050 --> 01:00:45,250
+So here, it's stuck on its back, and it's
+
+1194
+01:00:45,250 --> 01:00:47,170
+trying to get back to a state that's familiar
+
+1195
+01:00:47,170 --> 01:00:49,390
+for example, a state where it's on its feet
+
+1196
+01:00:49,390 --> 01:00:51,270
+And it's able to eventually recover
+
+1197
+01:00:51,270 --> 01:00:56,270
+from that after a bit of attempts
+
+1198
+01:00:56,270 --> 01:01:02,430
+and then make it to the goal state
+
+1199
+01:01:02,430 --> 01:01:04,600
+And then in terms of adapting, we
+
+1200
+01:01:04,600 --> 01:01:06,310
+talked about adopting the low-level space
+
+1201
+01:01:06,310 --> 01:01:08,550
+and in the high-level space
+
+1202
+01:01:08,550 --> 01:01:10,230
+This first example is a system that
+
+1203
+01:01:10,230 --> 01:01:14,750
+was trained to be able to adapt in the low-level space
+
+1204
+01:01:14,750 --> 01:01:16,870
+from recent history
+
+1205
+01:01:16,870 --> 01:01:20,870
+And this is able to handle some small out-of-distribution
+
+1206
+01:01:20,870 --> 01:01:24,550
+scenarios, where it's like on different terrains
+
+1207
+01:01:24,550 --> 01:01:28,030
+But if you have things that are more drastically
+
+1208
+01:01:28,030 --> 01:01:29,790
+different from what you've seen before
+
+1209
+01:01:29,790 --> 01:01:33,750
+it can be very helpful to adapt in a more high-level space
+
+1210
+01:01:33,750 --> 01:01:36,670
+And so what that could look like is say that you--
+
+1211
+01:01:36,670 --> 01:01:38,710
+say that you have this legged robot that's trying
+
+1212
+01:01:38,710 --> 01:01:40,710
+to reach a goal over here
+
+1213
+01:01:40,710 --> 01:01:44,990
+Then, if for example, all the agencies
+
+1214
+01:01:44,990 --> 01:01:48,160
+is this image right here tries to go forward
+
+1215
+01:01:48,160 --> 01:01:50,100
+goes backward, if you just keep on running
+
+1216
+01:01:50,100 --> 01:01:52,300
+a policy without any context, it'll just
+
+1217
+01:01:52,300 --> 01:01:53,820
+keep on trying to go forward
+
+1218
+01:01:53,820 --> 01:01:59,300
+Because it doesn't know that it tried going forward before
+
+1219
+01:01:59,300 --> 01:02:01,460
+If instead you try different strategies
+
+1220
+01:02:01,460 --> 01:02:05,020
+like moving left, moving backwards, with context
+
+1221
+01:02:05,020 --> 01:02:09,340
+and adaptation, then you can figure out how to, ultimately--
+
+1222
+01:02:09,340 --> 01:02:11,260
+Even though the agent in this particular case
+
+1223
+01:02:11,260 --> 01:02:14,020
+has never seen this environment before, it's able to problem
+
+1224
+01:02:14,020 --> 01:02:17,780
+solve its way through these different obstacles
+
+1225
+01:02:17,780 --> 01:02:21,900
+and navigating to a goal position
+
+1226
+01:02:21,900 --> 01:02:24,540
+This is something where if you adapt it in the low-level motor
+
+1227
+01:02:24,540 --> 01:02:30,180
+space, trying out different positions of your joints, then
+
+1228
+01:02:30,180 --> 01:02:32,740
+it would be very tricky to try to problem solve
+
+1229
+01:02:32,740 --> 01:02:35,400
+through this circumstance
+
+1230
+01:02:35,400 --> 01:02:35,900
+Cool
+
+1231
+01:02:35,900 --> 01:02:40,780
+So that was a brief foray into this single-life reinforcement
+
+1232
+01:02:40,780 --> 01:02:42,260
+learning setting
+
+1233
+01:02:42,260 --> 01:02:43,120
+Yeah, good question
+
+1234
+01:02:43,120 --> 01:02:45,560
+So how do we bake in safety constraints
+
+1235
+01:02:45,560 --> 01:02:48,610
+So yeah, another circumstance that
+
+1236
+01:02:48,610 --> 01:02:53,010
+might require human oversight is, if you're in scenarios
+
+1237
+01:02:53,010 --> 01:02:57,050
+where you could make safety critical mistakes-- if you
+
+1238
+01:02:57,050 --> 01:03:02,250
+are a legged robot, you can fall in a way that damages the robot
+
+1239
+01:03:02,250 --> 01:03:05,290
+If you're a manipulator, you could drop a glass
+
+1240
+01:03:05,290 --> 01:03:06,330
+onto the floor
+
+1241
+01:03:06,330 --> 01:03:09,730
+You could also hit objects pretty hard
+
+1242
+01:03:09,730 --> 01:03:14,740
+There's actually work that builds very directly
+
+1243
+01:03:14,740 --> 01:03:16,570
+upon some of these ideas, where you actually
+
+1244
+01:03:16,570 --> 01:03:19,050
+try to learn some notion of safety
+
+1245
+01:03:19,050 --> 01:03:21,470
+and learn when you're actually in a high risk state
+
+1246
+01:03:21,470 --> 01:03:24,990
+and then go back to a state that is less risky
+
+1247
+01:03:24,990 --> 01:03:28,010
+So you could actually learn, for example, a recovery policy that
+
+1248
+01:03:28,010 --> 01:03:30,050
+tries to get back to states that are known
+
+1249
+01:03:30,050 --> 01:03:33,290
+to be less risky and more safe
+
+1250
+01:03:33,290 --> 01:03:36,050
+And so these ideas, actually-- some of these ideas
+
+1251
+01:03:36,050 --> 01:03:44,170
+were actually, several years ago, studied in safety settings
+
+1252
+01:03:44,170 --> 01:03:45,680
+The other practical thing to do is
+
+1253
+01:03:45,680 --> 01:03:49,960
+to try to, to the extent possible
+
+1254
+01:03:49,960 --> 01:03:52,040
+try to impose safety constraints on the controller
+
+1255
+01:03:52,040 --> 01:03:54,440
+itself so that, for example, you're
+
+1256
+01:03:54,440 --> 01:03:58,960
+not using the motors to the point in which they'll overheat
+
+1257
+01:03:58,960 --> 01:04:02,200
+or minimize, have a box around the robot that doesn't allow it
+
+1258
+01:04:02,200 --> 01:04:05,960
+to, for example, apply a lot of force
+
+1259
+01:04:05,960 --> 01:04:08,200
+to different parts of the state space
+
+1260
+01:04:08,200 --> 01:04:09,700
+Now, that's not possible everywhere
+
+1261
+01:04:09,700 --> 01:04:14,120
+And learning notions of safety might be the only way
+
+1262
+01:04:14,120 --> 01:04:16,700
+to actually address the problem in general
+
+1263
+01:04:16,700 --> 01:04:20,100
+Although to learn safety, you need examples of failing
+
+1264
+01:04:20,100 --> 01:04:23,880
+So it's generally a pretty tricky problem
+
+1265
+01:04:23,880 --> 01:04:27,640
+And yeah, I guess those are my main thoughts on that
+
+1266
+01:04:27,640 --> 01:04:30,220
+Yeah, so you also-- the question is maybe
+
+1267
+01:04:30,220 --> 01:04:31,800
+when navigate around people, you could
+
+1268
+01:04:31,800 --> 01:04:36,080
+try to ask a VLM, like what you might
+
+1269
+01:04:36,080 --> 01:04:38,500
+try to do at a high level in different circumstances
+
+1270
+01:04:38,500 --> 01:04:42,200
+And this work, right here, actually
+
+1271
+01:04:42,200 --> 01:04:45,680
+was using a VLM to indicate with past experience what
+
+1272
+01:04:45,680 --> 01:04:47,520
+are good strategies to try
+
+1273
+01:04:47,520 --> 01:04:51,400
+And so these models may have some common sense, suggesting
+
+1274
+01:04:51,400 --> 01:04:56,200
+maybe you shouldn't walk or run into a person, for example
+
+1275
+01:04:56,200 --> 01:04:59,320
+Or maybe you should wait, that sort of thing
+
+1276
+01:04:59,320 --> 01:05:04,320
+And so leveraging those common sense in those models
+
+1277
+01:05:04,320 --> 01:05:07,160
+is fairly promising
+
+1278
+01:05:07,160 --> 01:05:08,520
+Cool
+
+1279
+01:05:08,520 --> 01:05:09,020
+Great
+
+1280
+01:05:09,020 --> 01:05:12,680
+So to summarize, we talked about why reinforcement learning
+
+1281
+01:05:12,680 --> 01:05:14,960
+algorithms don't already give robots autonomous
+
+1282
+01:05:14,960 --> 01:05:16,840
+learning capabilities
+
+1283
+01:05:16,840 --> 01:05:20,880
+And define the problem, define a couple instances
+
+1284
+01:05:20,880 --> 01:05:22,560
+of this problem, where we either want
+
+1285
+01:05:22,560 --> 01:05:25,600
+to think about the lifetime of rewards or learning
+
+1286
+01:05:25,600 --> 01:05:26,780
+a good policy
+
+1287
+01:05:26,780 --> 01:05:28,400
+And we talked about algorithms for each
+
+1288
+01:05:28,400 --> 01:05:31,220
+of those, where we try to, for example
+
+1289
+01:05:31,220 --> 01:05:34,080
+learn a backward policy, learn a task graph
+
+1290
+01:05:34,080 --> 01:05:37,040
+and try different tasks, and also single life
+
+1291
+01:05:37,040 --> 01:05:39,310
+RL to prevent drift
+
